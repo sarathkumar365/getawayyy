@@ -1,6 +1,6 @@
 "use client";
 
-import type { JSX } from "react";
+import { useCallback, useState, type JSX } from "react";
 import "../feel/feel.css";
 import "./walk.css";
 import { SmoothScroll } from "@/components/feel/SmoothScroll";
@@ -11,6 +11,7 @@ import { Tree } from "@/components/scene/elements";
 import { Block, Guardrail, HighwaySign, Lake, RoadDashes, Storefront, Streetlight } from "@/components/scene/props";
 import { MUSKOKA_OPENING, RANGES } from "@/lib/scene/muskoka-opening";
 import { RouteMap } from "@/components/scene/RouteMap";
+import { Actor } from "@/components/characters/Actor";
 import { routeFor } from "@/lib/scene/route";
 import { tripById } from "@/lib/data";
 
@@ -20,13 +21,16 @@ const TRIP = tripById("muskoka");
 const ROUTE = TRIP ? routeFor(TRIP) : null;
 
 export default function WalkPage(): JSX.Element {
+  const [moving, setMoving] = useState(false);
+  const onMoving = useCallback((m: boolean) => setMoving(m), []);
+
   return (
     <SmoothScroll>
       <Celestial />
       <PointerTrail />
       <div className="sky" aria-hidden="true" />
 
-      <Walk strip={S} scale={1} pace={9}>
+      <Walk strip={S} scale={1} pace={9} onMoving={onMoving}>
         <div className="walk__road" />
 
         <WalkLayer layer="far" width={RANGES.WIDTH} height={200} baseline="15vh">
@@ -73,6 +77,15 @@ export default function WalkPage(): JSX.Element {
         <WalkLayer layer="ground" width={RANGES.WIDTH} height={30} baseline="7vh">
           <RoadDashes from={0} to={RANGES.WIDTH} gap={150} />
         </WalkLayer>
+
+        {/* They walk in place while the world slides past — which is the correct
+            illusion, and also the only one that survives an 8,400-unit strip. */}
+        <div className="walk__cast">
+          <Actor id="curse" outfit="parka" turn={1} walking={moving} height={210}
+            className="walk__actor walk__actor--b" />
+          <Actor id="sun" outfit="parka" turn={1} walking={moving} height={190}
+            className="walk__actor walk__actor--a" />
+        </div>
 
         <div className="walk__clock" data-clock="" />
         <div className="walk__rail"><i data-rail="" style={{ width: "0%" }} /></div>

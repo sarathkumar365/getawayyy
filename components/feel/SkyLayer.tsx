@@ -3,7 +3,7 @@
 import { useEffect, useRef, type JSX } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { mixSky, skyFor, type Sky } from "@/lib/sky";
+import { mixSky, skyAtTime, type Sky } from "@/lib/sky";
 
 export type SkyLayerProps = {
   /** Each stop's real clock time, in journey order. `null` keeps the previous sky. */
@@ -43,8 +43,8 @@ export function SkyLayer({
     const root = document.documentElement;
 
     const skies: Sky[] = times.length > 0
-      ? times.map((t) => skyFor(t))
-      : [skyFor(null)];
+      ? times.map((t) => skyAtTime(t))
+      : [skyAtTime(null)];
 
     let lastScheme = "";
     const write = (sky: Sky): void => {

@@ -101,3 +101,57 @@ function hexToRgb(hex: string): [number, number, number] {
     parseInt(h.slice(4, 6), 16),
   ];
 }
+
+/**
+ * Anchor points for a CONTINUOUS sky.
+ *
+ * `skyFor` looks a palette up by phase, so the sky changes in seven hard steps —
+ * golden hour becomes dusk in a single frame, and every colour derived from it
+ * (text, the road, the ground) snaps with it. That is visible as a flicker while
+ * scrolling, and it is the real cause rather than any boolean.
+ *
+ * These are the hours at which each palette is exactly itself. Between them the
+ * sky is interpolated, so it changes at the rate the actual light does.
+ */
+const ANCHORS: readonly { h: number; phase: Phase }[] = [
+  { h: 0, phase: "night" },
+  { h: 5.9, phase: "night" },
+  { h: 7.3, phase: "dawn" },
+  { h: 9.2, phase: "morning" },
+  { h: 12.6, phase: "midday" },
+  { h: 15.4, phase: "afternoon" },
+  { h: 17.9, phase: "goldenHour" },
+  { h: 19.1, phase: "dusk" },
+  { h: 20.6, phase: "night" },
+  { h: 24, phase: "night" },
+];
+
+const at = (phase: Phase, hour: number): Sky => ({
+  phase,
+  t: Math.min(1, Math.max(0, (hour - 6) / 15)),
+  ...PALETTE[phase],
+});
+
+/** The sky at any hour, interpolated rather than stepped. */
+export function skyAt(hour: number): Sky {
+  const h = ((hour % 24) + 24) % 24;
+  for (let i = 0; i < ANCHORS.length - 1; i += 1) {
+    const a = ANCHORS[i];
+    const b = ANCHORS[i + 1];
+    if (!a || !b) continue;
+    if (h >= a.h && h <= b.h) {
+      const k = b.h === a.h ? 0 : (h - a.h) / (b.h - a.h);
+      // smoothstep, so the change eases in and out of each phase
+      const e = k * k * (3 - 2 * k);
+      const mixed = mixSky(at(a.phase, h), at(b.phase, h), e);
+      return { ...mixed, phase: e < 0.5 ? a.phase : b.phase, t: at(a.phase, h).t };
+    }
+  }
+  return at("midday", h);
+}
+
+/** Continuous sky from a clock string. */
+export function skyAtTime(time: string | null): Sky {
+  const hour = parseTime(time);
+  return hour === null ? at("midday", 12) : skyAt(hour);
+}
