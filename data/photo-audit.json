@@ -1,0 +1,305 @@
+{
+  "generated": "2026-09-15T13:11:06.714Z",
+  "queries": {
+    "Gravenhurst, ON": {
+      "count": 10,
+      "place": "Gravenhurst",
+      "checked": "2026-09-15T13:10:41.022Z"
+    },
+    "Sawdust City Brewing, Gravenhurst ON": {
+      "count": 10,
+      "place": "Sawdust City Brewing Co.",
+      "checked": "2026-09-15T13:10:41.328Z"
+    },
+    "Bracebridge Falls, Bracebridge ON": {
+      "count": 10,
+      "place": "Bracebridge Falls",
+      "checked": "2026-09-15T13:10:41.713Z"
+    },
+    "Muskoka Heritage Place, Huntsville ON": {
+      "count": 0,
+      "place": "Muskoka Heritage Place",
+      "checked": "2026-09-15T13:10:41.993Z"
+    },
+    "Main Street, Huntsville ON": {
+      "count": 4,
+      "place": "Main Street East",
+      "checked": "2026-09-15T13:10:42.673Z"
+    },
+    "Group of Seven Outdoor Gallery, Huntsville ON": {
+      "count": 5,
+      "place": "Eclipse Art Gallery",
+      "checked": "2026-09-15T13:10:43.288Z"
+    },
+    "Arrowhead Provincial Park, Huntsville ON": {
+      "count": 10,
+      "place": "Arrowhead Provincial Park",
+      "checked": "2026-09-15T13:10:43.697Z"
+    },
+    "Lions Lookout, Huntsville ON": {
+      "count": 10,
+      "place": "Lions Lookout",
+      "checked": "2026-09-15T13:10:44.130Z"
+    },
+    "Manitoba Street, Bracebridge ON": {
+      "count": 10,
+      "place": "Manitoba Street",
+      "checked": "2026-09-15T13:10:44.722Z"
+    },
+    "Muskoka Wharf, Gravenhurst ON": {
+      "count": 10,
+      "place": "Gravenhurst Muskoka Wharf",
+      "checked": "2026-09-15T13:10:45.322Z"
+    },
+    "Downtown Gravenhurst, ON": {
+      "count": 10,
+      "place": "Downtown Gravenhurst",
+      "checked": "2026-09-15T13:10:45.723Z"
+    },
+    "Bethune Memorial House, Gravenhurst ON": {
+      "count": 10,
+      "place": "Bethune Memorial House National Historic Site",
+      "checked": "2026-09-15T13:10:46.119Z"
+    },
+    "Muskoka Bay Pottery, Gravenhurst ON": {
+      "count": 10,
+      "place": "MUSKOKA BAY POTTERY",
+      "checked": "2026-09-15T13:10:46.653Z"
+    },
+    "Gravenhurst, ON to Toronto, ON": {
+      "count": 10,
+      "place": "Gravenhurst",
+      "checked": "2026-09-15T13:10:47.015Z"
+    },
+    "Huntsville, ON": {
+      "count": 10,
+      "place": "Huntsville",
+      "checked": "2026-09-15T13:10:47.370Z"
+    },
+    "Algonquin Provincial Park West Gate, ON": {
+      "count": 10,
+      "place": "Algonquin Provincial Park - West Gate",
+      "checked": "2026-09-15T13:10:47.843Z"
+    },
+    "Algonquin Art Centre, Algonquin Park ON": {
+      "count": 10,
+      "place": "Algonquin Art Centre",
+      "checked": "2026-09-15T13:10:48.233Z"
+    },
+    "Lookout Trail, Algonquin Park ON": {
+      "count": 10,
+      "place": "Lookout Trail",
+      "checked": "2026-09-15T13:10:48.804Z"
+    },
+    "Spruce Bog Boardwalk, Algonquin Park ON": {
+      "count": 10,
+      "place": "Spruce Bog Boardwalk Trail",
+      "checked": "2026-09-15T13:10:49.151Z"
+    },
+    "Algonquin Provincial Park, ON": {
+      "count": 10,
+      "place": "Algonquin Provincial Park",
+      "checked": "2026-09-15T13:10:49.554Z"
+    },
+    "Algonquin Visitor Centre, ON": {
+      "count": 10,
+      "place": "Algonquin Park Visitor Centre",
+      "checked": "2026-09-15T13:10:50.055Z"
+    },
+    "Algonquin Logging Museum, ON": {
+      "count": 10,
+      "place": "Algonquin Logging Museum",
+      "checked": "2026-09-15T13:10:50.628Z"
+    },
+    "Booth's Rock Trail, Algonquin Park ON": {
+      "count": 10,
+      "place": "Booth's Rock Trail",
+      "checked": "2026-09-15T13:10:51.057Z"
+    },
+    "Dorset, ON": {
+      "count": 10,
+      "place": "Dorset",
+      "checked": "2026-09-15T13:10:51.467Z"
+    },
+    "Dorset Lookout Tower, Lake of Bays ON": {
+      "count": 10,
+      "place": "Dorset Lookout Tower",
+      "checked": "2026-09-15T13:10:51.813Z"
+    },
+    "Haliburton Sculpture Forest, Haliburton ON": {
+      "count": 10,
+      "place": "Haliburton Sculpture Forest",
+      "checked": "2026-09-15T13:10:52.156Z"
+    },
+    "Haliburton, ON": {
+      "count": 10,
+      "place": "Haliburton",
+      "checked": "2026-09-15T13:10:52.489Z"
+    },
+    "Blackbird Pottery, Haliburton ON": {
+      "count": 10,
+      "place": "Blackbird Pottery",
+      "checked": "2026-09-15T13:10:53.105Z"
+    },
+    "Haliburton, ON to Toronto, ON": {
+      "count": 10,
+      "place": "Haliburton County",
+      "checked": "2026-09-15T13:10:53.449Z"
+    },
+    "Kimberley, ON": {
+      "count": 3,
+      "place": "Kimberley",
+      "checked": "2026-09-15T13:10:53.821Z"
+    },
+    "Old Baldy Conservation Area, Kimberley ON": {
+      "count": 10,
+      "place": "Old Baldy Conservation Area",
+      "checked": "2026-09-15T13:10:54.160Z"
+    },
+    "Eugenia Falls Conservation Area, ON": {
+      "count": 10,
+      "place": "Eugenia Falls Conservation Area",
+      "checked": "2026-09-15T13:10:54.537Z"
+    },
+    "Scenic Caves Nature Adventures, Blue Mountains ON": {
+      "count": 10,
+      "place": "Scenic Caves Nature Adventures",
+      "checked": "2026-09-15T13:10:54.975Z"
+    },
+    "Thornbury, ON": {
+      "count": 10,
+      "place": "Thornbury",
+      "checked": "2026-09-15T13:10:55.251Z"
+    },
+    "Collingwood, ON": {
+      "count": 10,
+      "place": "Collingwood",
+      "checked": "2026-09-15T13:10:55.563Z"
+    },
+    "Inglis Falls Conservation Area, Owen Sound ON": {
+      "count": 10,
+      "place": "Inglis Falls Conservation Area",
+      "checked": "2026-09-15T13:10:55.973Z"
+    },
+    "Irish Mountain Lookout, Meaford ON": {
+      "count": 10,
+      "place": "Irish Mountain Lookout",
+      "checked": "2026-09-15T13:10:56.299Z"
+    },
+    "Hurontario Street, Collingwood ON": {
+      "count": 10,
+      "place": "Hurontario Street",
+      "checked": "2026-09-15T13:10:57.000Z"
+    },
+    "Hello Pottery Co, Collingwood ON": {
+      "count": 10,
+      "place": "Hello Pottery Co.",
+      "checked": "2026-09-15T13:10:57.350Z"
+    },
+    "Collingwood, ON to Toronto, ON": {
+      "count": 10,
+      "place": "Collingwood",
+      "checked": "2026-09-15T13:10:57.814Z"
+    },
+    "Montreal, QC": {
+      "count": 10,
+      "place": "Montreal",
+      "checked": "2026-09-15T13:10:58.119Z"
+    },
+    "Marche Jean-Talon, Montreal QC": {
+      "count": 10,
+      "place": "Jean Talon Market",
+      "checked": "2026-09-15T13:10:58.489Z"
+    },
+    "Rue Saint-Paul, Old Montreal, QC": {
+      "count": 10,
+      "place": "Rue Saint-Paul Ouest",
+      "checked": "2026-09-15T13:10:58.940Z"
+    },
+    "Notre-Dame Basilica, Montreal QC": {
+      "count": 10,
+      "place": "Notre-Dame Basilica of Montreal",
+      "checked": "2026-09-15T13:10:59.414Z"
+    },
+    "Old Port of Montreal, QC": {
+      "count": 10,
+      "place": "Old Port of Montreal",
+      "checked": "2026-09-15T13:10:59.865Z"
+    },
+    "Kondiaronk Belvedere, Montreal QC": {
+      "count": 10,
+      "place": "Kondiaronk Belvedere",
+      "checked": "2026-09-15T13:11:00.200Z"
+    },
+    "O-Taku Manga Lounge, 3623 Rue Saint-Denis, Montreal QC": {
+      "count": 10,
+      "place": "Otaku Manga Lounge",
+      "checked": "2026-09-15T13:11:00.551Z"
+    },
+    "Korean restaurant, Montreal QC": {
+      "count": 10,
+      "place": "Restaurant Itaewon",
+      "checked": "2026-09-15T13:11:01.035Z"
+    },
+    "Lachine Canal, Montreal QC": {
+      "count": 10,
+      "place": "Lachine Canal",
+      "checked": "2026-09-15T13:11:01.398Z"
+    },
+    "Studio Mie Kim, Montreal QC": {
+      "count": 10,
+      "place": "Mie Kim Ceramic Studio",
+      "checked": "2026-09-15T13:11:01.736Z"
+    },
+    "Montreal, QC to Toronto, ON": {
+      "count": 10,
+      "place": "Gare Centrale",
+      "checked": "2026-09-15T13:11:02.219Z"
+    },
+    "Quebec City, QC": {
+      "count": 10,
+      "place": "Québec City",
+      "checked": "2026-09-15T13:11:02.597Z"
+    },
+    "Dufferin Terrace, Quebec City QC": {
+      "count": 10,
+      "place": "Dufferin Terrace",
+      "checked": "2026-09-15T13:11:03.139Z"
+    },
+    "Quartier Petit-Champlain, Quebec City QC": {
+      "count": 10,
+      "place": "Quartier Petit Champlain",
+      "checked": "2026-09-15T13:11:03.634Z"
+    },
+    "Oh mon kogo, Rue Saint-Jean, Quebec City QC": {
+      "count": 10,
+      "place": "Oh mon kogo ! Street food",
+      "checked": "2026-09-15T13:11:04.266Z"
+    },
+    "Plains of Abraham, Quebec City QC": {
+      "count": 10,
+      "place": "Plains of Abraham",
+      "checked": "2026-09-15T13:11:04.610Z"
+    },
+    "Old Quebec, QC": {
+      "count": 10,
+      "place": "Old Quebec",
+      "checked": "2026-09-15T13:11:05.191Z"
+    },
+    "Parc de la Chute-Montmorency, Quebec QC": {
+      "count": 10,
+      "place": "Parc de la Chute-Montmorency",
+      "checked": "2026-09-15T13:11:05.700Z"
+    },
+    "Ile d'Orleans, QC": {
+      "count": 10,
+      "place": "Île d'Orléans",
+      "checked": "2026-09-15T13:11:06.111Z"
+    },
+    "Quebec City, QC to Toronto, ON": {
+      "count": 10,
+      "place": "Québec City",
+      "checked": "2026-09-15T13:11:06.622Z"
+    }
+  }
+}

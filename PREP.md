@@ -307,6 +307,58 @@ a build with no React can switch expressions by toggling `display`.
 **Deferred to the real device:** whether the walk is good enough. Nothing measured here
 answers that.
 
+### 4.9 Phase 2 — the feel — 15 Sep 2026
+
+Proving ground at `/feel`: one real Muskoka day, scrolled.
+
+**One clock.** Lenis is driven from `gsap.ticker` rather than its own rAF loop, with
+`lagSmoothing(0)`, so a dropped frame cannot desync scroll from the animations pinned to
+it. The character rigs already run on that ticker, so everything on screen advances on the
+same tick. Under `prefers-reduced-motion` Lenis is never constructed at all — smooth-
+scrolling someone who asked for less motion is worse than not smoothing.
+
+**The sky is computed, never authored.** Each stop's real clock time drives it, so the day
+actually passes as you scroll. Measured across the Muskoka page: golden hour at the 18:00
+Friday departure → **night, and `data-sky-scheme` flips to dark**, at the 22:15 Bracebridge
+Falls walk → morning at 09:30 → midday at 12:30 → **golden hour again at the 18:00 Lions
+Lookout sunset** → Sunday morning → afternoon on the drive home. Nothing re-renders: one
+tick writes six CSS custom properties and every surface reads them.
+
+**The Pencil trail.** Pointer Events hand over `pressure` and tilt for free, so the stroke
+behaves like ink — heavier when pressed, thinner when moving fast, thinner as the pen lies
+flatter, tapering as it fades. Verified: 0 → 1,081 painted pixels during a stroke → 0 after
+the 900 ms life. Redrawn from scratch each frame rather than composited with a translucent
+fade rect, because that trick leaves grey residue that never clears — instantly visible
+against a night sky. Touch is excluded by default: a finger on an iPad is scrolling, and
+trailing every scroll turns the page into a scribble.
+
+**Photos keyed by stop name.** Stops in the file have no `id` and no `slug`, only a name —
+so `public/photos/<slugified-name>/` is the convention, indexed by `bun run photos`. Name
+beats `maps_query` as the key because queries repeat: "Muskoka Wharf coffee" and "Late
+lunch at the wharf" share one query but want different photos.
+
+### 4.10 The photo audit changes the plan
+
+`bun run scripts/photo-audit.ts` checked all 60 unique `maps_query` values across the
+featured trips. Result:
+
+| | stops |
+|---|---|
+| 4+ Google photos already | **62** |
+| 1–3 photos | 2 *(both are drive legs, not real stops)* |
+| **no photos at all** | **1** — Muskoka Heritage Place |
+
+**The earlier estimate of "~30 anchor stops need photos" was wrong by an order of
+magnitude.** Google already covers essentially everything, with attribution. The one true
+gap is Muskoka Heritage Place — which is the steam train stop, and one of the reasons the
+Muskoka trip has a Saturday north day at all.
+
+This does not make your own photos pointless; Google's are user-submitted and uneven, and
+hero moments still deserve better. But it moves them from **required** to **upgrade**, and
+the site now works with zero photos supplied.
+
+Results are cached in `data/photo-audit.json`, so re-running costs nothing.
+
 ---
 
 ## 5. The five visual worlds
@@ -469,10 +521,10 @@ and a 보라해 tucked where only she'd catch it lands better than a likeness wo
 13. ⏳ **Judge the walk on a real iPad.** Rive decision point. Standalone build shipped
     for exactly this — see §4.8.
 
-**Phase 2 — the feel**
-14. Lenis + ScrollTrigger scaffolding; the scroll-driven sky
-15. Pointer trail on canvas
-16. Image pipeline: your photos → `next/image` → gallery with "show me more"
+**Phase 2 — the feel** ✅ **DONE**
+14. ✅ Lenis + ScrollTrigger scaffolding; the scroll-driven sky — `components/feel/`
+15. ✅ Pointer trail on canvas — pressure + tilt from Pointer Events
+16. ✅ Image pipeline: local photos → `next/image` → gallery with "show me more"
 
 **Phase 3 — components**
 17. `StopCard` — the hard one: 16 types, 22 optional keys

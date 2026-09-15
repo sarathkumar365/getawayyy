@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "geocode": "bun run scripts/geocode.ts"
+    "geocode": "bun run scripts/geocode.ts",
+    "photos": "bun run scripts/index-photos.ts",
+    "photo-audit": "bun run scripts/photo-audit.ts"
   },
   "dependencies": {
     "next": "^15.5.4",
