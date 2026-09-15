@@ -1,14 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState, type JSX } from "react";
+import { useCallback, useState, type JSX } from "react";
+import { usePhotos, useEscape, apiSrc, type ApiPhoto } from "./usePhotos";
 
-export type ApiPhoto = {
-  ref: string;
-  width: number | null;
-  height: number | null;
-  attribution: { name: string | null; uri: string | null }[];
-};
+export type { ApiPhoto };
 
 export type PhotoGalleryProps = {
   /** Stop name, for alt text. */
@@ -19,16 +15,6 @@ export type PhotoGalleryProps = {
   query: string | null;
   className?: string;
 };
-
-type Extra =
-  | { state: "idle" }
-  | { state: "loading" }
-  | { state: "none"; why: "no-key" | "not-found" | "empty" }
-  | { state: "error" }
-  | { state: "ok"; place: string; photos: ApiPhoto[] };
-
-const apiSrc = (ref: string, w: number): string =>
-  `/api/photo?ref=${encodeURIComponent(ref)}&w=${w}`;
 
 /**
  * Photos for one stop.
@@ -42,32 +28,10 @@ const apiSrc = (ref: string, w: number): string =>
  * carries its photographer credit. That is not optional and not decoration.
  */
 export function PhotoGallery({ name, local, query, className }: PhotoGalleryProps): JSX.Element {
-  const [extra, setExtra] = useState<Extra>({ state: "idle" });
+  const { extra, load } = usePhotos(query, name);
   const [open, setOpen] = useState<string | null>(null);
-
-  const more = useCallback(async () => {
-    if (!query) return;
-    setExtra({ state: "loading" });
-    try {
-      const res = await fetch(`/api/photos?q=${encodeURIComponent(query)}`);
-      const json = (await res.json()) as {
-        available: boolean; found?: boolean; place?: string; photos: ApiPhoto[];
-      };
-      if (!json.available) { setExtra({ state: "none", why: "no-key" }); return; }
-      if (json.found === false) { setExtra({ state: "none", why: "not-found" }); return; }
-      if (json.photos.length === 0) { setExtra({ state: "none", why: "empty" }); return; }
-      setExtra({ state: "ok", place: json.place ?? name, photos: json.photos });
-    } catch {
-      setExtra({ state: "error" });
-    }
-  }, [query, name]);
-
-  useEffect(() => {
-    if (!open) return undefined;
-    const esc = (e: KeyboardEvent): void => { if (e.key === "Escape") setOpen(null); };
-    window.addEventListener("keydown", esc);
-    return () => window.removeEventListener("keydown", esc);
-  }, [open]);
+  const close = useCallback(() => setOpen(null), []);
+  useEscape(open, close);
 
   const nothingYet = local.length === 0 && extra.state !== "ok";
 
@@ -124,7 +88,7 @@ export function PhotoGallery({ name, local, query, className }: PhotoGalleryProp
 
       <figcaption className="gallery__foot">
         {query && extra.state === "idle" && (
-          <button type="button" className="gallery__more" onClick={() => void more()}>
+          <button type="button" className="gallery__more" onClick={() => void load()}>
             Show me more
           </button>
         )}
@@ -139,7 +103,7 @@ export function PhotoGallery({ name, local, query, className }: PhotoGalleryProp
           </span>
         )}
         {extra.state === "error" && (
-          <button type="button" className="gallery__more" onClick={() => void more()}>
+          <button type="button" className="gallery__more" onClick={() => void load()}>
             That didn&apos;t load. Try again
           </button>
         )}

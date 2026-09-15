@@ -1,0 +1,47 @@
+/* Review surface for the station panels. Not the journey — the journey is
+   step 6. This exists so every block can be seen against real data. */
+
+.panel-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--s-7) var(--s-4) var(--s-9);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-7);
+}
+
+.panel-page__head { display: flex; flex-direction: column; gap: var(--s-4); }
+.panel-page__head h1 { font-size: var(--step-3); }
+.panel-page .eyebrow {
+  font-size: var(--step--1); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-faint); font-weight: 600; margin: 0;
+}
+.panel-page .lede { margin: 0; color: var(--ink-soft); max-width: 60ch; }
+.panel-page code {
+  font-family: var(--font-mono); font-size: .9em;
+  background: var(--paper-sunk); padding: 0 .3em; border-radius: 4px;
+}
+
+.picker { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.picker a {
+  font: inherit; font-size: var(--step--1); cursor: pointer; text-decoration: none;
+  padding: var(--s-2) var(--s-3); border-radius: 99px;
+  border: 1px solid var(--rule-strong); background: transparent; color: var(--ink-soft);
+}
+.picker a[aria-current="page"] {
+  background: var(--w-accent); border-color: var(--w-accent); color: #fff;
+}
+.picker a:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+
+.tally { margin: 0; font-size: var(--step--1); color: var(--ink-faint); }
+
+.panel-page__list { display: flex; flex-direction: column; gap: var(--s-7); }
+
+/* Each panel sits on a sliver of its world, the way it will over the walk. */
+.panel-page__slot {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  background: linear-gradient(180deg, var(--w-deep) 0%, var(--w-accent) 140%);
+  padding-top: var(--s-7);
+}
