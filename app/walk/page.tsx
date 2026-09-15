@@ -10,9 +10,14 @@ import { Walk, WalkLayer } from "@/components/scene/Walk";
 import { Tree } from "@/components/scene/elements";
 import { Block, Guardrail, HighwaySign, Lake, RoadDashes, Storefront, Streetlight } from "@/components/scene/props";
 import { MUSKOKA_OPENING, RANGES } from "@/lib/scene/muskoka-opening";
+import { RouteMap } from "@/components/scene/RouteMap";
+import { routeFor } from "@/lib/scene/route";
+import { tripById } from "@/lib/data";
 
 const S = MUSKOKA_OPENING;
 const pick = (kind: string) => S.items.filter((i) => i.kind === kind);
+const TRIP = tripById("muskoka");
+const ROUTE = TRIP ? routeFor(TRIP) : null;
 
 export default function WalkPage(): JSX.Element {
   return (
@@ -73,11 +78,12 @@ export default function WalkPage(): JSX.Element {
         <div className="walk__rail"><i data-rail="" style={{ width: "0%" }} /></div>
       </Walk>
 
-      <section style={{ minHeight: "60vh", display: "grid", placeItems: "center", padding: "3rem 1.5rem" }}>
-        <p style={{ maxWidth: "46ch", textAlign: "center", color: "var(--ink-2,#6b6560)" }}>
+      <section className="walk__after">
+        <p>
           That is movement 1 of 7, for one of five trips. The scenery and the sentence
           share one axis — the last streetlight passes while the line about it is on screen.
         </p>
+        {ROUTE && <RouteMap route={ROUTE} />}
       </section>
     </SmoothScroll>
   );
