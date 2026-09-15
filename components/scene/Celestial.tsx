@@ -24,6 +24,8 @@ export function Celestial({ className }: { className?: string }): JSX.Element {
   const sun = useRef<SVGGElement>(null);
   const moon = useRef<SVGGElement>(null);
   const stars = useRef<SVGGElement>(null);
+  const clouds = useRef<SVGGElement>(null);
+  const shoot = useRef<SVGGElement>(null);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -56,11 +58,60 @@ export function Celestial({ className }: { className?: string }): JSX.Element {
       if (stars.current) {
         stars.current.style.opacity = up ? "0" : String(Math.min(1, -alt * 1.6));
       }
+      if (clouds.current) {
+        // Cloud is only interesting when the sun is low enough to light it from
+        // underneath. Overhead it is flat and grey, so it fades out at midday
+        // and disappears entirely at night.
+        const lit = up ? Math.max(0, 1 - Math.abs(alt - 0.16) / 0.42) : 0;
+        clouds.current.style.opacity = (lit * 0.85).toFixed(3);
+      }
+    };
+
+    /* ---- shooting stars ---- */
+    // One at a time, on a long random interval. Two at once reads as a screensaver.
+    let next = 3 + Math.random() * 7;
+    let born = -99;
+    let path = { x: 0, y: 0, dx: 0, dy: 0 };
+    let clock = 0;
+    const LIFE = 0.85;
+
+    const streak = (dt: number): void => {
+      const g = shoot.current;
+      if (!g) return;
+      clock += dt;
+      const t = document.documentElement.style.getPropertyValue("--sky-t");
+      const night = altitude(Number.parseFloat(t || "0.5")) <= 0;
+
+      if (night && clock >= next) {
+        born = clock;
+        next = clock + 8 + Math.random() * 14;
+        // always falling, always shallow — a steep one looks like a firework
+        path = {
+          x: 12 + Math.random() * 62,
+          y: 6 + Math.random() * 22,
+          dx: 14 + Math.random() * 16,
+          dy: 7 + Math.random() * 7,
+        };
+      }
+
+      const age = (clock - born) / LIFE;
+      if (!night || age < 0 || age > 1) { g.style.opacity = "0"; return; }
+      const e = age * age * (3 - 2 * age);              // ease so it does not start abruptly
+      g.setAttribute("transform",
+        `translate(${(path.x + path.dx * e).toFixed(2)} ${(path.y + path.dy * e).toFixed(2)}) ` +
+        `rotate(${((Math.atan2(path.dy, path.dx) * 180) / Math.PI).toFixed(1)})`);
+      // bright on arrival, gone by the end
+      g.style.opacity = (Math.sin(Math.PI * age) * 0.9).toFixed(3);
+    };
+
+    const tick = (): void => {
+      place();
+      streak(gsap.ticker.deltaRatio(60) / 60);
     };
 
     place();
-    gsap.ticker.add(place);
-    return () => { gsap.ticker.remove(place); };
+    gsap.ticker.add(tick);
+    return () => { gsap.ticker.remove(tick); };
   }, []);
 
   return (
@@ -70,6 +121,25 @@ export function Celestial({ className }: { className?: string }): JSX.Element {
       preserveAspectRatio="xMidYMin slice"
       aria-hidden="true"
     >
+      <defs>
+        {/* lit from below — which is the whole reason a sunset cloud is worth drawing */}
+        <linearGradient id="cloudlit" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="var(--sky-2, #E8B06B)" stopOpacity="0.55" />
+          <stop offset="62%" stopColor="var(--sky-light, #FFC67D)" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#FFE6C4" stopOpacity="1" />
+        </linearGradient>
+      </defs>
+
+      <g ref={clouds} className="celestial__clouds" style={{ opacity: 0 }} fill="url(#cloudlit)">
+        {CLOUDS.map((c, i) => (
+          <g key={i} style={{ animationDelay: `${i * -37}s`, animationDuration: `${170 + i * 44}s` }}>
+            <ellipse cx={c[0]} cy={c[1]} rx={c[2]} ry={c[3]} />
+            <ellipse cx={c[0] - c[2] * 0.42} cy={c[1] + c[3] * 0.32} rx={c[2] * 0.58} ry={c[3] * 0.62} />
+            <ellipse cx={c[0] + c[2] * 0.5} cy={c[1] + c[3] * 0.2} rx={c[2] * 0.44} ry={c[3] * 0.55} />
+          </g>
+        ))}
+      </g>
+
       <g ref={stars} className="celestial__stars" style={{ opacity: 0 }}>
         {STARS.map((s, i) => (
           <circle key={i} cx={s[0]} cy={s[1]} r={s[2]} fill="#FFF8E6"
@@ -86,6 +156,11 @@ export function Celestial({ className }: { className?: string }): JSX.Element {
         <circle cx={-0.4} cy={1.2} r={0.7} fill="#DAD3C0" opacity={0.5} />
       </g>
 
+      <g ref={shoot} className="celestial__shoot" style={{ opacity: 0 }}>
+        <path d="M0,0 L-9,-1.1 L-9,1.1 Z" fill="#FFF8E6" opacity={0.55} />
+        <circle r={0.42} fill="#FFFFFF" />
+      </g>
+
       <g ref={sun} style={{ opacity: 0 }}>
         <circle r={7.5} fill="var(--sky-light, #FFC67D)" opacity={0.16} />
         <circle r={4.6} fill="var(--sky-light, #FFC67D)" opacity={0.3} />
@@ -94,6 +169,19 @@ export function Celestial({ className }: { className?: string }): JSX.Element {
     </svg>
   );
 }
+
+/**
+ * Long, flat cloud banks — cx, cy, rx, ry. Wide and thin on purpose: the
+ * streaked altocumulus you actually get over Ontario at sunset, not the
+ * cauliflower shapes a cartoon reaches for.
+ */
+const CLOUDS: readonly [number, number, number, number][] = [
+  [22, 30, 15, 1.9],
+  [58, 22, 19, 1.6],
+  [80, 36, 13, 2.2],
+  [38, 44, 22, 1.7],
+  [68, 52, 16, 2.0],
+];
 
 /** Fixed field, so the sky does not reshuffle itself on every render. */
 const STARS: readonly [number, number, number][] = [

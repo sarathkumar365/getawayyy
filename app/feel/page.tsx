@@ -28,7 +28,7 @@ export default function FeelPage(): JSX.Element {
 
   return (
     <SmoothScroll>
-      <SkyLayer times={times} />
+      <SkyLayer times={times} sectionSelector="section.stop" />
       <Celestial />
       <PointerTrail />
 

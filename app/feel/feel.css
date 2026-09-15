@@ -128,3 +128,8 @@
 .world .scene-layer--mid   { bottom: 12%; }
 .world .scene-layer--near  { bottom: 0; }
 .world .scene-layer--ground{ bottom: -2%; }
+
+.celestial__clouds > g { animation-name: drift; animation-timing-function: linear;
+  animation-iteration-count: infinite; }
+@keyframes drift { from { transform: translateX(-16%) } to { transform: translateX(16%) } }
+@media (prefers-reduced-motion: reduce) { .celestial__clouds > g { animation: none } }

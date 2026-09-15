@@ -10,6 +10,15 @@ export type SkyLayerProps = {
   times: readonly (string | null)[];
   /** Scroll container to track. Defaults to the whole document. */
   targetId?: string;
+  /**
+   * Selector for the stop sections, in the same order as `times`.
+   *
+   * Without this the sky splits the page into equal slices, which silently
+   * desyncs: a header and a trailing section are enough to put mid-afternoon
+   * light on the 22:15 night walk. With it, each stop's sky is exact when that
+   * stop is centred, and interpolated in between.
+   */
+  sectionSelector?: string;
   className?: string;
 };
 
@@ -24,7 +33,9 @@ export type SkyLayerProps = {
  * the root element and every themed surface reads them, so one scroll tick costs
  * six string assignments rather than a React pass.
  */
-export function SkyLayer({ times, targetId, className }: SkyLayerProps): JSX.Element {
+export function SkyLayer({
+  times, targetId, sectionSelector, className,
+}: SkyLayerProps): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,7 +59,19 @@ export function SkyLayer({ times, targetId, className }: SkyLayerProps): JSX.Ele
       }
     };
 
-    const at = (p: number): Sky => {
+    /** Document-Y at which each stop's sky should be exactly right. */
+    let anchors: number[] = [];
+    const measure = (): void => {
+      if (!sectionSelector) { anchors = []; return; }
+      const nodes = Array.from(document.querySelectorAll<HTMLElement>(sectionSelector));
+      anchors = nodes.slice(0, skies.length).map((n) => {
+        const r = n.getBoundingClientRect();
+        return r.top + window.scrollY + r.height / 2;
+      });
+    };
+    measure();
+
+    const byFraction = (p: number): Sky => {
       if (skies.length === 1) return skies[0] as Sky;
       const span = (skies.length - 1) * Math.min(1, Math.max(0, p));
       const i = Math.min(skies.length - 2, Math.floor(span));
@@ -58,7 +81,30 @@ export function SkyLayer({ times, targetId, className }: SkyLayerProps): JSX.Ele
       return mixSky(a, b, span - i);
     };
 
-    write(at(0));
+    /** Sky at the viewport centre, interpolated between the two nearest stops. */
+    const byAnchor = (): Sky | null => {
+      if (anchors.length < 2) return null;
+      const eye = window.scrollY + window.innerHeight / 2;
+      const first = anchors[0] ?? 0;
+      const last = anchors[anchors.length - 1] ?? 0;
+      if (eye <= first) return skies[0] ?? null;
+      if (eye >= last) return skies[anchors.length - 1] ?? null;
+      for (let i = 0; i < anchors.length - 1; i += 1) {
+        const a = anchors[i];
+        const b = anchors[i + 1];
+        if (a === undefined || b === undefined) continue;
+        if (eye >= a && eye <= b) {
+          const sa = skies[i];
+          const sb = skies[i + 1];
+          if (!sa || !sb) return null;
+          return mixSky(sa, sb, b === a ? 0 : (eye - a) / (b - a));
+        }
+      }
+      return null;
+    };
+
+    const update = (p: number): void => { write(byAnchor() ?? byFraction(p)); };
+    update(0);
 
     const target = targetId ? document.getElementById(targetId) : document.body;
     if (!target) return undefined;
@@ -67,16 +113,20 @@ export function SkyLayer({ times, targetId, className }: SkyLayerProps): JSX.Ele
       trigger: target,
       start: "top top",
       end: "bottom bottom",
-      onUpdate: (self) => { write(at(self.progress)); },
+      onUpdate: (self) => { update(self.progress); },
     });
 
+    const onResize = (): void => { measure(); update(st.progress); };
+    window.addEventListener("resize", onResize);
+
     return () => {
+      window.removeEventListener("resize", onResize);
       st.kill();
       ["--sky-1", "--sky-2", "--sky-3", "--sky-light", "--sky-t"]
         .forEach((v) => root.style.removeProperty(v));
       root.removeAttribute("data-sky-scheme");
     };
-  }, [times, targetId]);
+  }, [times, targetId, sectionSelector]);
 
   return <div ref={ref} className={`sky ${className ?? ""}`} aria-hidden="true" />;
 }
