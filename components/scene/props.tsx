@@ -14,10 +14,14 @@ export function Streetlight({ s = 1, lit = true }: { s?: number; lit?: boolean }
       <rect x={-1.6} y={-96} width={3.2} height={96} fill="currentColor" />
       <path d="M-1.6,-96 q0,-12 14,-12 l4,0 l0,4 l-4,0 q-10,0 -10,8 Z" fill="currentColor" />
       {lit && (
+        /* The arm's downward tab runs x 12.4 to 16.4, so the fitting hangs at
+           14.4 — not 16, which put the lamp off the right edge of its own
+           bracket and cast the cone from a point in mid-air. */
         <>
-          <ellipse cx={16} cy={-104} rx={5} ry={3} fill="#FFD79A" />
-          <path d="M16,-102 L34,-4 L-2,-4 Z" fill="#FFD79A" opacity={0.14} />
-          <circle cx={16} cy={-104} r={11} fill="#FFD79A" opacity={0.16} />
+          <path d="M11.4,-104 L17.4,-104 L15.4,-99.6 L13.4,-99.6 Z" fill="currentColor" />
+          <ellipse cx={14.4} cy={-100} rx={4.4} ry={2.6} fill="#FFE6B4" />
+          <path d="M14.4,-98.6 L31,0 L-2.2,0 Z" fill="#FFD79A" opacity={0.13} />
+          <circle cx={14.4} cy={-100} r={9.5} fill="#FFD79A" opacity={0.17} />
         </>
       )}
     </g>
