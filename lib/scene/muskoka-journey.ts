@@ -12,6 +12,9 @@ import type { Itinerary, Travel } from "./itinerary";
  * runs LOOK like, and what is said while walking them.
  */
 
+/** How far the world keeps going beyond where the camera stops. */
+const WORLD_TAIL = 2200;
+
 /* ------------------------------------------------------------ the road -- */
 
 /**
@@ -225,7 +228,14 @@ function legFor(travel: Travel, index: number): Leg | null {
     path: road(d, seed, a.amp, a.climb),
     // the clock is the derivation's, never re-stated here
     clock: travel.clock,
-    items: [...surface(d), ...(SCENERY[a.terrain]?.(d, seed) ?? [])],
+    // Scenery runs PAST the end of the run. The camera stops at `d`, and if the
+    // world stopped there too the last thing she saw would be an empty plain —
+    // which is exactly how the final screen came out blank. Trees do not stop
+    // at the end of a leg, so neither does this.
+    items: [
+      ...surface(d + WORLD_TAIL),
+      ...(SCENERY[a.terrain]?.(d + WORLD_TAIL, seed) ?? []),
+    ],
     beats: a.beats.map((b) => ({
       z: b.at * d,
       voice: b.voice,

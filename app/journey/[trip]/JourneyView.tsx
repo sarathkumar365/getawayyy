@@ -12,6 +12,7 @@ import { Journey } from "@/components/scene/Journey";
 import { tripById } from "@/lib/data";
 import { itineraryFor } from "@/lib/scene/itinerary";
 import { muskokaLegs } from "@/lib/scene/muskoka-journey";
+import { JourneyEnd } from "./JourneyEnd";
 
 /**
  * The trip, walked.
@@ -40,12 +41,7 @@ export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
 
         <Journey trip={trip} itinerary={itinerary} legs={legs} />
 
-        <section className="walk__after">
-          <p>
-            {trip.name} — {itinerary.stations.length} stops, walked.
-            {Object.keys(legs).length === 0 && " The runs for this one are not authored yet."}
-          </p>
-        </section>
+        <JourneyEnd trip={trip} stations={itinerary.stations} />
       </div>
     </SmoothScroll>
   );

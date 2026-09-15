@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type JSX } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type JSX } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LENS, beatAlpha, clockAt, project, sortForPaint } from "@/lib/scene/corridor";
 import { makePath, STRAIGHT } from "@/lib/scene/path";
 import { skyAtTime } from "@/lib/sky";
 import { buildSchedule, cameraAt } from "@/lib/scene/schedule";
+import { hexToRgb, propColour } from "@/lib/scene/palette";
+import { scrollToY } from "@/lib/lenis";
 import { CORRIDOR_KINDS } from "./corridorKinds";
 import { RearActor } from "@/components/characters/RearActor";
 import { StationPanel } from "@/components/station/StationPanel";
@@ -82,6 +84,30 @@ export function Journey({
   );
   const painted = useMemo(() => sortForPaint(schedule.items), [schedule]);
 
+  /** Scroll position, in page pixels, where a station's hold ends. */
+  const endOfStation = useMemo(() => {
+    const m: Record<string, number> = {};
+    for (const seg of schedule.segs) {
+      if (seg.kind === "station") m[seg.station.id] = seg.s1 / schedule.screens;
+    }
+    return m;
+  }, [schedule]);
+
+  /**
+   * Closing a panel scrolls PAST the stop rather than hiding the panel.
+   *
+   * The panel's position is a function of scroll, so hiding it on its own would
+   * put the view and the scroll position into disagreement — she would scroll
+   * up a little and it would reappear. Closing does exactly what scrolling on
+   * by hand does, just in one movement.
+   */
+  const close = useCallback((stationId: string) => {
+    const el = spacer.current;
+    const frac = endOfStation[stationId];
+    if (!el || frac === undefined) return;
+    scrollToY(el.offsetTop + frac * el.offsetHeight + 8);
+  }, [endOfStation]);
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const spacerEl = spacer.current;
@@ -131,6 +157,14 @@ export function Journey({
     const apply = (p: number): void => {
       const { z: cam, travelling, rise } = cameraAt(schedule, p);
 
+      // The sky is resolved BEFORE the props, because the props fade into it.
+      const time = clockAt(
+        { id: "j", depth: schedule.depth, clock: schedule.clock, items: [], beats: [] },
+        cam,
+      );
+      const sky = skyAtTime(time);
+      const skyRgb = hexToRgb(sky.gradient[1] ?? "#8090A0");
+
       if (road) road.setAttribute("d", ribbon(cam, 250));
       if (shoulder) shoulder.setAttribute("d", ribbon(cam, 340));
 
@@ -145,6 +179,9 @@ export function Journey({
           continue;
         }
         if (node.style.display === "none") node.style.display = "";
+        // Aerial perspective. Without it every tree reads at the same distance
+        // however small it is drawn.
+        node.style.color = propColour(node.dataset.kind ?? "", z - cam, LENS.far, skyRgb);
         node.style.transform =
           `translate3d(${pr.left.toFixed(1)}px, ${pr.base.toFixed(1)}px, 0) ` +
           `translate(-50%, -100%) scale(${(pr.scale * s).toFixed(4)})`;
@@ -173,7 +210,13 @@ export function Journey({
           continue;
         }
         if (node.style.visibility === "hidden") node.style.visibility = "";
-        node.style.transform = `translate3d(0, ${((1 - up) * 100).toFixed(2)}%, 0)`;
+        // Centred, lifting the last stretch rather than sliding the full height
+        // of the screen — a short travel reads as arriving, a long one reads as
+        // a drawer being pulled.
+        const lift = (1 - up) * 46;
+        const scale = 0.972 + up * 0.028;
+        node.style.transform =
+          `translate(-50%, calc(-50% + ${lift.toFixed(1)}px)) scale(${scale.toFixed(4)})`;
         node.style.opacity = up.toFixed(3);
         node.style.pointerEvents = up > 0.9 ? "auto" : "none";
       }
@@ -190,13 +233,8 @@ export function Journey({
 
       if (rail) rail.style.width = `${(p * 100).toFixed(2)}%`;
 
-      const time = clockAt(
-        { id: "j", depth: schedule.depth, clock: schedule.clock, items: [], beats: [] },
-        cam,
-      );
       if (clockEl) clockEl.textContent = time;
 
-      const sky = skyAtTime(time);
       root.style.setProperty("--sky-1", sky.gradient[0]);
       root.style.setProperty("--sky-2", sky.gradient[1]);
       root.style.setProperty("--sky-3", sky.gradient[2]);
@@ -257,6 +295,7 @@ export function Journey({
               data-x={it.x}
               data-y={it.y ?? 0}
               data-s={it.s ?? 1}
+              data-kind={it.kind}
               className="prop"
               style={{ opacity: 0 }}
             >
@@ -292,6 +331,14 @@ export function Journey({
             style={{ visibility: "hidden", opacity: 0 }}
             data-lenis-prevent=""
           >
+            <button
+              type="button"
+              className="journey__close"
+              aria-label={`Close ${s.stop.name} and keep walking`}
+              onClick={() => close(s.id)}
+            >
+              Keep walking
+            </button>
             <StationPanel
               station={s}
               bookingPriority={priorityFor(bookings, s.stop.name)}

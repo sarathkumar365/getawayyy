@@ -22,39 +22,89 @@
       var(--sky-3, #D9E2E0) 100%);
 }
 
-/* A panel is parked below the fold and slides up. It never fills the screen:
-   the top of the walk stays visible, so it reads as something coming up IN
-   the view rather than a page that replaced it. */
+/* A panel sits in the MIDDLE of the view and lifts the last short distance
+   into place. It never fills the screen: the walk stays visible above and
+   below, so it reads as something arriving in the view rather than a page
+   that replaced it. The transform is written per frame by the scroll handler,
+   including the centring — so nothing here may set `transform`. */
 .journey__panel {
   position: absolute;
   left: 50%;
-  bottom: 0;
-  transform: translate3d(0, 100%, 0);
-  width: min(720px, 100%);
-  margin-left: min(-360px, -50%);
-  max-height: 76vh;
-  max-height: 76svh;
+  top: 50%;
+  width: min(680px, 92vw);
+  max-height: 74vh;
+  max-height: 74svh;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   will-change: transform, opacity;
   z-index: 6;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  box-shadow: 0 -18px 50px -30px rgba(0, 0, 0, .6);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 70px -34px rgba(0, 0, 0, .7);
 }
 
 .journey__panel > .panel {
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  border-radius: var(--radius-lg);
 }
+
+/* Sits above the panel's own scroll, so it is reachable however far down she
+   has read. */
+.journey__close {
+  position: sticky;
+  top: var(--s-3);
+  float: right;
+  margin: var(--s-3) var(--s-3) 0 0;
+  z-index: 3;
+  font: inherit;
+  font-size: var(--step--1);
+  font-weight: 600;
+  cursor: pointer;
+  padding: var(--s-2) var(--s-4);
+  border-radius: 99px;
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+  transition: color var(--t-fast) var(--ease-out),
+              border-color var(--t-fast) var(--ease-out);
+}
+.journey__close:hover {
+  color: var(--w-accent, var(--ink));
+  border-color: var(--w-accent, var(--ink));
+}
+.journey__close:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
 
 /* The cast sit above the world but below a risen panel. */
 .journey__stage .corridor__cast { z-index: 4; }
 .journey__stage .corridor__script { z-index: 5; }
 
+/* ---- the end of the road ---- */
+.journey__end {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--s-4);
+  padding: var(--s-8) var(--s-5);
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+.journey__end h2 { font-size: var(--step-2); }
+.journey__end p { margin: 0; color: var(--ink-soft); }
+.journey__end .tally { font-size: var(--step--1); color: var(--ink-faint); }
+.journey__end .again {
+  display: inline-flex; align-self: center; gap: var(--s-2);
+  font: inherit; font-size: var(--step--1); font-weight: 600; cursor: pointer;
+  padding: var(--s-3) var(--s-5); border-radius: 99px;
+  border: 1px solid var(--rule-strong); background: transparent; color: var(--ink-soft);
+  text-decoration: none;
+}
+.journey__end .again:hover { border-color: var(--w-accent); color: var(--w-accent); }
+
 @media (max-width: 640px) {
   .journey__panel {
-    width: 100%;
-    margin-left: -50%;
-    max-height: 82svh;
+    width: 94vw;
+    max-height: 78svh;
   }
 }
