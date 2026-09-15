@@ -11,7 +11,7 @@
  */
 
 import { allStops, tripById } from "@/lib/data";
-import { stopKey } from "@/lib/answers";
+import { stopKey } from "@/lib/keys";
 import { photosForStop } from "@/lib/photos";
 import audit from "@/data/photo-audit.json";
 import type { Stop, Trip } from "@/lib/types";

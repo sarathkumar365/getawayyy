@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, type JSX } from "react";
+import { useMemo, useState, type JSX } from "react";
 import "@/app/feel/feel.css";
 import "@/app/walk/walk.css";
 import "@/styles/station.css";
@@ -13,6 +13,7 @@ import { tripById } from "@/lib/data";
 import { itineraryFor } from "@/lib/scene/itinerary";
 import { muskokaLegs } from "@/lib/scene/muskoka-journey";
 import { JourneyEnd } from "./JourneyEnd";
+import { TripMap } from "@/components/scene/TripMap";
 
 /**
  * The trip, walked.
@@ -21,6 +22,7 @@ import { JourneyEnd } from "./JourneyEnd";
  * until this one has been reviewed — doing one properly first was the point.
  */
 export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
+  const [mapOpen, setMapOpen] = useState(false);
   const trip = tripById(tripId);
   const itinerary = useMemo(() => (trip ? itineraryFor(trip) : null), [trip]);
   const legs = useMemo(
@@ -39,7 +41,22 @@ export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
         <PointerTrail />
         <div className="sky" aria-hidden="true" />
 
+        <button
+          type="button"
+          className="journey__mapbtn"
+          onClick={() => setMapOpen(true)}
+          aria-label="Show the map of this trip"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <path d="M9 3 L3 5.5 v15 L9 18 l6 3 6-2.5 v-15 L15 6 Z" strokeLinejoin="round" />
+            <path d="M9 3 v15 M15 6 v15" />
+          </svg>
+          Map
+        </button>
+
         <Journey trip={trip} itinerary={itinerary} legs={legs} />
+
+        <TripMap open={mapOpen} onClose={() => setMapOpen(false)} />
 
         <JourneyEnd trip={trip} stations={itinerary.stations} />
       </div>

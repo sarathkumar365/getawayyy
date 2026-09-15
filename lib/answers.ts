@@ -59,8 +59,8 @@ export function emptyAnswers(): Answers {
   };
 }
 
-export const stopKey = (tripId: string, day: number, time: string | null) =>
-  `${tripId}:${day}:${time ?? "?"}`;
+/** Re-exported so existing client callers keep one import. */
+export { stopKey } from "./keys";
 
 /* ------------------------------------------------------------- transport -- */
 

@@ -23,7 +23,8 @@ const ROUTES: readonly { href: string; label: string; note: string }[] = [
   { href: "/stage", label: "Stage", note: "characters, walk cycle, dialogue" },
   { href: "/feel", label: "Feel", note: "a full day, real photos, scroll-driven sky" },
   { href: "/sheets", label: "Sheets", note: "both character designs, every pose" },
-  { href: "/", label: "Data", note: "phase 0 scaffold" },
+  { href: "/", label: "Home", note: "the front door she lands on" },
+  { href: "/data", label: "Data", note: "phase 0 scaffold — the workbench" },
 ];
 
 export function DevNav(): JSX.Element {

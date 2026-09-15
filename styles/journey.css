@@ -162,3 +162,119 @@
 @media (prefers-reduced-motion: reduce) {
   .journey__motes { display: none; }
 }
+
+/* =========================================================================
+   The route map, over the walk.
+   ========================================================================= */
+
+.journey__mapbtn {
+  position: fixed;
+  top: max(var(--s-3), env(safe-area-inset-top));
+  right: var(--s-3);
+  z-index: 20;
+  font: inherit;
+  font-size: var(--step--1);
+  font-weight: 600;
+  cursor: pointer;
+  padding: var(--s-2) var(--s-4);
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, .34);
+  background: rgba(16, 22, 30, .58);
+  color: #F2EFE8;
+  backdrop-filter: blur(8px);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.journey__mapbtn:hover { background: rgba(16, 22, 30, .85); border-color: rgba(255, 255, 255, .7); }
+.journey__mapbtn:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+.journey__mapbtn svg { width: 14px; height: 14px; }
+
+.tripmap {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(10, 12, 16, .72);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--s-4);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.tripmap__sheet {
+  width: min(560px, 100%);
+  margin: auto;
+  background: var(--paper-raised);
+  border-radius: var(--radius-lg);
+  padding: var(--s-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, .8);
+}
+
+.tripmap__head { display: flex; gap: var(--s-4); align-items: flex-start; }
+.tripmap__head h2 { font-size: var(--step-2); margin: 0 0 var(--s-2); }
+.tripmap__head p { margin: 0; color: var(--ink-soft); font-size: var(--step--1); max-width: 46ch; }
+
+.tripmap__close {
+  flex: 0 0 auto;
+  margin-left: auto;
+  font: inherit;
+  font-size: var(--step--1);
+  font-weight: 600;
+  cursor: pointer;
+  padding: var(--s-2) var(--s-4);
+  border-radius: 99px;
+  border: 1px solid var(--rule-strong);
+  background: transparent;
+  color: var(--ink-soft);
+}
+.tripmap__close:hover { border-color: var(--w-accent); color: var(--w-accent); }
+.tripmap__close:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+
+/* The map keeps its own paper colour in both themes — it is a printed thing,
+   and inverting a hand-drawn diagram makes the water read as land. */
+.mapbox {
+  background: #e3ded4;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s-3);
+  overflow-x: auto;
+}
+.mapbox svg { display: block; width: 100%; min-width: 280px; height: auto; }
+
+.maplegend {
+  display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: .05em; text-transform: uppercase; color: var(--ink-faint);
+}
+.maplegend i {
+  display: inline-block; width: 22px; height: 3px; border-radius: 2px;
+  margin-right: 7px; vertical-align: middle;
+}
+
+.daylinks { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.daylinks .btn {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  font-family: var(--font-mono); font-size: var(--step--1); font-weight: 500;
+  letter-spacing: .06em; text-transform: uppercase; text-decoration: none;
+  padding: var(--s-2) var(--s-3); border-radius: var(--radius);
+  border: 1px solid var(--rule-strong);
+  background: var(--paper-sunk); color: var(--ink-soft);
+  transition: border-color var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+}
+.daylinks .btn:hover { border-color: var(--w-accent); color: var(--w-accent); }
+.daylinks .btn:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+
+@media (max-width: 640px) {
+  .tripmap { padding: var(--s-2); }
+  .tripmap__sheet { padding: var(--s-4); gap: var(--s-3); }
+  .tripmap__head { flex-direction: column; }
+  .tripmap__close { margin-left: 0; align-self: flex-start; }
+  .daylinks .btn { width: 100%; justify-content: center; }
+}
