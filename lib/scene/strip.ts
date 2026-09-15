@@ -59,6 +59,12 @@ export type Strip = {
   /** shown on the progress rail and in the movement heading */
   title?: string;
   terrain?: Terrain;
+  /**
+   * Wet-day rate, 0–1, when this movement should actually rain. Only set it
+   * where the data earns it: Muskoka's October figure is 0.48, the highest of
+   * the five. Rain everywhere would be mood; rain here is the number.
+   */
+  rain?: number;
   /** total travelled distance in strip units */
   width: number;
   /** clock times at strip positions — drives the sky along the walk */

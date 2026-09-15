@@ -1,9 +1,10 @@
 "use client";
 
-import { useCallback, useState, type JSX } from "react";
+import { useCallback, useState, type CSSProperties, type JSX } from "react";
 import { Walk, WalkLayer } from "./Walk";
 import { KINDS, LAYER_BOX, LAYER_ORDER } from "./kinds";
 import { Actor } from "@/components/characters/Actor";
+import { Rain } from "./Rain";
 import type { Strip } from "@/lib/scene/strip";
 import type { DOutfit } from "@/lib/characters/detailed";
 
@@ -36,9 +37,20 @@ export function Movement({
 
   return (
     <section className={`movement movement--${strip.terrain ?? "highway"} ${className ?? ""}`}
-      data-movement={strip.id} aria-label={strip.title ?? strip.id}>
+      data-movement={strip.id} data-rain={strip.rain !== undefined ? "true" : undefined}
+      style={strip.rain !== undefined
+        ? ({ "--overcast": strip.rain.toFixed(2) } as CSSProperties)
+        : undefined}
+      aria-label={strip.title ?? strip.id}>
       <Walk strip={strip} scale={1} pace={pace} onMoving={onMoving}>
         <div className="walk__road" />
+        {strip.rain !== undefined && (
+          <>
+            {/* the weather turned: colour drains for exactly one movement */}
+            <div className="walk__overcast" />
+            <Rain intensity={strip.rain} />
+          </>
+        )}
 
         {byLayer.map(({ layer, items }) => {
           const box = LAYER_BOX[layer];

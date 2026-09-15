@@ -121,6 +121,9 @@ const COST: Strip = {
   id: "muskoka-5-cost",
   title: "5 · What it costs",
   terrain: "highway",
+  // 48% of October days here see rain — the highest of the five, and the only
+  // one of the trips whose own number justifies putting water on the glass
+  rain: 0.48,
   width: W5,
   clock: [
     { x: 0, time: "11:00" },
