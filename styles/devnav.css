@@ -1,0 +1,42 @@
+.devnav {
+  position: fixed; top: max(.7rem, env(safe-area-inset-top)); right: .7rem; z-index: 80;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.devnav__toggle {
+  display: flex; align-items: center; gap: .5rem;
+  min-height: 40px; padding: .4rem .7rem;
+  font: inherit; font-size: .72rem; letter-spacing: .04em;
+  color: #F2EEE6; background: rgba(18,19,24,.68); backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.18); border-radius: 999px; cursor: pointer;
+}
+.devnav__dot { width: 7px; height: 7px; border-radius: 50%; background: #FF7A2F; flex: none; }
+.devnav__chev { opacity: .6; font-size: .8em; }
+.devnav__toggle:hover { background: rgba(18,19,24,.82); }
+.devnav__toggle:focus-visible { outline: 2px solid #FF7A2F; outline-offset: 2px; }
+
+.devnav__list {
+  list-style: none; margin: .45rem 0 0; padding: .35rem;
+  min-width: 15rem; max-width: min(19rem, calc(100vw - 1.6rem));
+  background: rgba(18,19,24,.9); backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.16); border-radius: 12px;
+  opacity: 0; transform: translateY(-6px) scale(.98); pointer-events: none;
+  transition: opacity .16s ease, transform .16s ease;
+}
+.devnav--open .devnav__list { opacity: 1; transform: none; pointer-events: auto; }
+
+.devnav__list a {
+  display: block; padding: .5rem .6rem; border-radius: 8px;
+  text-decoration: none; color: #EDE8DF; min-height: 44px;
+}
+.devnav__list a:hover { background: rgba(255,255,255,.07); }
+.devnav__list a.is-here { background: rgba(255,122,47,.16); }
+.devnav__list a.is-here b { color: #FF9A57; }
+.devnav__list b { display: block; font-size: .78rem; font-weight: 500; letter-spacing: .03em; }
+.devnav__list i { display: block; font-style: normal; font-size: .64rem; line-height: 1.4;
+  color: rgba(237,232,223,.55); margin-top: .12rem; }
+.devnav__foot { padding: .45rem .6rem .25rem; font-size: .58rem; letter-spacing: .06em;
+  text-transform: uppercase; color: rgba(237,232,223,.35);
+  border-top: 1px solid rgba(255,255,255,.1); margin-top: .25rem; }
+
+@media (prefers-reduced-motion: reduce) { .devnav__list { transition: none } }
+@media print { .devnav { display: none } }
