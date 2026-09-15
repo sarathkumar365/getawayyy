@@ -15,7 +15,9 @@ import { useState, type JSX } from "react";
  * Deliberately not in the journey: when the real screens land, this comes out.
  */
 const ROUTES: readonly { href: string; label: string; note: string }[] = [
-  { href: "/corridor", label: "Corridor", note: "NEW — walking into it, from behind" },
+  { href: "/journey/muskoka", label: "Journey", note: "NEW — the whole trip, stops and all" },
+  { href: "/panel/muskoka", label: "Panels", note: "every station, all the data" },
+  { href: "/corridor", label: "Corridor", note: "one leg, the depth engine alone" },
   { href: "/trip/muskoka", label: "Muskoka", note: "the old flat build, for comparison" },
   { href: "/walk", label: "Walk", note: "movement 1 alone, plus the map" },
   { href: "/stage", label: "Stage", note: "characters, walk cycle, dialogue" },
