@@ -62,6 +62,17 @@ Kimberley in British Columbia and Whitney in New Brunswick. The resolver now fil
 province parsed from the query. Two places Open-Meteo has no record of resolve to a
 nearby settlement and are flagged `approx: true` — no coordinate is hand-entered.
 
+## Deploying
+
+Vercel, from this repo. Next.js is auto-detected — no build settings to change.
+
+Set `GOOGLE_PLACES_API_KEY` in Environment Variables. Without it the site still
+works: `/api/photos` and `/api/reviews` return `available: false` and the gallery
+simply does not offer "show me more". That is a designed state, not a failure.
+
+`data/coords.json` and `data/photos.json` are committed because the build imports
+them. Regenerate with `bun run geocode` and `bun run photos`.
+
 ## Status
 
 Phase 0 complete. Phase 1 (characters) complete through the rig, the motion system and
