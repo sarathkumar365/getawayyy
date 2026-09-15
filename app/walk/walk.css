@@ -105,3 +105,17 @@
   .walk__actor--a { left: 30%; }
   .walk__actor--b { left: 12%; }
 }
+
+/* ---- movement chrome ---- */
+.movement { position: relative; }
+.walk__title { position: absolute; left: 1.25rem; top: max(3.2rem, calc(env(safe-area-inset-top) + 3rem));
+  margin: 0; font-family: ui-monospace, monospace; font-size: .62rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--on-sky-2, #C6C7CE); opacity: .72; }
+
+/* terrain palettes — the world recolours, the parts do not change */
+.movement--city    { --w-far: #3E4A5C; --w-mid: #2E3746; --w-near: #1C222C; --w-ground: #141A22; }
+.movement--highway { --w-far: #44525F; --w-mid: #2F3D42; --w-near: #1D262A; --w-ground: #141A1E; }
+.movement--town    { --w-far: #4A5462; --w-mid: #3A4450; --w-near: #232A33; --w-ground: #171C22; }
+.movement--forest  { --w-far: #5C6E63; --w-mid: #3B5445; --w-near: #223026; --w-ground: #17211B; }
+.movement--water   { --w-far: #52667A; --w-mid: #35505F; --w-near: #1F2E38; --w-ground: #152027; }
+.movement--indoor  { --w-far: #5A4F44; --w-mid: #463C33; --w-near: #2C2620; --w-ground: #1D1916; }

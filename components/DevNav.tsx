@@ -15,7 +15,8 @@ import { useState, type JSX } from "react";
  * Deliberately not in the journey: when the real screens land, this comes out.
  */
 const ROUTES: readonly { href: string; label: string; note: string }[] = [
-  { href: "/walk", label: "Walk", note: "the strip — scenery tracks the sentence" },
+  { href: "/trip/muskoka", label: "Muskoka", note: "the whole trip — all seven movements" },
+  { href: "/walk", label: "Walk", note: "movement 1 alone, plus the map" },
   { href: "/stage", label: "Stage", note: "characters, walk cycle, dialogue" },
   { href: "/feel", label: "Feel", note: "a full day, real photos, scroll-driven sky" },
   { href: "/sheets", label: "Sheets", note: "both character designs, every pose" },

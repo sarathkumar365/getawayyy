@@ -126,3 +126,104 @@ export function Lake({ from, to, depth = 46 }: { from: number; to: number; depth
     </g>
   );
 }
+
+/* ---------- places, not furniture ---------- */
+
+/** A waterfall with a lit plunge pool — Bracebridge at 22:15, Stubb's at 15:00. */
+export function Falls({ s = 1, h = 120, w = 54 }: { s?: number; h?: number; w?: number }): JSX.Element {
+  return (
+    <g transform={`scale(${s})`}>
+      <path d={`M${-w},0 L${-w},${-h} L${w},${-h} L${w},0 Z`} fill="currentColor" opacity={0.9} />
+      <path d={`M${-w * 0.5},${-h * 0.82} L${-w * 0.42},${-h * 0.1} L${w * 0.46},${-h * 0.1} L${w * 0.52},${-h * 0.82} Z`}
+        fill="#CFE2EA" opacity={0.5} />
+      {[-0.3, 0, 0.28].map((t, i) => (
+        <path key={i} d={`M${w * t},${-h * 0.8} L${w * t},${-h * 0.14}`}
+          stroke="#EAF3F7" strokeWidth={2.4} opacity={0.45} strokeLinecap="round" />
+      ))}
+      <ellipse cx={0} cy={-2} rx={w * 1.1} ry={7} fill="#CFE2EA" opacity={0.35} />
+    </g>
+  );
+}
+
+/** An escarpment edge you stand on. The drop is the point. */
+export function Lookout({ s = 1, h = 150, w = 210 }: { s?: number; h?: number; w?: number }): JSX.Element {
+  return (
+    <g transform={`scale(${s})`}>
+      <path d={`M${-w},0 L${-w},${-h * 0.5} Q${-w * 0.5},${-h} ${-w * 0.08},${-h}
+        L${w * 0.16},${-h * 0.98} L${w * 0.2},0 Z`} fill="currentColor" />
+      <path d={`M${-w * 0.7},${-h * 0.72} l${w * 0.22},${h * 0.1}`}
+        stroke="#0006" strokeWidth={2} fill="none" />
+    </g>
+  );
+}
+
+/** Pottery: a wheel, a stool and shelves of drying work. The quiet screen. */
+export function Studio({ s = 1 }: { s?: number }): JSX.Element {
+  return (
+    <g transform={`scale(${s})`}>
+      <rect x={-96} y={-124} width={192} height={124} rx={3} fill="currentColor" opacity={0.55} />
+      <rect x={-84} y={-58} width={168} height={4} fill="#C9B79C" />
+      {[-66, -34, -2, 30, 62].map((x, i) => (
+        <path key={i} d={`M${x - 7},-58 q7,-13 14,0 Z`} fill="#C9B79C" opacity={0.9 - i * 0.06} />
+      ))}
+      <g transform="translate(0 0)">
+        <rect x={-4} y={-40} width={8} height={40} fill="#6C6154" />
+        <ellipse cx={0} cy={-42} rx={26} ry={5} fill="#8B7E6D" />
+        <path d="M-9,-46 q9,-15 18,0 l-2,4 q-7,4 -14,0 Z" fill="#C9743A" />
+      </g>
+      <rect x={52} y={-34} width={30} height={34} rx={2} fill="#7A6A58" />
+    </g>
+  );
+}
+
+/** Open-air murals — the Group of Seven gallery is outdoors, on walls. */
+export function Mural({ s = 1, seed = 2 }: { s?: number; seed?: number }): JSX.Element {
+  let a = seed >>> 0;
+  const rnd = (): number => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const w = 64 + rnd() * 26;
+  const h = 78 + rnd() * 30;
+  const tints = ["#C9743A", "#4E7A5E", "#3E6280", "#B2913F"];
+  return (
+    <g transform={`scale(${s})`}>
+      <rect x={-w / 2} y={-h} width={w} height={h} fill="currentColor" />
+      <rect x={-w / 2 + 6} y={-h + 8} width={w - 12} height={h - 22}
+        fill={tints[Math.floor(rnd() * tints.length)] ?? "#C9743A"} opacity={0.85} />
+      <path d={`M${-w / 2 + 8},${-h * 0.42} l${w * 0.24},${-h * 0.2} l${w * 0.2},${h * 0.16}
+        l${w * 0.18},${-h * 0.24} l${w * 0.16},${h * 0.5} l${-w + 20},0 Z`}
+        fill="#2B2B33" opacity={0.42} />
+    </g>
+  );
+}
+
+/** A dock and a moored boat. Muskoka's whole idea of a shoreline. */
+export function Dock({ s = 1 }: { s?: number }): JSX.Element {
+  return (
+    <g transform={`scale(${s})`}>
+      <rect x={-52} y={-10} width={104} height={5} fill="currentColor" />
+      {[-44, -20, 4, 28, 46].map((x) => (
+        <rect key={x} x={x} y={-10} width={3.4} height={14} fill="currentColor" />
+      ))}
+      <path d="M58,-10 q16,0 22,8 l-42,0 q4,-8 20,-8 Z" fill="currentColor" opacity={0.85} />
+      <rect x={66} y={-34} width={2} height={24} fill="currentColor" />
+    </g>
+  );
+}
+
+/** Fire tower / lookout tower on a ridge. */
+export function Tower({ s = 1, h = 96 }: { s?: number; h?: number }): JSX.Element {
+  return (
+    <g transform={`scale(${s})`} fill="currentColor">
+      <path d={`M-13,0 L-5,${-h} L5,${-h} L13,0 L9,0 L3,${-h * 0.94} L-3,${-h * 0.94} L-9,0 Z`} />
+      {[0.3, 0.55, 0.78].map((t) => (
+        <rect key={t} x={-13 + t * 9} y={-h * t} width={26 - t * 18} height={2.4} />
+      ))}
+      <rect x={-13} y={-h - 15} width={26} height={15} />
+      <path d="M-16,-98 L16,-98 L10,-106 L-10,-106 Z" transform={`translate(0 ${-h + 98})`} />
+    </g>
+  );
+}

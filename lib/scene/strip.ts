@@ -34,7 +34,14 @@ export type Item = {
   /** vertical offset from the layer baseline */
   y?: number;
   flip?: boolean;
+  /** for span kinds (guardrail, lake, road dashes) — where the span ends */
+  to?: number;
+  /** for signs */
+  label?: string;
 };
+
+/** Which terrain recipe a movement uses — picks palette and default furniture. */
+export type Terrain = "city" | "highway" | "town" | "forest" | "water" | "indoor";
 
 export type BeatVoice = "narrate" | "sun" | "curse";
 
@@ -49,6 +56,9 @@ export type Beat = {
 
 export type Strip = {
   id: string;
+  /** shown on the progress rail and in the movement heading */
+  title?: string;
+  terrain?: Terrain;
   /** total travelled distance in strip units */
   width: number;
   /** clock times at strip positions — drives the sky along the walk */
