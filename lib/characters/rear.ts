@@ -15,6 +15,7 @@
  */
 
 import type { Pose } from "./rig";
+import { DETAILED, type DetailId } from "./detailed";
 
 export type RearLimb = {
   /** lateral offset from the joint, positive = outward */
@@ -84,5 +85,76 @@ export function rearFrom(p: Pose): RearPose {
     legR: leg(p.hipR, p.kneeR, 1, sway),
     armL: arm(p.shoulderL, p.elbowL, -1),
     armR: arm(p.shoulderR, p.elbowR, 1),
+  };
+}
+
+/* ---------------- geometry ---------------- */
+
+export type RearLegGeom = {
+  hx: number; hy: number; ky: number; ay: number;
+  footOut: number; w1: number; w2: number; footRx: number; footRy: number;
+  lifted: boolean;
+};
+export type RearArmGeom = {
+  ox: number; sx: number; sy: number; ey: number; wy: number; w1: number; w2: number;
+};
+export type RearGeom = {
+  sway: number; bob: number; twist: number; headTilt: number;
+  legL: RearLegGeom; legR: RearLegGeom;
+  armL: RearArmGeom; armR: RearArmGeom;
+};
+
+const LIMB = { arm: 14, leg: 20 } as const;
+
+/**
+ * All the numbers the rear drawing needs, in one place.
+ *
+ * Shared by the component (first paint) and the controller (every frame after),
+ * so the animated figure can never drift from the rendered one — the same bug
+ * class that made React and GSAP fight over transforms on the front rig.
+ */
+export function rearGeometry(id: DetailId, pose: Pose): RearGeom {
+  const c = DETAILED[id];
+  const s = c.skeleton;
+  const t = s.torso;
+  const r = rearFrom(pose);
+
+  const legGeom = (side: -1 | 1, limb: RearLimb): RearLegGeom => {
+    const hx = side * s.hipX + limb.out;
+    const hy = t.hipY;
+    const ky = hy + s.thigh * limb.scale - limb.lift * 0.45;
+    const ay = ky + s.shin * limb.scale - limb.lift * 0.55;
+    const lifted = limb.lift > 2.5;
+    return {
+      hx, hy, ky, ay,
+      footOut: limb.out * 0.35,
+      w1: LIMB.leg * limb.scale,
+      w2: (LIMB.leg - 4) * limb.scale,
+      footRx: 11 * limb.scale,
+      footRy: lifted ? 6.5 : 4.2,
+      lifted,
+    };
+  };
+
+  const armGeom = (side: -1 | 1, limb: RearLimb): RearArmGeom => {
+    const ox = side * s.shoulderX;
+    const sx = ox + limb.out;
+    const sy = t.shoulderY + 4;
+    const ey = sy + s.upperArm * limb.scale;
+    return {
+      ox, sx, sy, ey,
+      wy: ey + s.foreArm * limb.scale - limb.lift,
+      w1: LIMB.arm * limb.scale,
+      w2: (LIMB.arm - 3) * limb.scale,
+    };
+  };
+
+  return {
+    sway: r.sway, bob: r.bob, twist: r.twist,
+    headTilt: r.headTilt - r.twist * 0.55,
+    legL: legGeom(-1, r.legL),
+    legR: legGeom(1, r.legR),
+    armL: armGeom(-1, r.armL),
+    armR: armGeom(1, r.armR),
   };
 }

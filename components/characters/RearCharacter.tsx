@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { DETAILED, type DetailId } from "@/lib/characters/detailed";
 import { IDLE, type Pose } from "@/lib/characters/rig";
-import { rearFrom, type RearLimb } from "@/lib/characters/rear";
+import { rearGeometry, type RearArmGeom, type RearLegGeom } from "@/lib/characters/rear";
 import { crownPath, hairPathFallback } from "./rearHair";
 
 export type RearCharacterProps = {
@@ -12,20 +12,19 @@ export type RearCharacterProps = {
 };
 
 const n = (v: number): string => `${Math.round(v * 100) / 100}`;
-const LIMB = { arm: 14, leg: 20 } as const;
-
+/** Tagged so the controller can rewrite both passes every frame. */
 function Stroke({
-  x1, y1, x2, y2, w, fill, ink, stroke,
+  part, x1, y1, x2, y2, w, fill, ink, stroke,
 }: {
-  x1: number; y1: number; x2: number; y2: number;
+  part: string; x1: number; y1: number; x2: number; y2: number;
   w: number; fill: string; ink: string; stroke: number;
 }): JSX.Element {
   const d = `M${n(x1)},${n(y1)} L${n(x2)},${n(y2)}`;
   return (
-    <>
+    <g data-part={part}>
       <path d={d} stroke={ink} strokeWidth={w + stroke * 2} strokeLinecap="round" fill="none" />
       <path d={d} stroke={fill} strokeWidth={w} strokeLinecap="round" fill="none" />
-    </>
+    </g>
   );
 }
 
@@ -41,44 +40,30 @@ export function RearCharacter({ id, pose = IDLE, uid, className }: RearCharacter
   const s = c.skeleton;
   const p = c.palette;
   const f = c.face;
-  const r = rearFrom(pose);
   const t = s.torso;
+  const g = rearGeometry(id, pose);
 
-  const legFor = (side: -1 | 1, limb: RearLimb): JSX.Element => {
-    const hx = side * s.hipX + limb.out;
-    const hy = t.hipY;
-    const ky = hy + s.thigh * limb.scale - limb.lift * 0.45;
-    const ay = ky + s.shin * limb.scale - limb.lift * 0.55;
-    const footOut = limb.out * 0.35;
-    return (
-      <g data-part={`rear-leg-${side < 0 ? "l" : "r"}`}>
-        <Stroke x1={hx} y1={hy - 8} x2={hx + footOut * 0.4} y2={ky} w={LIMB.leg * limb.scale}
-          fill={p.bottom} ink={p.ink} stroke={s.stroke} />
-        <Stroke x1={hx + footOut * 0.4} y1={ky - 2} x2={hx + footOut} y2={ay}
-          w={(LIMB.leg - 4) * limb.scale} fill={p.bottom} ink={p.ink} stroke={s.stroke} />
-        {/* a planted foot shows its heel; a lifted one shows the sole */}
-        <ellipse cx={hx + footOut} cy={ay + 4} rx={11 * limb.scale}
-          ry={limb.lift > 2.5 ? 6.5 : 4.2}
-          fill={limb.lift > 2.5 ? p.shoeTrim : p.shoe}
-          stroke={p.ink} strokeWidth={s.stroke} />
-      </g>
-    );
-  };
+  const legFor = (tag: "l" | "r", L: RearLegGeom): JSX.Element => (
+    <g data-part={`rear-leg-${tag}`}>
+      <Stroke part={`thigh-${tag}`} x1={L.hx} y1={L.hy - 8} x2={L.hx + L.footOut * 0.4} y2={L.ky}
+        w={L.w1} fill={p.bottom} ink={p.ink} stroke={s.stroke} />
+      <Stroke part={`shin-${tag}`} x1={L.hx + L.footOut * 0.4} y1={L.ky - 2}
+        x2={L.hx + L.footOut} y2={L.ay} w={L.w2} fill={p.bottom} ink={p.ink} stroke={s.stroke} />
+      {/* a planted foot shows its heel; a lifted one shows the sole */}
+      <ellipse data-part={`foot-${tag}`} cx={L.hx + L.footOut} cy={L.ay + 4}
+        rx={L.footRx} ry={L.footRy}
+        fill={L.lifted ? p.shoeTrim : p.shoe} stroke={p.ink} strokeWidth={s.stroke} />
+    </g>
+  );
 
-  const armFor = (side: -1 | 1, limb: RearLimb): JSX.Element => {
-    const sx = side * s.shoulderX + limb.out;
-    const sy = t.shoulderY + 4;
-    const ey = sy + s.upperArm * limb.scale;
-    const wy = ey + s.foreArm * limb.scale - limb.lift;
-    return (
-      <g data-part={`rear-arm-${side < 0 ? "l" : "r"}`}>
-        <Stroke x1={side * s.shoulderX} y1={sy} x2={sx} y2={ey} w={LIMB.arm * limb.scale}
-          fill={p.top} ink={p.ink} stroke={s.stroke} />
-        <Stroke x1={sx} y1={ey - 2} x2={sx + limb.out * 0.25} y2={wy}
-          w={(LIMB.arm - 3) * limb.scale} fill={p.skin} ink={p.ink} stroke={s.stroke} />
-      </g>
-    );
-  };
+  const armFor = (tag: "l" | "r", A: RearArmGeom): JSX.Element => (
+    <g data-part={`rear-arm-${tag}`}>
+      <Stroke part={`upper-${tag}`} x1={A.ox} y1={A.sy} x2={A.sx} y2={A.ey}
+        w={A.w1} fill={p.top} ink={p.ink} stroke={s.stroke} />
+      <Stroke part={`fore-${tag}`} x1={A.sx} y1={A.ey - 2} x2={A.sx} y2={A.wy}
+        w={A.w2} fill={p.skin} ink={p.ink} stroke={s.stroke} />
+    </g>
+  );
 
   const backPath = [
     `M${n(-t.shoulderW / 2)},${n(t.shoulderY + 4)}`,
@@ -94,20 +79,20 @@ export function RearCharacter({ id, pose = IDLE, uid, className }: RearCharacter
   return (
     <svg viewBox={s.viewBox} className={className} role="img" aria-label={`${c.name}, from behind`}
       data-character={id} data-view="rear" id={`rc-${uid}`}>
-      <g data-part="root" transform={`translate(${n(r.sway)} ${n(r.bob)})`}>
+      <g data-part="root" transform={`translate(${n(g.sway)} ${n(g.bob)})`}>
         {/* far side first */}
-        {legFor(-1, r.legL)}
-        {armFor(-1, r.armL)}
+        {legFor("l", g.legL)}
+        {armFor("l", g.armL)}
 
-        <g data-part="rear-torso" transform={`rotate(${n(r.twist)} 0 ${t.hipY})`}>
-          {legFor(1, r.legR)}
+        <g data-part="rear-torso" transform={`rotate(${n(g.twist)} 0 ${t.hipY})`}>
+          {legFor("r", g.legR)}
           <path d={backPath} fill={p.top} stroke={p.ink} strokeWidth={s.stroke} strokeLinejoin="round" />
           {/* a seam down the spine: without it the back is a blank slab */}
           <path d={`M0,${n(t.shoulderY + 10)} L0,${n(t.waistY + 4)}`}
             stroke={p.ink} strokeWidth={1.4} opacity={0.3} />
 
           <g data-part="rear-head"
-            transform={`rotate(${n(r.headTilt - r.twist * 0.55)} 0 ${n(s.head.pivotY)})`}>
+            transform={`rotate(${n(g.headTilt)} 0 ${n(s.head.pivotY)})`}>
             <path d={`M${n(-s.neck.w / 2)},${n(s.neck.top)} L${n(-s.neck.w / 2 - 2)},${n(s.neck.bottom)}
               L${n(s.neck.w / 2 + 2)},${n(s.neck.bottom)} L${n(s.neck.w / 2)},${n(s.neck.top)} Z`}
               fill={p.skinShade} stroke={p.ink} strokeWidth={s.stroke} strokeLinejoin="round" />
@@ -126,7 +111,7 @@ export function RearCharacter({ id, pose = IDLE, uid, className }: RearCharacter
           </g>
         </g>
 
-        {armFor(1, r.armR)}
+        {armFor("r", g.armR)}
       </g>
     </svg>
   );

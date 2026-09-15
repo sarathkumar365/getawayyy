@@ -134,3 +134,49 @@
 .movement[data-rain] .walk__clock { z-index: 4; position: absolute; }
 .movement[data-rain] .walk__script { z-index: 4; }
 .movement[data-rain] .walk__cast { z-index: 4; }
+
+/* ================= corridor ================= */
+.corridor { position: relative; }
+.corridor__stage { position: sticky; top: 0; height: 100vh; overflow: hidden;
+  color: var(--w-near, #24303A); }
+.corridor__world { position: absolute; inset: 0; }
+.prop { position: absolute; left: 0; top: 0; will-change: transform, opacity;
+  transform-origin: 50% 100%; }
+.corridor__ground { position: absolute; left: 0; right: 0;
+  top: calc(var(--horizon, 47%)); bottom: 0;
+  background: linear-gradient(180deg, var(--road-far, #3A4450) 0%, var(--road-near, #1A2028) 100%); }
+
+.corridor__script { position: absolute; left: 0; right: 0; bottom: 16vh;
+  display: grid; place-items: start center; padding: 0 1.25rem; pointer-events: none; }
+.corridor__script .beat { grid-area: 1 / 1; margin: 0; max-width: 34ch; text-align: center;
+  will-change: opacity, transform; }
+.corridor__title { position: absolute; left: 1.25rem; top: max(3.2rem, calc(env(safe-area-inset-top) + 3rem));
+  margin: 0; font-family: ui-monospace, monospace; font-size: .62rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--on-sky-2, #C6C7CE); opacity: .72; }
+.corridor__clock { position: absolute; right: 1.25rem; bottom: 2.1rem;
+  font-family: ui-monospace, monospace; font-size: .68rem; letter-spacing: .12em;
+  color: var(--on-sky-2, #C6C7CE); opacity: .6; }
+.corridor__rail { position: absolute; left: 1.25rem; right: 1.25rem; bottom: 1.1rem;
+  height: 2px; background: color-mix(in srgb, var(--on-sky-2, #C6C7CE) 22%, transparent);
+  border-radius: 2px; }
+.corridor__rail i { position: absolute; inset: 0 auto 0 0; border-radius: 2px; display: block;
+  background: color-mix(in srgb, var(--on-sky, #F2EEE6) 70%, transparent); }
+
+.corridor--city    { --w-near: #232B36; --road-far: #3A4450; --road-near: #171D26; }
+.corridor--highway { --w-near: #22303A; --road-far: #36434C; --road-near: #151C22; }
+.corridor--town    { --w-near: #2A323C; --road-far: #3E4752; --road-near: #1A2028; }
+.corridor--forest  { --w-near: #22301F; --road-far: #3D4A3A; --road-near: #161E16; }
+.corridor--water   { --w-near: #1F2E38; --road-far: #35505F; --road-near: #131E26; }
+.corridor--indoor  { --w-near: #2C2620; --road-far: #4A4038; --road-near: #1A1612; }
+
+/* the cast, walking into the corridor ahead of her */
+.corridor__cast { position: absolute; inset: 0; pointer-events: none; }
+/* close enough to be following them, not watching from across the road */
+.rear { position: absolute; bottom: 9vh; height: 42vh; }
+.rear svg { height: 100%; width: auto; display: block; }
+.rear--a { left: 44%; transform: translateX(-50%); z-index: 3; }
+.rear--b { left: 57%; transform: translateX(-50%); z-index: 2; height: 45vh; bottom: 10vh; }
+@media (max-width: 700px) {
+  .rear { height: 34vh; }
+  .rear--b { height: 36vh; }
+}
