@@ -4,7 +4,7 @@ import { useMemo, type JSX } from "react";
 import "@/app/feel/feel.css";
 import "@/app/walk/walk.css";
 import "@/styles/station.css";
-import "@/styles/station-stage.css";
+import "@/styles/journey.css";
 import { SmoothScroll } from "@/components/feel/SmoothScroll";
 import { PointerTrail } from "@/components/feel/PointerTrail";
 import { Celestial } from "@/components/scene/Celestial";
