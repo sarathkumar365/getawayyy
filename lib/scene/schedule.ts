@@ -148,6 +148,8 @@ export type CameraState = {
   travelling: boolean;
   /** station id -> 0..1 how far its panel is up */
   rise: Record<string, number>;
+  /** 0..1 how far the cast have folded down onto the ground */
+  sit: number;
 };
 
 /** Ease into and out of a stop, so arriving reads as slowing down. */
@@ -166,6 +168,7 @@ export function cameraAt(schedule: Schedule, progress: number): CameraState {
   const rise: Record<string, number> = {};
   let z = 0;
   let travelling = false;
+  let sit = 0;
 
   for (const seg of schedule.segs) {
     if (seg.kind === "station") {
@@ -173,7 +176,11 @@ export function cameraAt(schedule: Schedule, progress: number): CameraState {
       // station cannot leave one behind on screen.
       if (s >= seg.s0 && s <= seg.s1) {
         const t = (s - seg.s0) / Math.max(0.0001, seg.s1 - seg.s0);
-        rise[seg.station.id] = ramp(t, 0, 0.26) * (1 - ramp(t, 0.74, 1));
+        // They arrive and sit FIRST; the card follows once they have settled.
+        // Raising it while they were still on their feet is what made the
+        // arrival feel abrupt — the card beat the people to the place.
+        sit = ramp(t, 0, 0.2) * (1 - ramp(t, 0.82, 1));
+        rise[seg.station.id] = ramp(t, 0.2, 0.44) * (1 - ramp(t, 0.76, 0.96));
         z = seg.z;
       } else {
         rise[seg.station.id] = 0;
@@ -190,5 +197,5 @@ export function cameraAt(schedule: Schedule, progress: number): CameraState {
     }
   }
 
-  return { z, travelling, rise };
+  return { z, travelling, rise, sit };
 }

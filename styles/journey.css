@@ -1,18 +1,15 @@
 /* =========================================================================
    The journey: ONE stage for the whole trip.
 
-   There is deliberately no second surface here. The landscape is the only
-   view — panels rise over it and sink back, and the camera never cuts.
+   The landscape is the only view. Cards settle into it and lift away again,
+   and the camera never cuts.
    ========================================================================= */
 
-.journey {
-  position: relative;
-}
+.journey { position: relative; }
 
 .journey__stage {
   position: sticky;
   top: 0;
-  height: 100vh;
   height: 100svh;
   overflow: hidden;
   background:
@@ -21,61 +18,91 @@
       var(--sky-2, #BBD3E4) 52%,
       var(--sky-3, #D9E2E0) 100%);
 }
+/* svh is not universal; vh is the floor so nothing collapses without it. */
+@supports not (height: 100svh) {
+  .journey__stage { height: 100vh; }
+}
 
-/* A panel sits in the MIDDLE of the view and lifts the last short distance
-   into place. It never fills the screen: the walk stays visible above and
-   below, so it reads as something arriving in the view rather than a page
-   that replaced it. The transform is written per frame by the scroll handler,
-   including the centring — so nothing here may set `transform`. */
+/* ---------------------------------------------------------------- card --
+   The wrapper is POSITION ONLY. Its transform is written every frame by the
+   scroll handler, centring included, so nothing here may set `transform` —
+   a transform in CSS would be overwritten on the first tick and reappear
+   whenever the handler is not running.
+   Layout is a column: the card scrolls, the button never does.            */
 .journey__panel {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: min(680px, 92vw);
-  max-height: 74vh;
-  max-height: 74svh;
+  z-index: 6;
+
+  width: min(660px, calc(100vw - 2 * var(--s-4)));
+  max-height: min(78svh, calc(100svh - 2 * var(--s-5)));
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  will-change: transform, opacity;
+}
+
+/* the card body — this is the part that scrolls */
+.journey__card {
+  flex: 0 1 auto;
+  min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  will-change: transform, opacity;
-  z-index: 6;
   border-radius: var(--radius-lg);
   box-shadow: 0 30px 70px -34px rgba(0, 0, 0, .7);
 }
+.journey__card > .panel { border-radius: var(--radius-lg); }
 
-.journey__panel > .panel {
-  border-radius: var(--radius-lg);
-}
-
-/* Sits above the panel's own scroll, so it is reachable however far down she
-   has read. */
+/* Outside the scroller, so it stays put however far down she has read. */
 .journey__close {
-  position: sticky;
-  top: var(--s-3);
-  float: right;
-  margin: var(--s-3) var(--s-3) 0 0;
-  z-index: 3;
+  flex: 0 0 auto;
+  align-self: center;
   font: inherit;
   font-size: var(--step--1);
   font-weight: 600;
   cursor: pointer;
-  padding: var(--s-2) var(--s-4);
+  padding: var(--s-3) var(--s-5);
   border-radius: 99px;
-  border: 1px solid var(--rule-strong);
+  border: 1px solid transparent;
   background: var(--paper-raised);
   color: var(--ink-soft);
+  box-shadow: 0 10px 26px -14px rgba(0, 0, 0, .6);
   transition: color var(--t-fast) var(--ease-out),
-              border-color var(--t-fast) var(--ease-out);
+              border-color var(--t-fast) var(--ease-out),
+              transform var(--t-fast) var(--ease-out);
 }
 .journey__close:hover {
   color: var(--w-accent, var(--ink));
   border-color: var(--w-accent, var(--ink));
 }
+.journey__close:active { transform: scale(.97); }
 .journey__close:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
 
-/* The cast sit above the world but below a risen panel. */
+/* ---- the dust a card settles into ----
+   Purely decorative; it carries none of the meaning, so it is hidden from
+   assistive tech and removed entirely under reduced motion. */
+.journey__motes {
+  position: absolute;
+  inset: -12% -8%;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+}
+.journey__motes i {
+  position: absolute;
+  width: 5px; height: 5px;
+  border-radius: 99px;
+  background: var(--sky-light, #FFE6B4);
+  opacity: .7;
+  will-change: transform, opacity;
+}
+
+/* ---- depth order inside the stage ---- */
 .journey__stage .corridor__cast { z-index: 4; }
-.journey__stage .corridor__script { z-index: 5; }
+.journey__stage .corridor__script { z-index: 3; }
 
 /* ---- the end of the road ---- */
 .journey__end {
@@ -95,16 +122,43 @@
 .journey__end .tally { font-size: var(--step--1); color: var(--ink-faint); }
 .journey__end .again {
   display: inline-flex; align-self: center; gap: var(--s-2);
-  font: inherit; font-size: var(--step--1); font-weight: 600; cursor: pointer;
+  font: inherit; font-size: var(--step--1); font-weight: 600;
   padding: var(--s-3) var(--s-5); border-radius: 99px;
-  border: 1px solid var(--rule-strong); background: transparent; color: var(--ink-soft);
-  text-decoration: none;
+  border: 1px solid var(--rule-strong); background: transparent;
+  color: var(--ink-soft); text-decoration: none;
 }
 .journey__end .again:hover { border-color: var(--w-accent); color: var(--w-accent); }
 
+/* ---------------------------------------------------------- responsive --
+   Three real cases, not a phone/desktop split: a tall narrow screen where the
+   card should own nearly the whole width; a tablet, where it is a panel with
+   the walk visible around it; and a short landscape screen (a phone turned
+   sideways is only ~380px tall) where vertical room is the scarce thing.   */
+
+/* phones */
 @media (max-width: 640px) {
   .journey__panel {
-    width: 94vw;
-    max-height: 78svh;
+    width: calc(100vw - 2 * var(--s-3));
+    max-height: min(80svh, calc(100svh - 2 * var(--s-4)));
+    gap: var(--s-2);
   }
+  .journey__close { width: 100%; padding: var(--s-3) var(--s-4); }
+}
+
+/* tablets */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .journey__panel { width: min(600px, calc(100vw - 2 * var(--s-6))); }
+}
+
+/* anything short: the card gives up height before it gives up legibility */
+@media (max-height: 560px) {
+  .journey__panel {
+    max-height: calc(100svh - 2 * var(--s-3));
+    gap: var(--s-2);
+  }
+  .journey__close { padding: var(--s-2) var(--s-4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journey__motes { display: none; }
 }

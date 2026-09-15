@@ -46,6 +46,21 @@ const INK_DARK = [244, 240, 232] as const;
 const DIM_LIGHT = [61, 68, 80] as const;
 const DIM_DARK = [198, 199, 206] as const;
 
+/**
+ * Fixed, seeded positions — Math.random() here would differ between the server
+ * render and the client one and React would replace the whole layer.
+ */
+const MOTES = Array.from({ length: 18 }, (_, i) => {
+  const a = (i * 2654435761) % 1000 / 1000;
+  const b = ((i + 7) * 40503) % 1000 / 1000;
+  return {
+    x: 6 + a * 88,
+    y: 14 + b * 72,
+    d: 0.25 + ((i * 37) % 100) / 200,
+    s: 0.6 + ((i * 53) % 100) / 125,
+  };
+});
+
 function bookingPriorities(trip: Trip): Map<string, number> {
   return new Map(trip.bookings.map((b) => [b.name.toLowerCase(), b.priority]));
 }
@@ -74,6 +89,7 @@ export function Journey({
   const spacer = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const [walking, setWalking] = useState(false);
+  const [sitting, setSitting] = useState(false);
 
   const { answers, reactToStop, setNote } = useAnswers();
   const bookings = useMemo(() => bookingPriorities(trip), [trip]);
@@ -105,7 +121,12 @@ export function Journey({
     const el = spacer.current;
     const frac = endOfStation[stationId];
     if (!el || frac === undefined) return;
-    scrollToY(el.offsetTop + frac * el.offsetHeight + 8);
+    // getBoundingClientRect + scrollY, NOT offsetTop: the spacer sits inside a
+    // positioned wrapper, so offsetTop measured from that wrapper rather than
+    // from the page and the button scrolled to the wrong place — usually back
+    // to the very beginning, which is why it looked like it did nothing.
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    scrollToY(top + frac * el.offsetHeight + 8);
   }, [endOfStation]);
 
   useEffect(() => {
@@ -118,6 +139,8 @@ export function Journey({
     const beatEls = Array.from(stageEl.querySelectorAll<HTMLElement>("[data-beat]"));
     const panelEls = Array.from(stageEl.querySelectorAll<HTMLElement>("[data-station]"));
     const cast = stageEl.querySelector<HTMLElement>("[data-cast]");
+    const motes = stageEl.querySelector<HTMLElement>("[data-motes]");
+    const moteEls = Array.from(stageEl.querySelectorAll<HTMLElement>("[data-mote]"));
     const rail = stageEl.querySelector<HTMLElement>("[data-rail]");
     const road = stageEl.querySelector<SVGPathElement>("[data-road]");
     const shoulder = stageEl.querySelector<SVGPathElement>("[data-shoulder]");
@@ -134,6 +157,7 @@ export function Journey({
     size();
 
     let wasWalking = false;
+    let wasSitting = false;
     let stopTimer: number | null = null;
 
     const ribbon = (cam: number, halfW: number): string => {
@@ -155,7 +179,7 @@ export function Journey({
     };
 
     const apply = (p: number): void => {
-      const { z: cam, travelling, rise } = cameraAt(schedule, p);
+      const { z: cam, travelling, rise, sit } = cameraAt(schedule, p);
 
       // The sky is resolved BEFORE the props, because the props fade into it.
       const time = clockAt(
@@ -213,22 +237,46 @@ export function Journey({
         // Centred, lifting the last stretch rather than sliding the full height
         // of the screen — a short travel reads as arriving, a long one reads as
         // a drawer being pulled.
-        const lift = (1 - up) * 46;
-        const scale = 0.972 + up * 0.028;
+        // Opacity leads the movement, so it fades in and THEN settles the last
+        // few pixels — a card that arrives at full strength reads as a popup.
+        const eased = up * up * (3 - 2 * up);
+        const lift = (1 - eased) * 34;
+        const scale = 0.984 + eased * 0.016;
         node.style.transform =
           `translate(-50%, calc(-50% + ${lift.toFixed(1)}px)) scale(${scale.toFixed(4)})`;
-        node.style.opacity = up.toFixed(3);
-        node.style.pointerEvents = up > 0.9 ? "auto" : "none";
+        node.style.opacity = Math.min(1, up * 1.35).toFixed(3);
+        node.style.pointerEvents = up > 0.6 ? "auto" : "none";
       }
 
       if (cast) {
         const lead = 170;
         const shift = (path.bend(cam + lead) - path.bend(cam)) * (LENS.focal / (LENS.focal + lead));
-        // The cast stands aside as a panel comes up, so they are never behind it.
-        const anyUp = Math.max(0, ...Object.values(rise));
+        // Seated, they slide toward the edge so the card does not land on top
+        // of them — they stay in shot, which is the point of them sitting.
         cast.style.transform =
-          `translateX(${shift.toFixed(1)}px) translateY(${(anyUp * 12).toFixed(1)}px)`;
-        cast.style.opacity = (1 - anyUp * 0.45).toFixed(3);
+          `translateX(${(shift - sit * 128).toFixed(1)}px) translateY(${(sit * 26).toFixed(1)}px)`;
+        cast.style.opacity = (1 - sit * 0.12).toFixed(3);
+      }
+
+      const seated = sit > 0.45;
+      if (seated !== wasSitting) { wasSitting = seated; setSitting(seated); }
+
+      // Motes drift up and fade out as the card lands, so the arrival has a
+      // moment of movement of its own rather than the card simply appearing.
+      const anyUp = Math.max(0, ...Object.values(rise));
+      if (motes) {
+        motes.style.opacity = (Math.sin(Math.min(1, anyUp) * Math.PI) * 0.85).toFixed(3);
+        motes.style.display = anyUp <= 0.002 ? "none" : "";
+      }
+      if (anyUp > 0.002) {
+        for (const m of moteEls) {
+          const d = Number(m.dataset.md ?? 0.4);
+          const sc = Number(m.dataset.ms ?? 1);
+          const t2 = Math.min(1, Math.max(0, (anyUp - d * 0.35) / (1 - d * 0.35)));
+          m.style.transform =
+            `translate3d(0, ${(-t2 * 56 * sc).toFixed(1)}px, 0) scale(${(0.5 + t2 * sc).toFixed(3)})`;
+          m.style.opacity = (Math.sin(t2 * Math.PI) * 0.75).toFixed(3);
+        }
       }
 
       if (rail) rail.style.width = `${(p * 100).toFixed(2)}%`;
@@ -246,7 +294,7 @@ export function Journey({
       root.style.setProperty("--on-sky-3", mix(INK_LIGHT, INK_DARK, dark));
 
       // They walk when the camera is moving. Standing at a stop, they stand.
-      const moving = travelling;
+      const moving = travelling && sit < 0.15;
       if (moving !== wasWalking) { wasWalking = moving; setWalking(moving); }
       if (stopTimer !== null) window.clearTimeout(stopTimer);
       stopTimer = window.setTimeout(() => {
@@ -305,8 +353,8 @@ export function Journey({
         </div>
 
         <div className="corridor__cast" data-cast="">
-          <RearActor id="curse" walking={walking} className="rear rear--b" />
-          <RearActor id="sun" walking={walking} className="rear rear--a" />
+          <RearActor id="curse" walking={walking} sitting={sitting} className="rear rear--b" />
+          <RearActor id="sun" walking={walking} sitting={sitting} className="rear rear--a" />
         </div>
 
         <div className="corridor__script">
@@ -329,8 +377,17 @@ export function Journey({
             data-station={s.id}
             className="journey__panel"
             style={{ visibility: "hidden", opacity: 0 }}
-            data-lenis-prevent=""
           >
+            <div className="journey__card" data-lenis-prevent="">
+              <StationPanel
+                station={s}
+                bookingPriority={priorityFor(bookings, s.stop.name)}
+                reaction={answers.stops[s.key]}
+                note={answers.notes[s.key]}
+                onReact={reactToStop}
+                onNote={setNote}
+              />
+            </div>
             <button
               type="button"
               className="journey__close"
@@ -339,16 +396,16 @@ export function Journey({
             >
               Keep walking
             </button>
-            <StationPanel
-              station={s}
-              bookingPriority={priorityFor(bookings, s.stop.name)}
-              reaction={answers.stops[s.key]}
-              note={answers.notes[s.key]}
-              onReact={reactToStop}
-              onNote={setNote}
-            />
           </div>
         ))}
+
+        {/* Dust the card settles into. Decorative only. */}
+        <div className="journey__motes" data-motes="" aria-hidden="true">
+          {MOTES.map((m, i) => (
+            <i key={i} data-mote="" data-mx={m.x} data-my={m.y} data-md={m.d} data-ms={m.s}
+              style={{ left: `${m.x}%`, top: `${m.y}%` }} />
+          ))}
+        </div>
 
         <div className="corridor__clock" data-clock="" />
         <div className="corridor__rail"><i data-rail="" style={{ width: "0%" }} /></div>

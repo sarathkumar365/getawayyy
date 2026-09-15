@@ -9,7 +9,7 @@
 
 import { gsap } from "gsap";
 import { blendPose, IDLE, walkFrame, type Pose } from "./rig";
-import { rearGeometry, type RearArmGeom, type RearLegGeom } from "./rear";
+import { blendGeom, rearGeometry, sitGeometry, type RearArmGeom, type RearGeom, type RearLegGeom } from "./rear";
 import { DETAILED, type DetailId } from "./detailed";
 
 const f = (v: number): string => `${Math.round(v * 100) / 100}`;
@@ -25,7 +25,7 @@ function setStroke(root: SVGSVGElement, part: string, x1: number, y1: number, x2
   if (fill) { fill.setAttribute("d", d); fill.setAttribute("stroke-width", f(w)); }
 }
 
-export type RearMotion = { walk(on: boolean): void; kill(): void };
+export type RearMotion = { walk(on: boolean): void; sit(on: boolean): void; kill(): void };
 
 export function createRearMotion(
   svg: SVGSVGElement,
@@ -43,6 +43,8 @@ export function createRearMotion(
 
   let walking = 0;
   let target = 0;
+  let sitting = 0;
+  let sitTarget = 0;
   let phase = 0;
   let t = 0;
 
@@ -64,8 +66,7 @@ export function createRearMotion(
     setStroke(svg, `fore-${tag}`, A.sx, A.ey - 2, A.sx, A.wy, A.w2, s.stroke);
   };
 
-  const paint = (pose: Pose): void => {
-    const g = rearGeometry(id, pose);
+  const paintGeom = (g: RearGeom): void => {
     if (root) root.setAttribute("transform", `translate(${f(g.sway)} ${f(g.bob)})`);
     if (torso) torso.setAttribute("transform", `rotate(${f(g.twist)} 0 ${s.torso.hipY})`);
     if (head) head.setAttribute("transform", `rotate(${f(g.headTilt)} 0 ${s.head.pivotY})`);
@@ -73,15 +74,27 @@ export function createRearMotion(
     paintArm("l", g.armL); paintArm("r", g.armR);
   };
 
+  const paint = (pose: Pose): void => paintGeom(rearGeometry(id, pose));
+
+  /** Built once: it does not depend on the walk phase. */
+  const SIT = sitGeometry(id);
+
   if (opts.reduced) {
     paint(IDLE);
-    return { walk: () => undefined, kill: () => undefined };
+    return {
+      walk: () => undefined,
+      sit: (on: boolean) => paintGeom(on ? sitGeometry(id) : rearGeometry(id, IDLE)),
+      kill: () => undefined,
+    };
   }
 
   const tick = (): void => {
     const dt = Math.min(gsap.ticker.deltaRatio(60) / 60, 1 / 24);
     t += dt;
     walking += (target - walking) * Math.min(1, dt * 6);
+    // Sitting down takes longer than starting to walk. Folding onto the ground
+    // at the speed of a footstep is what made the arrival feel abrupt.
+    sitting += (sitTarget - sitting) * Math.min(1, dt * 2.6);
     if (walking > 0.002) phase = (phase + dt * cadence * walking) % 1;
 
     const fr = phase * 8;
@@ -91,12 +104,24 @@ export function createRearMotion(
 
     // a little idle life even when standing, so they never look pasted on
     const breath = Math.sin((t * Math.PI * 2) / 4.3) * (1 - walking);
-    paint({ ...live, bob: live.bob + breath * 0.8, headTilt: live.headTilt + breath * 0.6 });
+    const standing = rearGeometry(id, {
+      ...live, bob: live.bob + breath * 0.8, headTilt: live.headTilt + breath * 0.6,
+    });
+
+    if (sitting < 0.002) { paintGeom(standing); return; }
+
+    // Ease the fold so the weight settles rather than dropping.
+    const k = sitting < 0.5 ? 2 * sitting * sitting : 1 - (-2 * sitting + 2) ** 2 / 2;
+    const seated = blendGeom(standing, SIT, k);
+    // Seated, the breath moves the shoulders instead of the whole body, and the
+    // head keeps looking up rather than nodding along with a walk.
+    paintGeom({ ...seated, bob: seated.bob + breath * 0.5 * k });
   };
 
   gsap.ticker.add(tick);
   return {
     walk(on: boolean) { target = on ? 1 : 0; },
+    sit(on: boolean) { sitTarget = on ? 1 : 0; if (on) target = 0; },
     kill() { gsap.ticker.remove(tick); },
   };
 }

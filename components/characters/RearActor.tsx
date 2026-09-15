@@ -8,11 +8,13 @@ import type { DetailId } from "@/lib/characters/detailed";
 export type RearActorProps = {
   id: DetailId;
   walking?: boolean;
+  /** folded down on the ground, looking up — what they do at a stop */
+  sitting?: boolean;
   className?: string;
 };
 
 /** A rear-view figure that walks while she scrolls. */
-export function RearActor({ id, walking = false, className }: RearActorProps): JSX.Element {
+export function RearActor({ id, walking = false, sitting = false, className }: RearActorProps): JSX.Element {
   const host = useRef<HTMLDivElement>(null);
   const motion = useRef<RearMotion | null>(null);
   const [ready, setReady] = useState(false);
@@ -31,6 +33,7 @@ export function RearActor({ id, walking = false, className }: RearActorProps): J
   }, [id]);
 
   useEffect(() => { motion.current?.walk(walking); }, [walking]);
+  useEffect(() => { motion.current?.sit(sitting); }, [sitting]);
 
   return (
     <div ref={host} className={className}
