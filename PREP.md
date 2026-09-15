@@ -265,6 +265,48 @@ Four bugs worth remembering, all invisible in code and obvious on screen:
 Still open in Phase 1: expressions wired to a controller, the idle/talk/react loops, hair
 lag, the dialogue script, and the iPad walk judgement (the Rive decision point).
 
+### 4.8 Design 2 chosen · the motion system — 15 Sep 2026
+
+**Design 2 (detailed) is the pick.** Design 1 stays in the tree; it costs nothing to keep
+and both consume the same poses, so it remains available per screen if the detailed rig
+ever fights a busy photograph.
+
+**How React and the animation share the rig.** They cannot both own a `transform`. The
+split: React owns the outer *placement* transforms and which expression variant is on
+screen; the motion controller owns every *joint* transform, written as a plain
+`transform="rotate(a cx cy)"` attribute from each part's `data-origin`. This works because
+the `pose` prop handed to the renderer is a **constant** — React diffs against its own
+previous value, sees no change, and never writes those attributes again. Where both needed
+a handle, the drawing gained an inner group: `blink-l` / `blink-r` inside the placed eye,
+`mouth-anim` inside the placed mouth.
+
+**One ticker, not many tweens.** Separate tweens per part drift out of phase and cost more
+than recomputing the whole rig. Everything — walk phase, breath, blink, hair springs, talk
+— is composed in a single tick.
+
+- **Idle** runs on three sines with deliberately unrelated periods (4.1s / 5.7s / 7.3s), so
+  they never line up and the loop never reads as a loop.
+- **Hair** rides second-order springs, one per layer with different stiffness. Measured on
+  a real head turn: strands 3.15°, hair-front 2.60°, hair-back 2.11°, head only 0.86° —
+  and hair-back was still arriving after the head had already turned back. That trailing is
+  the overlapping action §4.3 called for, and it is the difference between puppet and
+  animation.
+- **Walk** samples the eight frames continuously and springs in and out, so starting and
+  stopping are eased rather than snapped. Verified hip sweep −21.8° to +25.4°.
+- **Blink** fires on a random 2.1–6.4s interval with the two eyes offset by tens of
+  milliseconds, so they never shut in unison.
+- **Talk** squashes the mouth group from the typewriter's own state, so the mouth stops the
+  instant the words do — no timer to fall out of sync.
+
+**The standalone build.** `scripts/export-rig.ts` dumps the pose tables and the script to
+JSON; `scripts/build-stage-artifact.mjs` combines that with SVG scraped from `/embed` and a
+vanilla port of the controller. The demo therefore *cannot drift* from the real rig — it
+shares the data. The `variants` prop renders all 39 expression groups as hidden siblings so
+a build with no React can switch expressions by toggling `display`.
+
+**Deferred to the real device:** whether the walk is good enough. Nothing measured here
+answers that.
+
 ---
 
 ## 5. The five visual worlds
@@ -419,11 +461,13 @@ and a 보라해 tucked where only she'd catch it lands better than a likeness wo
    outfits. **Two designs, both built** (§4.7). `app/sheets`.
 8. ✅ Rigged — no slicing step. The sheet renders from the rig, so approving a drawing and
    having it move are the same thing.
-9. Expression + pose controller; idle / talk / react loops
-10. Walk cycle + entrance/exit choreography
-11. Speech bubble + typewriter
-12. Write the dialogue script
-13. **Judge the walk on a real iPad.** Rive decision point.
+9. ✅ Expression + pose controller; idle / talk / react loops — `lib/characters/motion.ts`,
+   `components/characters/Actor.tsx`
+10. ✅ Walk cycle + entrance/exit choreography
+11. ✅ Speech bubble + typewriter, skip-on-tap — `components/characters/SpeechBubble.tsx`
+12. ✅ Dialogue script — **86 lines across 30 beats**, `lib/characters/dialogue.ts`
+13. ⏳ **Judge the walk on a real iPad.** Rive decision point. Standalone build shipped
+    for exactly this — see §4.8.
 
 **Phase 2 — the feel**
 14. Lenis + ScrollTrigger scaffolding; the scroll-driven sky
