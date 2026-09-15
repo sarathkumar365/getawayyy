@@ -10,6 +10,13 @@ export type PhotoStripProps = {
   local: readonly string[];
   /** `maps_query`. Without one there is nothing to look up. */
   query: string | null;
+  /**
+   * Whether this station is the one she is at. Every panel in a trip is mounted
+   * at once, so fetching on mount meant eight Places lookups and up to eighty
+   * image requests fired the moment the page opened — which locked up a phone
+   * before she could touch anything.
+   */
+  active?: boolean;
 };
 
 /**
@@ -21,8 +28,8 @@ export type PhotoStripProps = {
  * of text reads as a page that failed to load; a strip you push through reads
  * as somewhere worth going.
  */
-export function PhotoStrip({ name, local, query }: PhotoStripProps): JSX.Element {
-  const { extra } = usePhotos(query, name, true);
+export function PhotoStrip({ name, local, query, active = false }: PhotoStripProps): JSX.Element {
+  const { extra } = usePhotos(query, name, active);
   const [open, setOpen] = useState<string | null>(null);
   const close = useCallback(() => setOpen(null), []);
   useEscape(open, close);
@@ -33,7 +40,9 @@ export function PhotoStrip({ name, local, query }: PhotoStripProps): JSX.Element
   if (count === 0) {
     return (
       <div className="strip__empty">
-        {extra.state === "loading" ? (
+        {!active ? (
+          <span>photos load as you arrive</span>
+        ) : extra.state === "loading" ? (
           <span>looking for photos…</span>
         ) : extra.state === "none" && extra.why === "no-key" ? (
           <span>Photos need the Places key. The trip itself is unaffected.</span>

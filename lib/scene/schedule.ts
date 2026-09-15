@@ -150,6 +150,8 @@ export type CameraState = {
   rise: Record<string, number>;
   /** 0..1 how far the cast have folded down onto the ground */
   sit: number;
+  /** the station she is at or closing on — the only one worth loading */
+  near: string | null;
 };
 
 /** Ease into and out of a stop, so arriving reads as slowing down. */
@@ -163,12 +165,16 @@ const ramp = (t: number, a: number, b: number): number => {
   return k * k * (3 - 2 * k);
 };
 
+/** Marker replaced by the next station's id once the whole list is known. */
+const APPROACHING = "\u0000next";
+
 export function cameraAt(schedule: Schedule, progress: number): CameraState {
   const s = progress * schedule.screens;
   const rise: Record<string, number> = {};
   let z = 0;
   let travelling = false;
   let sit = 0;
+  let near: string | null = null;
 
   for (const seg of schedule.segs) {
     if (seg.kind === "station") {
@@ -182,6 +188,7 @@ export function cameraAt(schedule: Schedule, progress: number): CameraState {
         sit = ramp(t, 0, 0.2) * (1 - ramp(t, 0.82, 1));
         rise[seg.station.id] = ramp(t, 0.2, 0.44) * (1 - ramp(t, 0.76, 0.96));
         z = seg.z;
+        near = seg.station.id;
       } else {
         rise[seg.station.id] = 0;
       }
@@ -192,10 +199,21 @@ export function cameraAt(schedule: Schedule, progress: number): CameraState {
       const t = (s - seg.s0) / Math.max(0.0001, seg.s1 - seg.s0);
       z = seg.z0 + (seg.z1 - seg.z0) * easeInOut(t);
       travelling = true;
+      // Claim the stop at the end of this run once it is close, so its photos
+      // are in hand by the time she gets there rather than after.
+      if (t > 0.68) near = APPROACHING;
     } else if (s > seg.s1) {
       z = seg.z1;
     }
   }
 
-  return { z, travelling, rise, sit };
+  if (near === APPROACHING) {
+    near = null;
+    for (const seg of schedule.segs) {
+      if (seg.kind !== "station") continue;
+      if (seg.s0 >= s) { near = seg.station.id; break; }
+    }
+  }
+
+  return { z, travelling, rise, sit, near };
 }

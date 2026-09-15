@@ -18,6 +18,8 @@ export type StationPanelProps = {
   note?: string;
   onReact: (key: string, r: StopReaction) => void;
   onNote: (key: string, text: string) => void;
+  /** she is at this one — only then are its photos worth fetching */
+  active?: boolean;
 };
 
 /**
@@ -34,7 +36,7 @@ export type StationPanelProps = {
  * price. Her row is always last and always identical.
  */
 export function StationPanel({
-  station, bookingPriority, reaction, note, onReact, onNote,
+  station, bookingPriority, reaction, note, onReact, onNote, active = false,
 }: StationPanelProps): JSX.Element {
   const { stop } = station;
   const trails = stop.trail ? [stop.trail] : (stop.trail_options ?? []);
@@ -61,6 +63,7 @@ export function StationPanel({
         name={stop.name}
         local={photosForStop(stop.name)}
         query={stop.maps_query}
+        active={active}
       />
 
       <FlagBlock stop={stop} booking={bookingPriority} />

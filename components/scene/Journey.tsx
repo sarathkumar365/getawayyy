@@ -90,6 +90,7 @@ export function Journey({
   const stage = useRef<HTMLDivElement>(null);
   const [walking, setWalking] = useState(false);
   const [sitting, setSitting] = useState(false);
+  const [nearId, setNearId] = useState<string | null>(null);
 
   const { answers, reactToStop, setNote } = useAnswers();
   const bookings = useMemo(() => bookingPriorities(trip), [trip]);
@@ -158,6 +159,7 @@ export function Journey({
 
     let wasWalking = false;
     let wasSitting = false;
+    let wasNear: string | null = null;
     let stopTimer: number | null = null;
 
     const ribbon = (cam: number, halfW: number): string => {
@@ -179,7 +181,7 @@ export function Journey({
     };
 
     const apply = (p: number): void => {
-      const { z: cam, travelling, rise, sit } = cameraAt(schedule, p);
+      const { z: cam, travelling, rise, sit, near } = cameraAt(schedule, p);
 
       // The sky is resolved BEFORE the props, because the props fade into it.
       const time = clockAt(
@@ -257,6 +259,8 @@ export function Journey({
           `translateX(${(shift - sit * 128).toFixed(1)}px) translateY(${(sit * 26).toFixed(1)}px)`;
         cast.style.opacity = (1 - sit * 0.12).toFixed(3);
       }
+
+      if (near !== wasNear) { wasNear = near; setNearId(near); }
 
       const seated = sit > 0.45;
       if (seated !== wasSitting) { wasSitting = seated; setSitting(seated); }
@@ -386,6 +390,7 @@ export function Journey({
                 note={answers.notes[s.key]}
                 onReact={reactToStop}
                 onNote={setNote}
+                active={nearId === s.id}
               />
             </div>
             <button
