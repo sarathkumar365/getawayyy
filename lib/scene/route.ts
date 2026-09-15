@@ -11,6 +11,36 @@
 import { allStops, coordFor, type Coord } from "@/lib/data";
 import type { Trip } from "@/lib/types";
 
+/** What kind of place this is — chooses the icon on the map. */
+export type PlaceIcon =
+  | "origin" | "pottery" | "nature" | "view" | "history" | "architecture"
+  | "art" | "market" | "food" | "landmark" | "town" | "water";
+
+/**
+ * Several stops share a town, so a place gets ONE icon: whichever of its stops
+ * is the most worth drawing. A town with a pottery studio and three cafes is a
+ * pottery town — that is the thing you went for.
+ */
+const ICON_RANK: readonly { icon: PlaceIcon; types: readonly string[] }[] = [
+  { icon: "pottery", types: ["workshop"] },
+  { icon: "view", types: ["viewpoint"] },
+  { icon: "nature", types: ["nature"] },
+  { icon: "landmark", types: ["landmark", "attraction"] },
+  { icon: "architecture", types: ["architecture"] },
+  { icon: "history", types: ["history"] },
+  { icon: "art", types: ["art", "culture"] },
+  { icon: "market", types: ["market"] },
+  { icon: "food", types: ["food"] },
+  { icon: "town", types: ["town", "sight"] },
+];
+
+function iconFor(types: readonly string[]): PlaceIcon {
+  for (const rank of ICON_RANK) {
+    if (types.some((t) => rank.types.includes(t))) return rank.icon;
+  }
+  return "town";
+}
+
 export type RoutePoint = {
   /** projected 0–1 within the route's own bounding box */
   x: number;
@@ -24,6 +54,9 @@ export type RoutePoint = {
   base: boolean;
   /** show the name (first occurrence only, so an out-and-back is not labelled twice) */
   label: boolean;
+  icon: PlaceIcon;
+  /** every stop type that happens here, for the tooltip */
+  types: string[];
 };
 
 export type Route = {
@@ -33,6 +66,8 @@ export type Route = {
   km: number;
   /** aspect ratio of the projected box, width / height */
   aspect: number;
+  /** real kilometres represented by one unit of the 0–1 projection */
+  kmPerUnit: number;
 };
 
 const TORONTO: Coord = { lat: 43.70011, lon: -79.4163, name: "Toronto", admin: "Ontario" };
@@ -51,19 +86,20 @@ function project(c: Coord, lat0: number): [number, number] {
 }
 
 export function routeFor(trip: Trip): Route {
-  const seen = new Set<string>();
-  const raw: { c: Coord; name: string; time: string | null }[] = [];
-
-  raw.push({ c: TORONTO, name: "Toronto", time: null });
-  seen.add("Toronto");
+  const raw: { c: Coord; name: string; time: string | null; types: string[] }[] = [];
+  raw.push({ c: TORONTO, name: "Toronto", time: null, types: [] });
 
   for (const stop of allStops(trip)) {
     const c = coordFor(stop.maps_query ?? null);
     if (!c) continue;
-    // one point per place: a day with five stops in one town is one dot
-    if (seen.has(c.name) && raw[raw.length - 1]?.c.name === c.name) continue;
-    seen.add(c.name);
-    raw.push({ c, name: c.name, time: stop.time });
+    const prev = raw[raw.length - 1];
+    // one point per place: a day with five stops in one town is one dot, and it
+    // collects their types so the icon can reflect what you actually do there
+    if (prev && prev.c.name === c.name) {
+      if (stop.type && !prev.types.includes(stop.type)) prev.types.push(stop.type);
+      continue;
+    }
+    raw.push({ c, name: c.name, time: stop.time, types: stop.type ? [stop.type] : [] });
   }
 
   const lat0 = raw.reduce((s, r) => s + r.c.lat, 0) / Math.max(1, raw.length);
@@ -119,8 +155,23 @@ export function routeFor(trip: Trip): Route {
       approx: r.c.approx === true,
       base: isBase,
       label,
+      icon: i === 0 ? "origin" : iconFor(r.types),
+      types: r.types,
     };
   });
+
+  // real km per projected unit, from the longest leg — gives an honest scale bar
+  let kmPerUnit = 0;
+  for (let i = 1; i < raw.length; i += 1) {
+    const a = raw[i - 1];
+    const b = raw[i];
+    const pa = xy[i - 1];
+    const pb = xy[i];
+    if (!a || !b || !pa || !pb) continue;
+    const projected = Math.hypot((pb[0] - pa[0]) / span, (pb[1] - pa[1]) / span);
+    if (projected < 0.02) continue;
+    kmPerUnit = Math.max(kmPerUnit, haversine(a.c, b.c) / projected);
+  }
 
   return {
     points,
@@ -128,7 +179,20 @@ export function routeFor(trip: Trip): Route {
     km: trip.stats?.distance_km ?? 0,
     // square, because both axes now share one scale
     aspect: 1,
+    kmPerUnit,
   };
+}
+
+/** Straight-line distance in km. Road distance is longer; the scale bar says so. */
+function haversine(a: Coord, b: Coord): number {
+  const R = 6371;
+  const toRad = (d: number): number => (d * Math.PI) / 180;
+  const dLat = toRad(b.lat - a.lat);
+  const dLon = toRad(b.lon - a.lon);
+  const s =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLon / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(s));
 }
 
 function bearingFrom(a: Coord, b: Coord): number {
