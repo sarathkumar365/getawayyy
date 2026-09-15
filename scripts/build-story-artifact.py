@@ -13,11 +13,16 @@ def inline(t):
     return t
 
 out, lines, i = [], src.split("\n"), 0
+in_tale = [False]
 while i < len(lines):
     ln = lines[i]
 
     if ln.strip() == "---":
-        out.append('<hr>'); i += 1; continue
+        if in_tale[0]:
+            out.append("</section>"); in_tale[0] = False
+        else:
+            out.append('<hr>')
+        i += 1; continue
 
     m = re.match(r"^(#{1,4})\s+(.*)$", ln)
     if m:
@@ -25,9 +30,13 @@ while i < len(lines):
         # "8.1 Muskoka — the closest one" becomes a titled story card
         sm = re.match(r"^(\d+\.\d+)\s+(.+?)\s+—\s+\*(.+)\*$", txt)
         if lvl == 3 and sm:
-            out.append(f'<h3 class="story"><span class="story__n">{sm.group(1)}</span>'
+            if in_tale[0]:
+                out.append("</section>")
+            out.append(f'<section class="tale"><h3 class="story">'
+                       f'<span class="story__n">{sm.group(1)}</span>'
                        f'<span class="story__name">{inline(sm.group(2))}</span>'
                        f'<span class="story__sub">{inline(sm.group(3))}</span></h3>')
+            in_tale[0] = True
         else:
             out.append(f"<h{lvl}>{inline(txt)}</h{lvl}>")
         i += 1; continue
@@ -65,7 +74,8 @@ while i < len(lines):
         t = " ".join(buf).strip()
         if t.startswith("*") and t.endswith("*"):
             t = t[1:-1]
-        out.append(f'<p class="direct">{inline(t)}</p>'); continue
+        cls = "staging" if t.startswith("Staging") else "direct"
+        out.append(f'<p class="{cls}">{inline(t)}</p>'); continue
 
     if ln.startswith("|"):
         rows = []
@@ -100,6 +110,8 @@ while i < len(lines):
 
     i += 1
 
+if in_tale[0]:
+    out.append("</section>")
 body_html = "\n".join(out)
 # drop the duplicated H1 title line
 body_html = re.sub(r"<h1>.*?</h1>", "", body_html, count=1)
