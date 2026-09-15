@@ -1,0 +1,280 @@
+{
+  "generated": "2026-09-15T02:24:16.400Z",
+  "source": "Open-Meteo geocoding (keyless)",
+  "precision": "town-level; venue pins would need Google Geocoding (TIER 2)",
+  "note": "Every coordinate here came from Open-Meteo. None is hand-entered. Entries flagged approx:true resolved a nearby settlement instead of the named place, because Open-Meteo carries no record of it.",
+  "towns": {
+    "Adolphustown": {
+      "lat": 44.06361,
+      "lon": -77.00333,
+      "name": "Adolphustown",
+      "admin": "Ontario"
+    },
+    "Algonquin Logging Museum": {
+      "lat": 45.75012,
+      "lon": -78.49956,
+      "name": "Algonquin Provincial Park",
+      "admin": "Ontario",
+      "approx": true
+    },
+    "Algonquin Park": {
+      "lat": 45.75012,
+      "lon": -78.49956,
+      "name": "Algonquin Provincial Park",
+      "admin": "Ontario",
+      "approx": true
+    },
+    "Algonquin Provincial Park": {
+      "lat": 45.75012,
+      "lon": -78.49956,
+      "name": "Algonquin Provincial Park",
+      "admin": "Ontario"
+    },
+    "Algonquin Provincial Park West Gate": {
+      "lat": 45.75012,
+      "lon": -78.49956,
+      "name": "Algonquin Provincial Park",
+      "admin": "Ontario",
+      "approx": true
+    },
+    "Algonquin Visitor Centre": {
+      "lat": 45.75012,
+      "lon": -78.49956,
+      "name": "Algonquin Provincial Park",
+      "admin": "Ontario",
+      "approx": true
+    },
+    "Blue Mountains": {
+      "lat": 44.56363,
+      "lon": -80.45245,
+      "name": "Thornbury",
+      "admin": "Ontario",
+      "approx": true
+    },
+    "Bracebridge": {
+      "lat": 45.03341,
+      "lon": -79.31633,
+      "name": "Bracebridge",
+      "admin": "Ontario"
+    },
+    "Collingwood": {
+      "lat": 44.4834,
+      "lon": -80.21638,
+      "name": "Collingwood",
+      "admin": "Ontario"
+    },
+    "Dorset": {
+      "lat": 45.23341,
+      "lon": -78.8996,
+      "name": "Dorset",
+      "admin": "Ontario"
+    },
+    "Eugenia Falls Conservation Area": {
+      "lat": 44.3168,
+      "lon": -80.5164,
+      "name": "Eugenia",
+      "admin": "Ontario",
+      "approx": true
+    },
+    "Gravenhurst": {
+      "lat": 44.91681,
+      "lon": -79.36633,
+      "name": "Gravenhurst",
+      "admin": "Ontario"
+    },
+    "Haliburton": {
+      "lat": 45.04587,
+      "lon": -78.50761,
+      "name": "Haliburton",
+      "admin": "Ontario"
+    },
+    "Huntsville": {
+      "lat": 45.33341,
+      "lon": -79.21632,
+      "name": "Huntsville",
+      "admin": "Ontario"
+    },
+    "Ile d'Orleans": {
+      "lat": 46.81228,
+      "lon": -71.21454,
+      "name": "Québec",
+      "admin": "Quebec",
+      "approx": true
+    },
+    "Kimberley": {
+      "lat": 44.3168,
+      "lon": -80.5164,
+      "name": "Eugenia",
+      "admin": "Ontario",
+      "approx": true
+    },
+    "Kingston": {
+      "lat": 44.22976,
+      "lon": -76.48098,
+      "name": "Kingston",
+      "admin": "Ontario"
+    },
+    "Lake of Bays": {
+      "lat": 45.23341,
+      "lon": -78.8996,
+      "name": "Dorset",
+      "admin": "Ontario",
+      "approx": true
+    },
+    "Lake on the Mountain Provincial Park": {
+      "lat": 44.00176,
+      "lon": -77.14637,
+      "name": "Picton",
+      "admin": "Ontario",
+      "approx": true
+    },
+    "Meaford": {
+      "lat": 44.60725,
+      "lon": -80.61081,
+      "name": "Meaford",
+      "admin": "Ontario"
+    },
+    "Montreal": {
+      "lat": 45.50884,
+      "lon": -73.58781,
+      "name": "Montreal",
+      "admin": "Quebec"
+    },
+    "Old Montreal": {
+      "lat": 45.50884,
+      "lon": -73.58781,
+      "name": "Montreal",
+      "admin": "Quebec"
+    },
+    "Old Port of Montreal": {
+      "lat": 45.50884,
+      "lon": -73.58781,
+      "name": "Montreal",
+      "admin": "Quebec"
+    },
+    "Old Quebec": {
+      "lat": 46.81228,
+      "lon": -71.21454,
+      "name": "Québec",
+      "admin": "Quebec"
+    },
+    "Owen Sound": {
+      "lat": 44.56717,
+      "lon": -80.94349,
+      "name": "Owen Sound",
+      "admin": "Ontario"
+    },
+    "Picton": {
+      "lat": 44.00176,
+      "lon": -77.14637,
+      "name": "Picton",
+      "admin": "Ontario"
+    },
+    "Prince Edward County": {
+      "lat": 44.00176,
+      "lon": -77.14637,
+      "name": "Picton",
+      "admin": "Ontario",
+      "approx": true
+    },
+    "Quebec": {
+      "lat": 46.81228,
+      "lon": -71.21454,
+      "name": "Québec",
+      "admin": "Quebec"
+    },
+    "Quebec City": {
+      "lat": 46.81228,
+      "lon": -71.21454,
+      "name": "Québec",
+      "admin": "Quebec"
+    },
+    "Thornbury": {
+      "lat": 44.56363,
+      "lon": -80.45245,
+      "name": "Thornbury",
+      "admin": "Ontario"
+    },
+    "Toronto": {
+      "lat": 43.70643,
+      "lon": -79.39864,
+      "name": "Toronto",
+      "admin": "Ontario"
+    }
+  },
+  "queryToTown": {
+    "Toronto, ON": "Toronto",
+    "Gravenhurst, ON": "Gravenhurst",
+    "Sawdust City Brewing, Gravenhurst ON": "Gravenhurst",
+    "Bracebridge Falls, Bracebridge ON": "Bracebridge",
+    "Muskoka Heritage Place, Huntsville ON": "Huntsville",
+    "Main Street, Huntsville ON": "Huntsville",
+    "Group of Seven Outdoor Gallery, Huntsville ON": "Huntsville",
+    "Arrowhead Provincial Park, Huntsville ON": "Huntsville",
+    "Lions Lookout, Huntsville ON": "Huntsville",
+    "Manitoba Street, Bracebridge ON": "Bracebridge",
+    "Muskoka Wharf, Gravenhurst ON": "Gravenhurst",
+    "Downtown Gravenhurst, ON": "Gravenhurst",
+    "Bethune Memorial House, Gravenhurst ON": "Gravenhurst",
+    "Muskoka Bay Pottery, Gravenhurst ON": "Gravenhurst",
+    "Gravenhurst, ON to Toronto, ON": "Gravenhurst",
+    "Huntsville, ON": "Huntsville",
+    "Algonquin Provincial Park West Gate, ON": "Algonquin Provincial Park West Gate",
+    "Algonquin Art Centre, Algonquin Park ON": "Algonquin Park",
+    "Lookout Trail, Algonquin Park ON": "Algonquin Park",
+    "Spruce Bog Boardwalk, Algonquin Park ON": "Algonquin Park",
+    "Algonquin Provincial Park, ON": "Algonquin Provincial Park",
+    "Algonquin Visitor Centre, ON": "Algonquin Visitor Centre",
+    "Algonquin Logging Museum, ON": "Algonquin Logging Museum",
+    "Booth's Rock Trail, Algonquin Park ON": "Algonquin Park",
+    "Dorset, ON": "Dorset",
+    "Dorset Lookout Tower, Lake of Bays ON": "Lake of Bays",
+    "Haliburton Sculpture Forest, Haliburton ON": "Haliburton",
+    "Haliburton, ON": "Haliburton",
+    "Blackbird Pottery, Haliburton ON": "Haliburton",
+    "Haliburton, ON to Toronto, ON": "Haliburton",
+    "Montreal, QC": "Montreal",
+    "Marche Jean-Talon, Montreal QC": "Montreal",
+    "Rue Saint-Paul, Old Montreal, QC": "Old Montreal",
+    "Notre-Dame Basilica, Montreal QC": "Montreal",
+    "Old Port of Montreal, QC": "Old Port of Montreal",
+    "Kondiaronk Belvedere, Montreal QC": "Montreal",
+    "O-Taku Manga Lounge, 3623 Rue Saint-Denis, Montreal QC": "Montreal",
+    "Korean restaurant, Montreal QC": "Montreal",
+    "Lachine Canal, Montreal QC": "Montreal",
+    "Studio Mie Kim, Montreal QC": "Montreal",
+    "Montreal, QC to Toronto, ON": "Montreal",
+    "Quebec City, QC": "Quebec City",
+    "Dufferin Terrace, Quebec City QC": "Quebec City",
+    "Quartier Petit-Champlain, Quebec City QC": "Quebec City",
+    "Oh mon kogo, Rue Saint-Jean, Quebec City QC": "Quebec City",
+    "Plains of Abraham, Quebec City QC": "Quebec City",
+    "Old Quebec, QC": "Old Quebec",
+    "Parc de la Chute-Montmorency, Quebec QC": "Quebec",
+    "Ile d'Orleans, QC": "Ile d'Orleans",
+    "Quebec City, QC to Toronto, ON": "Quebec City",
+    "Kimberley, ON": "Kimberley",
+    "Old Baldy Conservation Area, Kimberley ON": "Kimberley",
+    "Eugenia Falls Conservation Area, ON": "Eugenia Falls Conservation Area",
+    "Scenic Caves Nature Adventures, Blue Mountains ON": "Blue Mountains",
+    "Thornbury, ON": "Thornbury",
+    "Collingwood, ON": "Collingwood",
+    "Inglis Falls Conservation Area, Owen Sound ON": "Owen Sound",
+    "Irish Mountain Lookout, Meaford ON": "Meaford",
+    "Hurontario Street, Collingwood ON": "Collingwood",
+    "Hello Pottery Co, Collingwood ON": "Collingwood",
+    "Collingwood, ON to Toronto, ON": "Collingwood",
+    "Springer Market Square, Kingston ON": "Kingston",
+    "Downtown Kingston, ON": "Kingston",
+    "Kingston Penitentiary, Kingston ON": "Kingston",
+    "Wolfe Island Ferry, Kingston ON": "Kingston",
+    "Princess Street, Kingston ON": "Kingston",
+    "Adolphustown, ON": "Adolphustown",
+    "Glenora Ferry, Picton ON": "Picton",
+    "Lake on the Mountain Provincial Park, ON": "Lake on the Mountain Provincial Park",
+    "Lake on the Mountain Resort, Prince Edward County ON": "Prince Edward County",
+    "Main Street, Picton ON": "Picton",
+    "Sandbanks Provincial Park, Picton ON": "Picton"
+  },
+  "unresolved": []
+}

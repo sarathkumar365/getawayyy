@@ -1,0 +1,172 @@
+/* =========================================================================
+   Design tokens — Phase 0.
+   Light-first. Dark is a redefinition of the same names, never a filter.
+   ========================================================================= */
+
+:root {
+  /* ---- paper & ink ---- */
+  --paper:        #FBF8F3;   /* warm off-white, not a flat white */
+  --paper-raised: #FFFFFF;
+  --paper-sunk:   #F2ECE3;
+  --ink:          #1A1714;
+  --ink-soft:     #4A433C;
+  --ink-faint:    #857C71;
+  --rule:         #E3DAcd;
+  --rule-strong:  #CFC3B2;
+
+  /* ---- the two characters ---- */
+  --sun:          #FF7A2F;   /* A — tangerine */
+  --sun-soft:     #FFE3D0;
+  --curse:        #C1121F;   /* B — crimson */
+  --curse-ink:    #14100F;   /* his line-markings */
+
+  /* ---- the secret accent (보라해) ---- */
+  --violet:       #7C5CDB;
+  --violet-soft:  #EDE7FB;
+
+  /* ---- semantic ---- */
+  --warn:         #B45309;   /* warnings[] — serious, not alarming */
+  --warn-bg:      #FDF3E3;
+  --danger:       #B3261E;   /* closed_since_v1 / removed */
+  --danger-bg:    #FBEAE8;
+  --good:         #2E6B4F;
+  --unknown:      #6B6459;   /* cost.amount === null — "call to confirm" */
+  --estimate:     #8A6D3B;   /* estimated:true — an unverified guess */
+  --sourced:      #2E6B4F;   /* data_source — checked against a live API */
+
+  /* ---- type ---- */
+  --font-display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --font-body:    ui-sans-serif, -apple-system, "Segoe UI", Inter, system-ui, sans-serif;
+  --font-mono:    ui-monospace, "SF Mono", Menlo, monospace;
+  /* Hangul/kana decorative type needs its own stack or it falls back badly. */
+  --font-kr:      "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --font-jp:      "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
+
+  --step--1: clamp(0.83rem, 0.80rem + 0.15vw, 0.92rem);
+  --step-0:  clamp(1.00rem, 0.95rem + 0.25vw, 1.13rem);
+  --step-1:  clamp(1.25rem, 1.15rem + 0.50vw, 1.55rem);
+  --step-2:  clamp(1.60rem, 1.40rem + 1.00vw, 2.20rem);
+  --step-3:  clamp(2.10rem, 1.70rem + 2.00vw, 3.30rem);
+  --step-4:  clamp(2.80rem, 2.00rem + 4.00vw, 5.20rem);
+
+  /* ---- space ---- */
+  --s-1: 0.25rem; --s-2: 0.5rem;  --s-3: 0.75rem; --s-4: 1rem;
+  --s-5: 1.5rem;  --s-6: 2rem;    --s-7: 3rem;    --s-8: 4.5rem;
+  --s-9: 7rem;
+
+  --measure: 68ch;
+  --radius:  14px;
+  --radius-lg: 22px;
+
+  /* ---- motion ----
+     Nothing linear. These are the curves every GSAP tween and CSS transition
+     should pull from, so the whole site moves with one hand. */
+  --ease-out:   cubic-bezier(0.16, 1, 0.30, 1);      /* arrivals */
+  --ease-in:    cubic-bezier(0.70, 0, 0.84, 0);      /* exits */
+  --ease-soft:  cubic-bezier(0.45, 0, 0.15, 1);      /* section transitions */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);  /* character reactions */
+  --t-fast:  180ms;
+  --t-base:  340ms;
+  --t-slow:  680ms;
+  --t-scene: 1100ms;
+}
+
+/* ---- dark: redefine the names, don't invert ---- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:        #14120F;
+    --paper-raised: #1D1A16;
+    --paper-sunk:   #0D0B09;
+    --ink:          #F3EDE4;
+    --ink-soft:     #C3BAAD;
+    --ink-faint:    #8A8073;
+    --rule:         #2E2922;
+    --rule-strong:  #453E34;
+
+    --sun-soft:     #40250F;
+    --violet-soft:  #241C3D;
+    --warn:         #E0A458;
+    --warn-bg:      #2A2013;
+    --danger:       #E8796F;
+    --danger-bg:    #2C1715;
+    --good:         #6DBF97;
+    --unknown:      #9A9186;
+    --estimate:     #C9A063;
+    --sourced:      #6DBF97;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #14120F; --paper-raised: #1D1A16; --paper-sunk: #0D0B09;
+  --ink: #F3EDE4; --ink-soft: #C3BAAD; --ink-faint: #8A8073;
+  --rule: #2E2922; --rule-strong: #453E34;
+  --sun-soft: #40250F; --violet-soft: #241C3D;
+  --warn: #E0A458; --warn-bg: #2A2013;
+  --danger: #E8796F; --danger-bg: #2C1715;
+  --good: #6DBF97; --unknown: #9A9186;
+  --estimate: #C9A063; --sourced: #6DBF97;
+}
+
+/* =========================================================================
+   The five worlds. Each trip page sets data-world on a wrapper and every
+   accent below re-points. Drawn from each trip's own geography.
+   ========================================================================= */
+
+[data-world="muskoka"] {
+  --w-accent: #2F6E6B; --w-accent-soft: #DCEAE8;
+  --w-deep:   #14383A; --w-warm: #C8763C;   /* lake + dock cedar */
+}
+[data-world="algonquin-haliburton"] {
+  --w-accent: #B23A20; --w-accent-soft: #F6E0D6;
+  --w-deep:   #3A2416; --w-warm: #E0902F;   /* maple red, pine shadow */
+}
+[data-world="georgian-bay"] {
+  --w-accent: #5A6B78; --w-accent-soft: #E3E8EC;
+  --w-deep:   #26323B; --w-warm: #D2A03C;   /* escarpment stone, apple gold */
+}
+[data-world="montreal"] {
+  --w-accent: #3E5A80; --w-accent-soft: #E1E7F0;
+  --w-deep:   #1F2A3A; --w-warm: #C9A227;   /* basilica blue + gold */
+}
+[data-world="quebec-city"] {
+  --w-accent: #38495C; --w-accent-soft: #E0E5EB;
+  --w-deep:   #1A2430; --w-warm: #9C6B4A;   /* slate + copper roof */
+}
+[data-world="kingston-pec"] {
+  --w-accent: #6E6656; --w-accent-soft: #EBE7DD;
+  --w-deep:   #2E2A22; --w-warm: #A8894F;   /* grey limestone */
+}
+
+/* =========================================================================
+   Base
+   ========================================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* Lenis drives scrolling; the native smooth behaviour fights it. */
+  scroll-behavior: auto;
+  /* iPad: stop the rubber-band from revealing the page ground mid-animation. */
+  overscroll-behavior-y: none;
+}
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.1; }
+
+/* Respect the setting — this site moves a lot. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

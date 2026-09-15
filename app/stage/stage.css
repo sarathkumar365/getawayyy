@@ -1,0 +1,55 @@
+.stage-page { max-width: 1040px; margin: 0 auto; padding: 2.5rem 1.25rem 6rem; }
+.stage-page h1 { font-size: 1.6rem; letter-spacing: -.02em; margin: 0 0 .3rem; }
+.stage-page .lede { color: var(--ink-2, #6b6560); margin: 0 0 2rem; max-width: 62ch; }
+
+.picker { display: flex; flex-wrap: wrap; gap: .35rem; margin: 0 0 1.5rem; }
+.picker button { font: inherit; font-size: .74rem; font-family: ui-monospace, monospace;
+  padding: .3rem .6rem; border: 1px solid var(--rule, #d8d2c8); border-radius: 3px;
+  background: transparent; color: inherit; cursor: pointer; }
+.picker button[aria-pressed="true"] { background: var(--ink, #1e1e24); color: var(--paper, #faf7f2); }
+
+.scene { border: 1px solid var(--rule, #d8d2c8); border-radius: 8px; overflow: hidden;
+  background: var(--paper-2, #f6f2ea); }
+.scene__stage { position: relative; height: 370px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.05) 100%); }
+.scene__stage::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1px;
+  background: var(--rule, #d8d2c8); }
+.actor-svg { height: 100%; width: auto; display: block; }
+.scene [data-actor] > svg { height: 100%; width: auto; }
+
+.scene__talk { padding: 1rem 1.1rem 0; min-height: 120px; }
+.scene__end { font-family: ui-monospace, monospace; font-size: .74rem; color: var(--ink-3, #9a958d); }
+.scene__progress { display: flex; gap: 4px; padding: .9rem 1.1rem 1.1rem; }
+.scene__progress span { height: 2px; flex: 1; background: var(--rule, #d8d2c8); border-radius: 2px; }
+.scene__progress span[data-on="true"] { background: var(--ink, #1e1e24); }
+
+/* ---- speech bubble ---- */
+.bubble { position: relative; max-width: 54ch; padding: .85rem 1rem 1.6rem;
+  border: 1.5px solid var(--ink, #1e1e24); border-radius: 12px;
+  background: var(--paper, #fffdf8); cursor: pointer; user-select: none;
+  box-shadow: 3px 3px 0 var(--bubble-accent, #1e1e24); }
+.bubble--sun { --bubble-accent: #FF7A2F; margin-right: auto; }
+.bubble--curse { --bubble-accent: #C1121F; margin-left: auto; }
+.bubble::after { content: ""; position: absolute; top: -9px; width: 14px; height: 14px;
+  background: var(--paper, #fffdf8); border-left: 1.5px solid var(--ink, #1e1e24);
+  border-top: 1.5px solid var(--ink, #1e1e24); transform: rotate(45deg); }
+.bubble--left::after { left: 26px; }
+.bubble--right::after { right: 26px; }
+.bubble__text { margin: 0; font-size: 1.02rem; line-height: 1.55; min-height: 1.55em; }
+.bubble__caret { display: inline-block; width: .5ch; height: 1.05em; margin-left: 1px;
+  background: var(--bubble-accent); vertical-align: -.16em; animation: caret .8s steps(1) infinite; }
+@keyframes caret { 50% { opacity: 0 } }
+.bubble__sr { position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; }
+.bubble__more { position: absolute; right: .8rem; bottom: .45rem;
+  font-family: ui-monospace, monospace; font-size: .6rem; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-3, #9a958d); }
+.bubble:focus-visible { outline: 2px solid var(--bubble-accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .bubble__caret { animation: none } }
+
+/* ---- walk lane ---- */
+.lane { position: relative; height: 300px; margin-top: 2rem;
+  border: 1px solid var(--rule, #d8d2c8); border-radius: 8px; overflow: hidden;
+  background: var(--paper-2, #f6f2ea); }
+.lane::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1px;
+  background: var(--rule, #d8d2c8); }

@@ -1,0 +1,3670 @@
+{
+  "$schema_version": "2.0.0",
+  "meta": {
+    "title": "Weekend Getaways from Toronto",
+    "subtitle": "Five trips, five directions",
+    "generated": "2026-09-15",
+    "currency": "CAD",
+    "origin": {
+      "city": "Toronto",
+      "province": "Ontario",
+      "maps_query": "Toronto, ON"
+    },
+    "travellers": {
+      "count": 2,
+      "type": "couple"
+    },
+    "all_prices_are_for": "two people together, unless a line says per_person",
+    "notes": [
+      "Trip 'kingston-pec' is flagged featured:false - superseded by Montreal, which covers the same direction. The other four are featured:true. 'muskoka' and 'algonquin-haliburton' are two ALTERNATIVE versions of the north trip - use the alternative_to field to group them in the UI rather than showing them as unrelated offerings.",
+      "Coordinates are deliberately omitted. Every place has a maps_query string instead — feed it to Google Maps, Mapbox geocoding, or an embed URL.",
+      "cost.amount of 0 means genuinely free. cost.amount of null means unknown/needs a phone call.",
+      "data_source on a stop or lodging option names where the numbers came from and when. Anything without one is still my estimate.",
+      "Budget: read budget.total for the headline number and budget.variants[] for the alternatives. A variant with total:null has total_range instead (a string like '1150-1350') - Quebec City flying and Georgian Bay with-pottery are the only two.",
+      "Every stop is guaranteed to have: time, name, type, description, duration_min, cost{amount,per,note}, maps_query, tags[], address. Any of these may be null, but the key is always present. Everything else is optional."
+    ],
+    "revision_note": "v2.0 - schema normalised for the build. Every trip now has the same budget shape (total + variants[]), and every stop has the same required keys. Content unchanged from v1.2."
+  },
+  "trips": [
+    {
+      "id": "muskoka",
+      "slug": "muskoka-north",
+      "featured": true,
+      "order": 1,
+      "name": "Muskoka",
+      "tagline": "Lakes, pioneer history and a steam train",
+      "direction": "North",
+      "bearing_deg": 0,
+      "status": "planned",
+      "summary": "The original plan. Bracebridge as a base, Huntsville and Arrowhead to the north on Saturday, Gravenhurst and a pottery workshop on the way home Sunday. Cottage country in fall colour.",
+      "why_this_trip": "Closest of the three. Strongest nature-to-effort ratio, a confirmed pottery booking, and the only one with a genuine cottage-country feel.",
+      "stats": {
+        "distance_km": 495,
+        "drive_time_hours": 6.25,
+        "nights": 2,
+        "shape": "Friday evening departure, home Sunday evening",
+        "best_season": "Peak fall colour around Thanksgiving, Oct 10-12",
+        "base_town": "Bracebridge"
+      },
+      "highlights": [
+        "Portage Flyer steam train at Muskoka Heritage Place",
+        "Stubb's Falls and Big Bend Lookout, Arrowhead Provincial Park",
+        "Two-hour pottery workshop at Muskoka Bay Pottery",
+        "Group of Seven outdoor mural gallery, Huntsville"
+      ],
+      "scores": {
+        "nature": 5,
+        "architecture_history": 3,
+        "pottery": 5,
+        "korean_anime": 0,
+        "famous_landmark": 2,
+        "photo_spots": 4,
+        "relaxation": 5,
+        "value": 3
+      },
+      "budget": {
+        "currency": "CAD",
+        "for": "two people together",
+        "total": 980,
+        "total_range": null,
+        "default_variant": "full",
+        "line_items": [
+          {
+            "label": "Stay, 2 nights (Cedar Lane Motel, live rate)",
+            "amount": 368,
+            "was_estimated": 260,
+            "data_source": "Booking.com 2026-09-15"
+          },
+          {
+            "label": "Food and drink, 6 meals",
+            "amount": 320
+          },
+          {
+            "label": "Pottery, 2 hours",
+            "amount": 140
+          },
+          {
+            "label": "Gas, 495 km",
+            "amount": 70
+          },
+          {
+            "label": "Muskoka Heritage Place",
+            "amount": 45
+          },
+          {
+            "label": "Arrowhead day-use",
+            "amount": 21
+          },
+          {
+            "label": "Bethune House",
+            "amount": 16
+          }
+        ],
+        "variants": [
+          {
+            "id": "full",
+            "label": "Everything",
+            "total": 980,
+            "line_items": [
+              {
+                "label": "Stay, 2 nights (Cedar Lane Motel, live rate)",
+                "amount": 368,
+                "was_estimated": 260,
+                "data_source": "Booking.com 2026-09-15"
+              },
+              {
+                "label": "Food and drink, 6 meals",
+                "amount": 320
+              },
+              {
+                "label": "Pottery, 2 hours",
+                "amount": 140
+              },
+              {
+                "label": "Gas, 495 km",
+                "amount": 70
+              },
+              {
+                "label": "Muskoka Heritage Place",
+                "amount": 45
+              },
+              {
+                "label": "Arrowhead day-use",
+                "amount": 21
+              },
+              {
+                "label": "Bethune House",
+                "amount": 16
+              }
+            ],
+            "note": null
+          },
+          {
+            "id": "trimmed",
+            "label": "Trimmed",
+            "total": 400,
+            "line_items": null,
+            "note": "One night instead of two, one hour of pottery, skip Muskoka Heritage Place, one meal from a cooler"
+          }
+        ],
+        "note": "Up from $872 in v1.0. The lodging estimate was $108 low for a peak-colour Thanksgiving weekend."
+      },
+      "days": [
+        {
+          "day": 0,
+          "label": "Friday evening",
+          "stops": [
+            {
+              "time": "18:00",
+              "name": "Toronto to Gravenhurst",
+              "type": "drive",
+              "description": "Hwy 400 to Hwy 11, about 1h45.",
+              "duration_min": 105,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Gravenhurst, ON",
+              "tags": [],
+              "address": null
+            },
+            {
+              "time": "20:00",
+              "name": "Sawdust City Brewing",
+              "type": "food",
+              "description": "Dinner and a local crowd. Open to 11pm Friday.",
+              "address": "397 Muskoka Rd N, Gravenhurst, ON",
+              "duration_min": 120,
+              "cost": {
+                "amount": 60,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Sawdust City Brewing, Gravenhurst ON",
+              "tags": [
+                "food",
+                "locals"
+              ]
+            },
+            {
+              "time": "22:15",
+              "name": "Bracebridge Falls night walk",
+              "type": "sight",
+              "description": "Check in first, then a short lit walk to the falls in the middle of town.",
+              "duration_min": 30,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Bracebridge Falls, Bracebridge ON",
+              "tags": [
+                "nature",
+                "free"
+              ],
+              "address": null
+            }
+          ]
+        },
+        {
+          "day": 1,
+          "label": "Saturday — north to Huntsville",
+          "stops": [
+            {
+              "time": "09:30",
+              "name": "Muskoka Heritage Place",
+              "type": "history",
+              "description": "Pioneer village plus the Portage Flyer steam train. The train runs Tuesday to Saturday only, which is why Saturday is the north day.",
+              "address": "88 Brunel Rd, Huntsville, ON",
+              "phone": "+1-705-789-7576",
+              "duration_min": 150,
+              "cost": {
+                "amount": 45,
+                "per": "two",
+                "note": "$22.60 per adult"
+              },
+              "season": "Closes for the season Oct 10",
+              "maps_query": "Muskoka Heritage Place, Huntsville ON",
+              "tags": [
+                "history",
+                "architecture",
+                "train"
+              ]
+            },
+            {
+              "time": "12:30",
+              "name": "Main Street lunch, Huntsville",
+              "type": "food",
+              "duration_min": 60,
+              "cost": {
+                "amount": 45,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Main Street, Huntsville ON",
+              "description": "Lunch on Huntsville’s main street.",
+              "tags": [],
+              "address": null
+            },
+            {
+              "time": "13:45",
+              "name": "Group of Seven Outdoor Gallery",
+              "type": "art",
+              "description": "Large-scale murals reproducing Group of Seven paintings, painted on buildings around town. Self-guided.",
+              "duration_min": 60,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Group of Seven Outdoor Gallery, Huntsville ON",
+              "tags": [
+                "art",
+                "free",
+                "photos"
+              ],
+              "address": null
+            },
+            {
+              "time": "15:00",
+              "name": "Arrowhead Provincial Park",
+              "type": "nature",
+              "description": "Stubb's Falls and the Big Bend Lookout.",
+              "duration_min": 150,
+              "cost": {
+                "amount": 21,
+                "per": "vehicle",
+                "note": "Day-use permit"
+              },
+              "maps_query": "Arrowhead Provincial Park, Huntsville ON",
+              "tags": [
+                "nature",
+                "hike",
+                "photos"
+              ],
+              "address": null
+            },
+            {
+              "time": "18:00",
+              "name": "Lions Lookout at sunset",
+              "type": "viewpoint",
+              "duration_min": 45,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Lions Lookout, Huntsville ON",
+              "tags": [
+                "viewpoint",
+                "free",
+                "photos",
+                "sunset"
+              ],
+              "description": null,
+              "address": null
+            },
+            {
+              "time": "19:30",
+              "name": "Dinner on Manitoba Street",
+              "type": "food",
+              "address": "Manitoba St, Bracebridge, ON",
+              "duration_min": 90,
+              "cost": {
+                "amount": 70,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Manitoba Street, Bracebridge ON",
+              "description": "Dinner on Bracebridge’s main street.",
+              "tags": []
+            }
+          ]
+        },
+        {
+          "day": 2,
+          "label": "Sunday — Gravenhurst, on the way home",
+          "stops": [
+            {
+              "time": "09:30",
+              "name": "Muskoka Wharf coffee",
+              "type": "food",
+              "duration_min": 45,
+              "cost": {
+                "amount": 20,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Muskoka Wharf, Gravenhurst ON",
+              "description": "Coffee on the wharf before the walking tour.",
+              "tags": [],
+              "address": null
+            },
+            {
+              "time": "10:15",
+              "name": "Gravenhurst Heritage Walking Tour",
+              "type": "history",
+              "description": "26 sites, self-guided, free.",
+              "duration_min": 75,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Downtown Gravenhurst, ON",
+              "tags": [
+                "history",
+                "architecture",
+                "free"
+              ],
+              "address": null
+            },
+            {
+              "time": "11:30",
+              "name": "Bethune Memorial House NHS",
+              "type": "history",
+              "description": "Birthplace of Norman Bethune. Open Thursday to Monday, 10-4, to Oct 31.",
+              "duration_min": 45,
+              "cost": {
+                "amount": 16,
+                "per": "two",
+                "note": "about $8 per adult"
+              },
+              "maps_query": "Bethune Memorial House, Gravenhurst ON",
+              "tags": [
+                "history"
+              ],
+              "address": null
+            },
+            {
+              "time": "12:30",
+              "name": "Muskoka Bay Pottery workshop",
+              "type": "workshop",
+              "description": "Two-hour hands-on session. This is the anchor booking — everything else was arranged around it.",
+              "address": "1026 North Muldrew Lake Rd, Gravenhurst, ON",
+              "phone": "+1-705-687-7890",
+              "duration_min": 120,
+              "cost": {
+                "amount": 140,
+                "note": "$70/hr for 1-2 people",
+                "per": "two"
+              },
+              "booking": "Phone or email only. Book this first.",
+              "maps_query": "Muskoka Bay Pottery, Gravenhurst ON",
+              "tags": [
+                "pottery",
+                "hands-on",
+                "anchor"
+              ]
+            },
+            {
+              "time": "14:45",
+              "name": "Late lunch at the wharf",
+              "type": "food",
+              "duration_min": 75,
+              "cost": {
+                "amount": 55,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Muskoka Wharf, Gravenhurst ON",
+              "description": "Late lunch on the Gravenhurst waterfront after the pottery session.",
+              "tags": [],
+              "address": null
+            },
+            {
+              "time": "16:00",
+              "name": "Drive home",
+              "type": "drive",
+              "description": "Hwy 11 to 400. Leave by 4pm, home around 5:45pm.",
+              "duration_min": 105,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Gravenhurst, ON to Toronto, ON",
+              "tags": [],
+              "address": null
+            }
+          ]
+        }
+      ],
+      "bookings": [
+        {
+          "priority": 1,
+          "name": "Muskoka Bay Pottery",
+          "phone": "+1-705-687-7890",
+          "note": "Phone or email only, $70/hr for 1-2 people, open 10-5 daily. Book before the room."
+        },
+        {
+          "priority": 2,
+          "name": "Accommodation in Bracebridge",
+          "note": "Cabin with a firepit preferred."
+        },
+        {
+          "priority": 3,
+          "name": "Muskoka Heritage Place",
+          "phone": "+1-705-789-7576",
+          "note": "Confirm Saturday steam train times."
+        },
+        {
+          "priority": 4,
+          "name": "RMS Segwun",
+          "phone": "+1-866-687-6667",
+          "note": "Rain plan only."
+        }
+      ],
+      "warnings": [
+        "Camping was ruled out. September overnight lows are around 9C, October around 3C, and September is Muskoka's rainiest month. Cabin with a firepit instead.",
+        "Torrance Barrens is excluded — already visited.",
+        "Fall colour was only about 10% as of Sept 14. Peak is around Thanksgiving, which is also the last weekend Muskoka Heritage Place is open."
+      ],
+      "alternatives": [
+        {
+          "name": "Dorset Lookout Tower",
+          "note": "Adds about 1h45 of driving",
+          "replaces": "Arrowhead"
+        },
+        {
+          "name": "RMS Segwun steamship",
+          "note": "Rain plan",
+          "replaces": "outdoor stops"
+        }
+      ],
+      "links": [
+        {
+          "label": "Interactive timeline artifact",
+          "url": "https://claude.ai/artifact/2Ktqjapw5gPAYDPkTTNRM7"
+        }
+      ],
+      "dates": {
+        "recommended": "2026-10-09 to 2026-10-11",
+        "depart": "Friday 2026-10-09 evening",
+        "return": "Sunday 2026-10-11 evening",
+        "label": "Thanksgiving weekend",
+        "why": [
+          "Fall colour in central Ontario peaks around Thanksgiving weekend - Ontario Parks' own guidance.",
+          "Muskoka Heritage Place closes for the season Oct 10, and the Portage Flyer steam train runs Tue-Sat only. Saturday Oct 10 is the LAST possible day to do the train and pioneer village this year.",
+          "Lodging is cheaper this weekend than the previous one - checked, and it is not close."
+        ],
+        "note": "Monday Oct 12 is the Thanksgiving holiday, so a third day is available if you want it.",
+        "data_source": {
+          "colour": "ontarioparks.ca/fallcolour",
+          "lodging": "Booking.com live rates",
+          "checked": "2026-09-15"
+        }
+      },
+      "lodging": {
+        "searched_for": "2026-10-09 to 2026-10-11, 2 nights, 2 adults, Bracebridge",
+        "prices_are": "total for the whole stay, two people",
+        "surprise": "Thanksgiving weekend is CHEAPER here than the weekend before. Oct 2-4 came back at $448-$576 for the same places. Counterintuitive, but that is what the live rates say - and it is another reason to take the Oct 9-11 dates.",
+        "caveat": "This is the most expensive lodging of the three trips. Muskoka in peak colour is simply pricey.",
+        "options": [
+          {
+            "name": "Cedar Lane Motel",
+            "total": 368,
+            "per_night": 184,
+            "score": 8.2,
+            "reviews": 169,
+            "stars": 2,
+            "address": "729 Cedar Lane, Bracebridge",
+            "pick": "cheapest",
+            "url": "https://www.booking.com/hotel/ca/cedar-lane-motel.html"
+          },
+          {
+            "name": "Wellington Inn",
+            "total": 434,
+            "per_night": 217,
+            "score": 8.9,
+            "reviews": 177,
+            "stars": 3,
+            "address": "265 Wellington Street, Bracebridge",
+            "pick": "best reviewed",
+            "url": "https://www.booking.com/hotel/ca/wellington-inn.html"
+          },
+          {
+            "name": "Comfort Inn",
+            "total": 438.3,
+            "per_night": 219,
+            "score": 7.9,
+            "reviews": 155,
+            "stars": 4,
+            "address": "510 Muskoka Road 118 West, Bracebridge",
+            "url": "https://www.booking.com/hotel/ca/sleep-inn-muskoka.html"
+          },
+          {
+            "name": "Travelodge by Wyndham",
+            "total": 488,
+            "per_night": 244,
+            "score": 7.3,
+            "reviews": 127,
+            "stars": 2,
+            "address": "320 Taylor Road, Bracebridge",
+            "url": "https://www.booking.com/hotel/ca/travelodge-bracebridge.html"
+          },
+          {
+            "name": "Quality Inn",
+            "total": 507.75,
+            "per_night": 254,
+            "score": 7.8,
+            "reviews": 279,
+            "stars": 4,
+            "address": "300 Ecclestone Drive, Bracebridge",
+            "note": "Indoor pool, sauna, hot tub",
+            "url": "https://www.booking.com/hotel/ca/quality-inn-bracebridge.html"
+          }
+        ],
+        "recommended": "Cedar Lane Motel at $368 - only $66 less than the much better reviewed Wellington Inn, so if the budget stretches, take the Wellington.",
+        "data_source": {
+          "source": "Booking.com",
+          "checked": "2026-09-15"
+        }
+      },
+      "alternative_to": "algonquin-haliburton"
+    },
+    {
+      "id": "algonquin-haliburton",
+      "slug": "algonquin-haliburton-north",
+      "featured": true,
+      "order": 2,
+      "alternative_to": "muskoka",
+      "name": "Algonquin & Haliburton Highlands",
+      "tagline": "The famous one — maple hills, logging history and a sculpture forest",
+      "direction": "North",
+      "bearing_deg": 15,
+      "status": "planned",
+      "summary": "The other way to do the north. Nothing here overlaps with the Muskoka plan — you drive past Bracebridge and keep going. Saturday is the Highway 60 corridor through Algonquin; Sunday comes home through Dorset and Haliburton.",
+      "why_this_trip": "Muskoka is lakes and towns. This is forest and art. Algonquin is the most famous park in Ontario and the best fall colour in the province, and the Haliburton side adds outdoor sculpture and a five-star pottery studio that Muskoka does not have.",
+      "how_it_differs_from_muskoka": [
+        "Different base town - Huntsville, not Bracebridge",
+        "Algonquin instead of Arrowhead",
+        "Canadian landscape art at the Algonquin Art Centre and Tom Thomson's legacy path, instead of the Group of Seven murals",
+        "Logging history instead of pioneer village history",
+        "Dorset Lookout Tower - it was only a footnote alternative in the Muskoka plan, here it is a main stop",
+        "Haliburton Sculpture Forest and Blackbird Pottery, both outside the Muskoka triangle entirely"
+      ],
+      "dates": {
+        "recommended": "2026-10-02 to 2026-10-04",
+        "depart": "Friday 2026-10-02 evening",
+        "return": "Sunday 2026-10-04 evening",
+        "label": "First full October weekend",
+        "why": [
+          "Algonquin's own records put the AVERAGE sugar maple peak in the west Highway 60 corridor at September 27 - earlier than Muskoka, because it is higher and further north.",
+          "Oct 2-4 lands in what the park calls the 'Golden Encore': poplar and birch yellows plus the orange sugar maple understory. Slightly past red maple peak, still spectacular, and the crowd has thinned.",
+          "Everything is open - the Art Centre runs to about Oct 19, the Logging Museum to mid-October."
+        ],
+        "warning": "Algonquin's report names Sept 19/20, 26/27, Oct 3/4 and Thanksgiving as the busiest weekends of the year. Start early and expect company at the trailheads.",
+        "data_source": {
+          "colour": "algonquinpark.on.ca fall colour report",
+          "lodging": "Booking.com",
+          "checked": "2026-09-15"
+        }
+      },
+      "stats": {
+        "distance_km": 700,
+        "drive_time_hours": 8,
+        "nights": 2,
+        "shape": "Friday evening departure, home Sunday evening",
+        "best_season": "Sugar maple peaks ~Sept 27 on average; golden encore early October",
+        "base_town": "Huntsville"
+      },
+      "highlights": [
+        "Algonquin Lookout Trail - 2.1 km to a cliff edge over an ocean of maple",
+        "Algonquin Art Centre at km 20, Tom Thomson legacy path, admission voluntary",
+        "Algonquin Logging Museum - camboose camp and a steam-powered amphibious 'alligator'",
+        "Dorset Lookout Tower, 4.6 stars from 1,843 reviews",
+        "Haliburton Sculpture Forest - outdoor art in the woods, free",
+        "Blackbird Pottery - 5.0 stars from 34 reviews"
+      ],
+      "scores": {
+        "nature": 5,
+        "architecture_history": 3,
+        "pottery": 4,
+        "korean_anime": 0,
+        "famous_landmark": 4,
+        "photo_spots": 5,
+        "relaxation": 4,
+        "value": 3
+      },
+      "budget": {
+        "currency": "CAD",
+        "for": "two people together",
+        "total": 858,
+        "total_range": null,
+        "default_variant": "full",
+        "line_items": [
+          {
+            "label": "Stay, 2 nights (Skyland Motel, live rate)",
+            "amount": 360,
+            "data_source": "Booking.com 2026-09-15"
+          },
+          {
+            "label": "Rental, 2 days from YYZ incl. airport fee",
+            "amount": 115
+          },
+          {
+            "label": "Gas, ~700 km",
+            "amount": 87
+          },
+          {
+            "label": "Food, 6 meals",
+            "amount": 280
+          },
+          {
+            "label": "Algonquin day-use permit",
+            "amount": 21,
+            "estimated": true,
+            "note": "Per vehicle per day - confirm, may be needed both days"
+          },
+          {
+            "label": "Dorset Lookout Tower",
+            "amount": 15,
+            "estimated": true
+          },
+          {
+            "label": "Pottery (needs a call)",
+            "amount": 0,
+            "note": "Not costed - Blackbird does not publish workshop pricing"
+          }
+        ],
+        "variants": [
+          {
+            "id": "full",
+            "label": "Everything",
+            "total": 858,
+            "line_items": [
+              {
+                "label": "Stay, 2 nights (Skyland Motel, live rate)",
+                "amount": 360,
+                "data_source": "Booking.com 2026-09-15"
+              },
+              {
+                "label": "Rental, 2 days from YYZ incl. airport fee",
+                "amount": 115
+              },
+              {
+                "label": "Gas, ~700 km",
+                "amount": 87
+              },
+              {
+                "label": "Food, 6 meals",
+                "amount": 280
+              },
+              {
+                "label": "Algonquin day-use permit",
+                "amount": 21,
+                "estimated": true,
+                "note": "Per vehicle per day - confirm, may be needed both days"
+              },
+              {
+                "label": "Dorset Lookout Tower",
+                "amount": 15,
+                "estimated": true
+              },
+              {
+                "label": "Pottery (needs a call)",
+                "amount": 0,
+                "note": "Not costed - Blackbird does not publish workshop pricing"
+              }
+            ],
+            "note": "Algonquin peak weekend lodging is expensive, same problem as Muskoka. The park itself is nearly free once you are in."
+          }
+        ],
+        "note": "Algonquin peak weekend lodging is expensive, same problem as Muskoka. The park itself is nearly free once you are in."
+      },
+      "lodging": {
+        "searched_for": "2026-10-02 to 2026-10-04, 2 nights, 2 adults, Huntsville",
+        "prices_are": "total for the whole stay, two people",
+        "options": [
+          {
+            "name": "Skyland Motel Inn & Suites",
+            "total": 360,
+            "per_night": 180,
+            "score": null,
+            "address": "208 Main St West, Huntsville",
+            "pick": "cheapest",
+            "note": "Unrated on Booking",
+            "url": "https://www.booking.com/hotel/ca/skyland-motel-inn-amp-suites.html"
+          },
+          {
+            "name": "Huntsville Inn",
+            "total": 379.98,
+            "per_night": 190,
+            "score": 7.8,
+            "reviews": 405,
+            "stars": 2,
+            "address": "19 King William Street, Huntsville",
+            "pick": "best value - $20 more for a real review score",
+            "url": "https://www.booking.com/hotel/ca/huntsville-inn.html"
+          },
+          {
+            "name": "Econolodge Huntsville",
+            "total": 475,
+            "per_night": 238,
+            "score": 7.0,
+            "reviews": 384,
+            "stars": 4,
+            "address": "117 Main Street West, Huntsville",
+            "url": "https://www.booking.com/hotel/ca/econolodge.html"
+          },
+          {
+            "name": "Sand and Stone Resort",
+            "total": 475.2,
+            "per_night": 238,
+            "score": null,
+            "address": "211 Arrowhead Park Rd, Huntsville",
+            "note": "Beachfront, firepit, canoeing",
+            "url": "https://www.booking.com/hotel/ca/sand-and-stone-resort.html"
+          },
+          {
+            "name": "Arrowhead Inn by Baaman's",
+            "total": 480,
+            "per_night": 240,
+            "score": null,
+            "address": "210 Arrowhead Park Road, Huntsville",
+            "url": "https://www.booking.com/hotel/ca/arrowhead-inn-by-baamans-huntsville2.html"
+          }
+        ],
+        "recommended": "Huntsville Inn at $380 - the $20 premium over the cheapest buys 405 reviews and a 7.8.",
+        "data_source": {
+          "source": "Booking.com",
+          "checked": "2026-09-15"
+        }
+      },
+      "days": [
+        {
+          "day": 0,
+          "label": "Friday evening",
+          "stops": [
+            {
+              "time": "18:00",
+              "name": "Toronto to Huntsville",
+              "type": "drive",
+              "description": "Hwy 400 to 11. About 2h30. Check in, sleep, be at the park gate early.",
+              "duration_min": 150,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Huntsville, ON",
+              "tags": [],
+              "address": null
+            },
+            {
+              "time": "21:00",
+              "name": "Dinner on Main Street, Huntsville",
+              "type": "food",
+              "duration_min": 75,
+              "cost": {
+                "amount": 65,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Main Street, Huntsville ON",
+              "description": "Late dinner after the drive up.",
+              "tags": [],
+              "address": null
+            }
+          ]
+        },
+        {
+          "day": 1,
+          "label": "Saturday — the Highway 60 corridor",
+          "stops": [
+            {
+              "time": "08:00",
+              "name": "Huntsville to Algonquin West Gate",
+              "type": "drive",
+              "description": "About 45 min. Buy the day-use permit at the gate. Early start matters - Algonquin names this one of its four busiest weekends.",
+              "duration_min": 45,
+              "cost": {
+                "amount": 21,
+                "per": "vehicle",
+                "estimated": true,
+                "note": null
+              },
+              "maps_query": "Algonquin Provincial Park West Gate, ON",
+              "tags": [],
+              "address": null
+            },
+            {
+              "time": "09:00",
+              "name": "Algonquin Art Centre",
+              "type": "art",
+              "description": "Three wings of Canadian landscape and wildlife art, plus a legacy path dedicated to Tom Thomson. On the shore of Found Lake.",
+              "address": "km 20, Highway 60, Algonquin Provincial Park",
+              "phone": "+1-705-633-5555",
+              "hours": "10:00-17:00 daily",
+              "season": "Late June to about Oct 19",
+              "duration_min": 75,
+              "cost": {
+                "amount": 0,
+                "note": "Admission voluntary - a valid Ontario Parks permit is required to be in the park",
+                "per": "two"
+              },
+              "maps_query": "Algonquin Art Centre, Algonquin Park ON",
+              "tags": [
+                "art",
+                "history",
+                "indoors"
+              ]
+            },
+            {
+              "time": "10:30",
+              "name": "Algonquin Lookout Trail",
+              "type": "nature",
+              "description": "The signature Algonquin photograph - a cliff edge looking out over kilometres of maple hillside. Short for what it delivers.",
+              "duration_min": 50,
+              "trail": {
+                "length_km": 2.1,
+                "duration_min": 38,
+                "elevation_gain_m": 78,
+                "difficulty": "Moderate",
+                "route_type": "Loop",
+                "rating": 4.7,
+                "url": "https://www.alltrails.com/trail/canada/ontario/algonquin-lookout-trail"
+              },
+              "cost": {
+                "amount": 0,
+                "note": "Covered by the day-use permit",
+                "per": "two"
+              },
+              "data_source": {
+                "source": "AllTrails",
+                "trail_id": 10238598,
+                "checked": "2026-09-15"
+              },
+              "maps_query": "Lookout Trail, Algonquin Park ON",
+              "tags": [
+                "nature",
+                "viewpoint",
+                "photos",
+                "famous"
+              ],
+              "address": null
+            },
+            {
+              "time": "11:45",
+              "name": "Spruce Bog Boardwalk",
+              "type": "nature",
+              "description": "Easy boardwalk loop through black spruce bog. Different landscape entirely from the maple hills, and the tamaracks here turn gold later in October.",
+              "duration_min": 35,
+              "trail": {
+                "length_km": 1.6,
+                "duration_min": 30,
+                "difficulty": "Easy",
+                "route_type": "Loop",
+                "rating": 4.6,
+                "url": "https://www.alltrails.com/trail/canada/ontario/spruce-bog-boardwalk"
+              },
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "data_source": {
+                "source": "AllTrails",
+                "checked": "2026-09-15"
+              },
+              "maps_query": "Spruce Bog Boardwalk, Algonquin Park ON",
+              "tags": [
+                "nature",
+                "easy",
+                "wildlife"
+              ],
+              "address": null
+            },
+            {
+              "time": "12:30",
+              "name": "Lunch",
+              "type": "food",
+              "description": "Bring it. Food options inside the corridor are thin and busy on a peak weekend.",
+              "duration_min": 45,
+              "cost": {
+                "amount": 30,
+                "per": "two",
+                "note": null
+              },
+              "tags": [
+                "food",
+                "pack-ahead"
+              ],
+              "maps_query": "Algonquin Provincial Park, ON",
+              "address": null
+            },
+            {
+              "time": "13:30",
+              "name": "Algonquin Visitor Centre",
+              "type": "history",
+              "description": "Museum, dioramas and a viewing deck over a wide expanse of the park. Good rain plan.",
+              "address": "km 43, Highway 60",
+              "duration_min": 60,
+              "cost": {
+                "amount": 0,
+                "note": "Covered by the permit",
+                "per": "two"
+              },
+              "maps_query": "Algonquin Visitor Centre, ON",
+              "tags": [
+                "history",
+                "indoors",
+                "viewpoint"
+              ]
+            },
+            {
+              "time": "14:45",
+              "name": "Algonquin Logging Museum",
+              "type": "history",
+              "description": "1.5 km trail past a recreated camboose camp and an 'alligator' - a steam-powered amphibious tug that winched itself overland between lakes. The trail and outdoor exhibits are open even when the reception building is not.",
+              "address": "km 54.5, Highway 60",
+              "season": "Late June to mid-October",
+              "duration_min": 75,
+              "cost": {
+                "amount": 0,
+                "note": "Covered by the permit",
+                "per": "two"
+              },
+              "maps_query": "Algonquin Logging Museum, ON",
+              "tags": [
+                "history",
+                "walking",
+                "free"
+              ]
+            },
+            {
+              "time": "16:15",
+              "name": "Booth's Rock Trail",
+              "type": "nature",
+              "description": "The big payoff of the day - a cliff-top view over Rock Lake, and a stretch of old railway bed on the way back. 4.7 stars.",
+              "duration_min": 120,
+              "trail": {
+                "length_km": 6.0,
+                "duration_min": 112,
+                "elevation_gain_m": 233,
+                "difficulty": "Moderate",
+                "route_type": "Loop",
+                "rating": 4.7,
+                "url": "https://www.alltrails.com/trail/canada/ontario/booths-rock-trail"
+              },
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "note": "Skip this and go straight back if the day has run long. The Lookout Trail already covered the view.",
+              "data_source": {
+                "source": "AllTrails",
+                "trail_id": 10237299,
+                "checked": "2026-09-15"
+              },
+              "maps_query": "Booth's Rock Trail, Algonquin Park ON",
+              "tags": [
+                "nature",
+                "hike",
+                "viewpoint",
+                "historic-site"
+              ],
+              "address": null
+            },
+            {
+              "time": "19:00",
+              "name": "Dinner, Huntsville",
+              "type": "food",
+              "duration_min": 90,
+              "cost": {
+                "amount": 75,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Huntsville, ON",
+              "description": "Dinner back in town after the corridor.",
+              "tags": [],
+              "address": null
+            }
+          ]
+        },
+        {
+          "day": 2,
+          "label": "Sunday — Dorset and Haliburton, on the way home",
+          "stops": [
+            {
+              "time": "09:30",
+              "name": "Huntsville to Dorset",
+              "type": "drive",
+              "duration_min": 45,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Dorset, ON",
+              "description": "About 45 minutes south-east on Hwy 60 and 35.",
+              "tags": [],
+              "address": null
+            },
+            {
+              "time": "10:15",
+              "name": "Dorset Lookout Tower",
+              "type": "viewpoint",
+              "description": "A tower on a hill above the Lake of Bays narrows. On a clear October morning it is one of the widest fall-colour views in Ontario.",
+              "address": "1191 Dorset Scenic Tower Rd, Lake of Bays, ON",
+              "duration_min": 60,
+              "cost": {
+                "amount": 15,
+                "estimated": true,
+                "note": "Per-vehicle gate fee - confirm",
+                "per": "two"
+              },
+              "reviews": {
+                "source": "Google Places",
+                "rating": 4.6,
+                "count": 1843
+              },
+              "data_source": {
+                "source": "Google Places",
+                "checked": "2026-09-15"
+              },
+              "maps_query": "Dorset Lookout Tower, Lake of Bays ON",
+              "tags": [
+                "viewpoint",
+                "photos",
+                "famous"
+              ]
+            },
+            {
+              "time": "11:45",
+              "name": "Haliburton Sculpture Forest",
+              "type": "art",
+              "description": "Outdoor sculpture set through woodland trails on the Haliburton campus. Free, open always, and unlike anything on the Muskoka itinerary.",
+              "duration_min": 75,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Haliburton Sculpture Forest, Haliburton ON",
+              "tags": [
+                "art",
+                "free",
+                "walking",
+                "photos"
+              ],
+              "address": null
+            },
+            {
+              "time": "13:15",
+              "name": "Lunch, Haliburton village",
+              "type": "food",
+              "duration_min": 75,
+              "cost": {
+                "amount": 55,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Haliburton, ON",
+              "description": "Lunch in the village before the pottery stop.",
+              "tags": [],
+              "address": null
+            },
+            {
+              "time": "14:30",
+              "name": "Blackbird Pottery",
+              "type": "workshop",
+              "description": "Working pottery studio outside Haliburton village.",
+              "address": "5843 Gelert Rd, Haliburton, ON K0M 1S0",
+              "duration_min": 90,
+              "cost": {
+                "amount": null,
+                "note": "Unknown - call ahead",
+                "per": "two"
+              },
+              "status": "operational",
+              "reviews": {
+                "source": "Google Places",
+                "rating": 5.0,
+                "count": 34
+              },
+              "caveat": "A perfect 5.0 across 34 reviews, but no published workshop schedule. Call before you build the day around it.",
+              "alternatives_nearby": [
+                {
+                  "name": "Purple Door Pottery Studio",
+                  "address": "2368 Eagle Lake Rd, Dysart and Others",
+                  "rating": 4.8,
+                  "count": 10
+                },
+                {
+                  "name": "BJ Peel Pottery",
+                  "address": "36 Skyline Park Rd, Haliburton",
+                  "rating": 5.0,
+                  "count": 1
+                }
+              ],
+              "data_source": {
+                "source": "Google Places",
+                "checked": "2026-09-15"
+              },
+              "maps_query": "Blackbird Pottery, Haliburton ON",
+              "tags": [
+                "pottery",
+                "hands-on",
+                "needs-call"
+              ]
+            },
+            {
+              "time": "16:15",
+              "name": "Drive home",
+              "type": "drive",
+              "description": "Haliburton to Toronto via Hwy 35 and 115, about 2h45.",
+              "duration_min": 165,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Haliburton, ON to Toronto, ON",
+              "tags": [],
+              "address": null
+            }
+          ]
+        }
+      ],
+      "bookings": [
+        {
+          "priority": 1,
+          "name": "Blackbird Pottery, 5843 Gelert Rd, Haliburton",
+          "note": "5.0 stars from 34 reviews, operational. No published schedule - call."
+        },
+        {
+          "priority": 2,
+          "name": "Accommodation in Huntsville",
+          "note": "Book early. Oct 3/4 is one of Algonquin's four busiest weekends."
+        },
+        {
+          "priority": 3,
+          "name": "Algonquin day-use permit",
+          "note": "Buy at the West Gate, or reserve online if daily vehicle permits are capped on peak weekends - worth checking."
+        },
+        {
+          "priority": 4,
+          "name": "Algonquin Art Centre",
+          "phone": "+1-705-633-5555",
+          "note": "Confirm the season end date - published as about Oct 19."
+        }
+      ],
+      "warnings": [
+        "Algonquin's fall colour report names Sept 19/20, 26/27, Oct 3/4 and Thanksgiving as the busiest weekends of the year. Trailhead parking fills.",
+        "Sugar maple peak averages Sept 27, which is before the October window. Oct 2-4 catches the golden encore rather than the red maple peak - still excellent, but manage expectations.",
+        "Food inside the Hwy 60 corridor is limited. Pack Saturday lunch.",
+        "Day-use permit and Dorset tower fees are estimates, not verified."
+      ],
+      "alternatives": [
+        {
+          "name": "Track and Tower Trail",
+          "note": "8.4 km, 2h25, 4.7 stars, has a waterfall and a historic site. Replaces Booth's Rock if you want one bigger hike instead of two.",
+          "url": "https://www.alltrails.com/trail/canada/ontario/algonquin-track-and-tower-trail"
+        },
+        {
+          "name": "Hemlock Bluff Trail",
+          "note": "3.9 km, 1h39, 4.7 stars, 280 m gain"
+        },
+        {
+          "name": "Beaver Pond Trail",
+          "note": "1.9 km, 35 min, 4.7 stars - the easy substitute for Booth's Rock"
+        },
+        {
+          "name": "Parry Sound and Killbear",
+          "type": "different-shape",
+          "note": "The other way to do an alternative north trip - 30,000 Islands boat cruise and the windswept pine at Killbear. Not researched in detail; say the word."
+        }
+      ]
+    },
+    {
+      "id": "montreal",
+      "slug": "montreal-east",
+      "featured": true,
+      "order": 4,
+      "name": "Montreal",
+      "tagline": "A city weekend that feels like abroad",
+      "direction": "East",
+      "bearing_deg": 90,
+      "status": "planned",
+      "summary": "542 km each way. Friday-night departure, a full Saturday of markets, old stone streets and the mountain, then a Sunday pottery class before the long drive home.",
+      "why_this_trip": "The only plan that scores on every single interest at once: 17th to 19th century architecture, a confirmed beginner pottery class, a real Koreatown, a manga cafe, and the most photographed church interior in the country.",
+      "stats": {
+        "distance_km": 1150,
+        "drive_time_hours": 11,
+        "one_way_km": 542,
+        "one_way_hours": 5.5,
+        "nights": 2,
+        "shape": "Friday evening departure required — otherwise Saturday starts at 2pm",
+        "tolls": "None",
+        "best_season": "Later October, when the city is less busy"
+      },
+      "highlights": [
+        "Marche Jean-Talon, the largest public market in North America",
+        "Notre-Dame Basilica's blue and gold interior",
+        "Kondiaronk Belvedere on Mount Royal at golden hour",
+        "One-day beginner wheel-throwing class at Studio Mie Kim",
+        "Koreatown dinner and a manga cafe on Saint-Denis"
+      ],
+      "scores": {
+        "nature": 2,
+        "architecture_history": 5,
+        "pottery": 5,
+        "korean_anime": 5,
+        "famous_landmark": 5,
+        "photo_spots": 5,
+        "relaxation": 2,
+        "value": 2
+      },
+      "budget": {
+        "currency": "CAD",
+        "for": "two people together",
+        "total": 806,
+        "total_range": null,
+        "default_variant": "full",
+        "line_items": [
+          {
+            "label": "Rental, 2 days from YYZ incl. airport concession fee",
+            "amount": 115
+          },
+          {
+            "label": "Gas, about 1,150 km",
+            "amount": 143
+          },
+          {
+            "label": "Hotel, 2 nights (Alt Hostel, live rate)",
+            "amount": 151,
+            "was_estimated": 300,
+            "data_source": "Booking.com 2026-09-15"
+          },
+          {
+            "label": "Parking",
+            "amount": 0,
+            "note": "Alt Hostel has private parking on site, so the $44 Old Port parking line disappears if you stay there."
+          },
+          {
+            "label": "Food",
+            "amount": 215
+          },
+          {
+            "label": "Notre-Dame Basilica, two adults",
+            "amount": 32
+          },
+          {
+            "label": "Pottery, two people",
+            "amount": 150
+          }
+        ],
+        "variants": [
+          {
+            "id": "full",
+            "label": "Two nights, with pottery",
+            "total": 806,
+            "line_items": [
+              {
+                "label": "Rental, 2 days from YYZ incl. airport concession fee",
+                "amount": 115
+              },
+              {
+                "label": "Gas, about 1,150 km",
+                "amount": 143
+              },
+              {
+                "label": "Hotel, 2 nights (Alt Hostel, live rate)",
+                "amount": 151,
+                "was_estimated": 300,
+                "data_source": "Booking.com 2026-09-15"
+              },
+              {
+                "label": "Parking",
+                "amount": 0,
+                "note": "Alt Hostel has private parking on site, so the $44 Old Port parking line disappears if you stay there."
+              },
+              {
+                "label": "Food",
+                "amount": 215
+              },
+              {
+                "label": "Notre-Dame Basilica, two adults",
+                "amount": 32
+              },
+              {
+                "label": "Pottery, two people",
+                "amount": 150
+              }
+            ],
+            "note": "Down from $999. Live lodging rates came in $149 under estimate and on-site parking removed another $44."
+          },
+          {
+            "id": "lean",
+            "label": "One night, no pottery",
+            "total": 472,
+            "line_items": [
+              {
+                "label": "Rental, 2 days from YYZ incl. airport concession fee",
+                "amount": 115
+              },
+              {
+                "label": "Gas, about 1,150 km",
+                "amount": 143
+              },
+              {
+                "label": "Hotel, 2 nights (Alt Hostel, live rate)",
+                "amount": 75,
+                "was_estimated": 300,
+                "data_source": "Booking.com 2026-09-15"
+              },
+              {
+                "label": "Parking",
+                "amount": 0,
+                "note": "Alt Hostel has private parking on site, so the $44 Old Port parking line disappears if you stay there."
+              },
+              {
+                "label": "Food",
+                "amount": 160
+              },
+              {
+                "label": "Notre-Dame Basilica, two adults",
+                "amount": 32
+              },
+              {
+                "label": "Pottery, two people",
+                "amount": 0
+              }
+            ],
+            "note": "One night, Saturday to Sunday, no pottery. You lose either the market or the mountain."
+          }
+        ],
+        "note": "Down from $999. Live lodging rates came in $149 under estimate and on-site parking removed another $44."
+      },
+      "days": [
+        {
+          "day": 0,
+          "label": "Friday night",
+          "stops": [
+            {
+              "time": "18:00",
+              "name": "Toronto to Montreal",
+              "type": "drive",
+              "description": "Hwy 401 east. Arrive 11:30pm to midnight. This is what buys you a full Saturday.",
+              "duration_min": 330,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Montreal, QC",
+              "tags": [],
+              "address": null
+            }
+          ]
+        },
+        {
+          "day": 1,
+          "label": "Saturday — Old Montreal, the mountain, the market",
+          "stops": [
+            {
+              "time": "09:00",
+              "name": "Marche Jean-Talon",
+              "type": "market",
+              "description": "The largest public market in North America. Breakfast here. Reviewers call it a slice of Montreal's culture rather than a shopping errand.",
+              "address": "7070 Ave Henri-Julien, Montreal, QC",
+              "hours": "08:00-18:00",
+              "duration_min": 120,
+              "cost": {
+                "amount": 35,
+                "per": "two",
+                "note": null
+              },
+              "transit": "5 minute walk from Jean-Talon metro, orange line. Underground parking on site.",
+              "reviews": {
+                "source": "TripAdvisor",
+                "rating": 4.5,
+                "count": 1975,
+                "note": "Travellers' Choice"
+              },
+              "maps_query": "Marche Jean-Talon, Montreal QC",
+              "tags": [
+                "food",
+                "authentic",
+                "market"
+              ]
+            },
+            {
+              "time": "11:00",
+              "name": "Old Montreal on foot",
+              "type": "architecture",
+              "description": "Rue Saint-Paul, Place Jacques-Cartier, Rue de la Commune. Cobblestones and 17th to 19th century stone. The closest thing to Europe you can drive to.",
+              "duration_min": 60,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Rue Saint-Paul, Old Montreal, QC",
+              "tags": [
+                "architecture",
+                "free",
+                "photos",
+                "walking"
+              ],
+              "address": null
+            },
+            {
+              "time": "12:00",
+              "name": "Notre-Dame Basilica",
+              "type": "landmark",
+              "description": "Deep blue vaulted ceiling with gold stars. The single most photographed room in the city.",
+              "address": "110 Notre-Dame St W, Montreal, QC",
+              "phone": "+1-514-842-2925",
+              "hours": "Mon-Sat 09:00-16:00, Sun 12:30-16:00",
+              "duration_min": 60,
+              "cost": {
+                "amount": 32,
+                "per": "two",
+                "note": "$16 per adult, daytime sightseeing visit"
+              },
+              "maps_query": "Notre-Dame Basilica, Montreal QC",
+              "tags": [
+                "landmark",
+                "architecture",
+                "famous",
+                "photos"
+              ]
+            },
+            {
+              "time": "13:30",
+              "name": "Lunch, Old Port",
+              "type": "food",
+              "duration_min": 75,
+              "cost": {
+                "amount": 50,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Old Port of Montreal, QC",
+              "description": "Lunch in the Old Port, or walk up to Chinatown.",
+              "tags": [],
+              "address": null
+            },
+            {
+              "time": "15:00",
+              "name": "Kondiaronk Belvedere, Mount Royal",
+              "type": "viewpoint",
+              "description": "The postcard skyline shot. Walk up from Peel St in about 30 steep minutes, or drive to the Smith House lot. Best light late afternoon.",
+              "duration_min": 120,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Kondiaronk Belvedere, Montreal QC",
+              "tags": [
+                "viewpoint",
+                "free",
+                "photos",
+                "nature"
+              ],
+              "address": null
+            },
+            {
+              "time": "17:30",
+              "name": "Plateau Mont-Royal and Saint-Denis",
+              "type": "culture",
+              "description": "Rue Saint-Denis and the Plateau's exterior spiral staircases, the other quintessential Montreal photograph.",
+              "duration_min": 120,
+              "cost": {
+                "amount": 25,
+                "note": "Browsing plus a drink",
+                "per": "two"
+              },
+              "maps_query": "O-Taku Manga Lounge, 3623 Rue Saint-Denis, Montreal QC",
+              "tags": [
+                "anime",
+                "manga",
+                "cafe",
+                "photos"
+              ],
+              "closed_since_v1": "O-Taku Manga Lounge is CLOSED PERMANENTLY - confirmed by Google Places (4.6 stars, 1,224 ratings, business_status CLOSED_PERMANENTLY). It was the anime anchor in v1.0. Replaced below.",
+              "options": [
+                {
+                  "name": "Kaizen Manga Cafe",
+                  "address": "1433c Rue Bishop, Montreal",
+                  "rating": 4.8,
+                  "count": 161,
+                  "note": "The direct replacement - an actual manga cafe. Downtown near Concordia, not the Plateau, so treat it as its own stop."
+                },
+                {
+                  "name": "Librairie Planete BD",
+                  "address": "4077 Rue Saint-Denis, Montreal",
+                  "rating": 4.8,
+                  "count": 293,
+                  "note": "On Saint-Denis, a few doors from where O-Taku was. Slots straight into this walk."
+                },
+                {
+                  "name": "Planete Otaku",
+                  "address": "6382 Rue St-Hubert, Montreal",
+                  "rating": 4.8,
+                  "count": 410,
+                  "note": "Anime and figures. Close to Jean-Talon, so it pairs with the morning market instead."
+                },
+                {
+                  "name": "Manga Bistro",
+                  "address": "1836A Rue Sainte-Catherine Ouest, Montreal",
+                  "rating": 4.4,
+                  "count": 3755,
+                  "note": "Japanese restaurant, enormous review count. A dinner alternative to Korean."
+                },
+                {
+                  "name": "Sarah & Tom",
+                  "address": "4383 Rue Saint-Denis, Montreal",
+                  "rating": 4.6,
+                  "count": 413,
+                  "note": "Also on Saint-Denis."
+                }
+              ],
+              "recommended": "Librairie Planete BD on the Saint-Denis walk, then Kaizen Manga Cafe on its own if she wants the cafe experience.",
+              "data_source": {
+                "source": "Google Places",
+                "checked": "2026-09-15"
+              },
+              "address": null
+            },
+            {
+              "time": "19:30",
+              "name": "Korean dinner",
+              "type": "food",
+              "description": "Montreal's Korean scene is genuinely strong.",
+              "options": [
+                {
+                  "name": "Restaurant Hwang-Kum",
+                  "note": "Haemul pajeon, seafood pancake — the city's best per Tourisme Montreal"
+                },
+                {
+                  "name": "Chez Bong",
+                  "note": "Chinatown. Japchae and jajangmyeon"
+                },
+                {
+                  "name": "Daldongnae Korean BBQ",
+                  "note": "Downtown, all-you-can-eat, open to 2:30am"
+                },
+                {
+                  "name": "Sota BBQ",
+                  "note": "Downtown, all-you-can-grill"
+                }
+              ],
+              "duration_min": 105,
+              "cost": {
+                "amount": 80,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Korean restaurant, Montreal QC",
+              "tags": [
+                "korean",
+                "food",
+                "authentic"
+              ],
+              "address": null
+            }
+          ]
+        },
+        {
+          "day": 2,
+          "label": "Sunday — clay, then home",
+          "stops": [
+            {
+              "time": "09:30",
+              "name": "Breakfast and a last walk",
+              "type": "food",
+              "description": "Plateau bakeries, or the Lachine Canal path.",
+              "duration_min": 120,
+              "cost": {
+                "amount": 30,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Lachine Canal, Montreal QC",
+              "tags": [],
+              "address": null
+            },
+            {
+              "time": "14:00",
+              "name": "Studio Mie Kim — Introduction to Wheel Throwing",
+              "type": "workshop",
+              "description": "Explicitly designed for people who have never touched clay. Clay, glaze and all materials included. Taught in French and English. You each make a cup or bowl.",
+              "schedule": "Sunday sessions 14:00-16:30, September through November",
+              "duration_min": 150,
+              "cost": {
+                "amount": 150,
+                "per": "two",
+                "note": "$75 per person, materials included"
+              },
+              "booking": "Book online at miekimstudio.com",
+              "caveat": "Finished pieces are fired and glazed for pickup in 5-6 weeks. Ask how they handle out-of-town students.",
+              "maps_query": "Studio Mie Kim, Montreal QC",
+              "tags": [
+                "pottery",
+                "hands-on",
+                "anchor"
+              ],
+              "address": null
+            },
+            {
+              "time": "16:45",
+              "name": "Drive home",
+              "type": "drive",
+              "description": "About 5h30. Home around 10:15pm.",
+              "duration_min": 330,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Montreal, QC to Toronto, ON",
+              "tags": [],
+              "address": null
+            }
+          ]
+        }
+      ],
+      "bookings": [
+        {
+          "priority": 1,
+          "name": "Studio Mie Kim",
+          "url": "https://miekimstudio.com",
+          "note": "Book the Sunday 2pm intro slot. Sessions run Sept-Nov and fill."
+        },
+        {
+          "priority": 2,
+          "name": "Hotel",
+          "note": "Quartier Latin or Plateau, near a metro station, parking included if possible."
+        },
+        {
+          "priority": 3,
+          "name": "Notre-Dame Basilica",
+          "phone": "+1-514-842-2925",
+          "url": "https://www.basiliquenotredame.ca",
+          "note": "Book AURA ahead if you want the evening show."
+        },
+        {
+          "priority": 4,
+          "name": "Anime / manga stop",
+          "note": "O-Taku Manga Lounge is permanently closed. Use Librairie Planete BD (4077 Saint-Denis) or Kaizen Manga Cafe (1433c Bishop). Neither needs booking."
+        },
+        {
+          "priority": 5,
+          "name": "Rental car at YYZ",
+          "note": "Book early. Check whether returning to a city branch instead of the airport dodges the concession fee."
+        }
+      ],
+      "warnings": [
+        "The car becomes a liability in the city. Old Port lots charge $35 for 0-3 hours and $70 for 12-24 hours.",
+        "Park off the waterfront: Champ-de-Mars garage is $15-20, Saint-Paul area garages $20-25 for 12 hours, and some side streets are free evenings and Sundays. Better still, park at the hotel and use the metro.",
+        "A bus for two costs roughly the same as rental plus gas, if you would rather not drive 11 hours round trip."
+      ],
+      "alternatives": [
+        {
+          "name": "AURA at Notre-Dame Basilica",
+          "note": "Light and sound show projected through the basilica. $37 per adult, so $74 on top of the daytime visit. Photographs extremely well.",
+          "replaces": "Saturday evening"
+        },
+        {
+          "name": "Biodome or Botanical Garden, or Mile End",
+          "note": "If you move pottery to Saturday morning and want a 1pm Sunday departure",
+          "replaces": "Sunday pottery slot"
+        }
+      ],
+      "food_notes": {
+        "korean": [
+          "Restaurant Hwang-Kum",
+          "Chez Bong (Chinatown)",
+          "Mon Ami",
+          "GaNaDaRa",
+          "Daldongnae Korean BBQ",
+          "Sota BBQ",
+          "Opiano (Korean corn dogs, near McGill)"
+        ]
+      },
+      "dates": {
+        "recommended": "2026-10-23 to 2026-10-25",
+        "depart": "Friday 2026-10-23 evening",
+        "return": "Sunday 2026-10-25 night",
+        "label": "Second-last October weekend",
+        "why": [
+          "City trees and Mount Royal peak later than cottage country - late October is right for Montreal.",
+          "Studio Mie Kim runs its Sunday intro sessions through November, so Sunday Oct 25 is available.",
+          "Cheapest lodging of the three trips by a wide margin on these dates."
+        ],
+        "data_source": {
+          "lodging": "Booking.com live rates",
+          "checked": "2026-09-15"
+        }
+      },
+      "lodging": {
+        "searched_for": "2026-10-23 to 2026-10-25, 2 nights, 2 adults, Montreal",
+        "prices_are": "total for the whole stay, two people",
+        "finding": "The biggest saving found anywhere in this whole file. Montreal lodging on these dates is a third of what I estimated. Alt Hostel is $75 a night for two people in Old Montreal.",
+        "caveat": "The cheapest options are hostels. The rate shown is for two adults, which should mean a private double - VERIFY the room type before booking, do not end up in a dorm.",
+        "options": [
+          {
+            "name": "Alt Hostel",
+            "total": 150.52,
+            "per_night": 75,
+            "score": 8.2,
+            "reviews": 2364,
+            "stars": 3,
+            "address": "347 Saint Paul Est, Old Montreal",
+            "district": "Old Montreal",
+            "pick": "cheapest and best value",
+            "note": "Adults only, private parking on site - which solves the Old Port parking problem too. Walking distance to Notre-Dame.",
+            "url": "https://www.booking.com/hotel/ca/auberge-st-paul.html"
+          },
+          {
+            "name": "Auberge Alternative",
+            "total": 175.32,
+            "per_night": 88,
+            "score": 8.3,
+            "reviews": 1075,
+            "stars": 3,
+            "address": "358 St-Pierre, Old Montreal",
+            "district": "Old Montreal",
+            "url": "https://www.booking.com/hotel/ca/auberge-alternative.html"
+          },
+          {
+            "name": "Samesun Montreal Hotel & Hostel",
+            "total": 215.18,
+            "per_night": 108,
+            "score": 7.6,
+            "reviews": 3112,
+            "stars": 3,
+            "address": "1586 St-Hubert, Quartier des Spectacles",
+            "url": "https://www.booking.com/hotel/ca/montreal-central.html"
+          },
+          {
+            "name": "Auberge du Plateau",
+            "total": 255.3,
+            "per_night": 128,
+            "score": 8.3,
+            "reviews": 2765,
+            "stars": 3,
+            "address": "185 Sherbrooke Est, Plateau Mont-Royal",
+            "note": "In the Plateau, has parking",
+            "url": "https://www.booking.com/hotel/ca/le-gite-du-plateau-mont-royal.html"
+          },
+          {
+            "name": "Auberge Saintlo Montreal",
+            "total": 258.56,
+            "per_night": 129,
+            "score": 8.7,
+            "reviews": 4271,
+            "address": "1030 MacKay, Downtown",
+            "pick": "best reviewed",
+            "url": "https://www.booking.com/hotel/ca/auberge-saintlo-montreal.html"
+          },
+          {
+            "name": "Hotel Montreal Metropolitan",
+            "total": 312.8,
+            "per_night": 156,
+            "score": 7.1,
+            "reviews": 1952,
+            "stars": 4,
+            "address": "3400 Boulevard Cremazie Est",
+            "note": "Free parking, but far out",
+            "url": "https://www.booking.com/hotel/ca/montreal-metropolitain.html"
+          }
+        ],
+        "recommended": "Alt Hostel - $150 for both nights, 8.2 from 2,364 reviews, Old Montreal, private parking. Confirm it is a private room.",
+        "data_source": {
+          "source": "Booking.com",
+          "checked": "2026-09-15"
+        }
+      }
+    },
+    {
+      "id": "quebec-city",
+      "slug": "quebec-city-far-east",
+      "featured": true,
+      "order": 5,
+      "name": "Quebec City",
+      "tagline": "A walled 17th-century city, and a waterfall taller than Niagara",
+      "direction": "Far east",
+      "bearing_deg": 75,
+      "status": "planned",
+      "summary": "The only walled city north of Mexico, a UNESCO World Heritage site you can walk end to end, and Montmorency Falls 12 km out - 83 m, thirty metres taller than Niagara.",
+      "why_this_trip": "Everything on her list at maximum strength: authentic architecture that is actually four centuries old, authentic food, a famous landmark, photographs everywhere you point the camera, a Korean street-food counter inside the old town, and four operational pottery studios.",
+      "the_honest_problem": {
+        "headline": "This is the one trip where driving stops making sense.",
+        "detail": "Quebec City is 800 km from Toronto - 8 to 9 hours of driving each way, so about 17 hours in the car for a two-day trip. Every other plan here absorbs the drive. This one does not.",
+        "options": [
+          {
+            "mode": "Drive",
+            "duration": "8-9 hr each way",
+            "cost_note": "~$205 gas + ~$170 rental for 3 days",
+            "verdict": "Doable with a Friday-night departure, but you will spend more time driving than in Quebec City."
+          },
+          {
+            "mode": "Fly",
+            "duration": "3-4 hr door to door, usually via Montreal",
+            "cost_note": "$150-260 one-way per person, plus $30-40 per checked bag",
+            "verdict": "RECOMMENDED. Costs roughly the same as driving once you drop the rental, and hands you back fourteen hours. Old Quebec is walkable and Montmorency is reachable by city bus, so you do not need a car there at all."
+          },
+          {
+            "mode": "Train (VIA Rail)",
+            "duration": "~15 hr end to end",
+            "cost_note": "$120-170 Toronto-Montreal, $60-100 Montreal-Quebec",
+            "verdict": "Arrives at Gare du Palais right beside the old town, but the total time is worse than driving."
+          },
+          {
+            "mode": "Bus",
+            "duration": "11-12 hr",
+            "cost_note": "$60-80 booked ahead",
+            "verdict": "Cheapest and slowest."
+          }
+        ],
+        "recommendation": "Fly, and skip the rental entirely. If you drive, treat it as three days, not two."
+      },
+      "dates": {
+        "recommended": "2026-10-16 to 2026-10-18",
+        "label": "Mid-October",
+        "why": [
+          "Colour on Ile d'Orleans and around Montmorency peaks early-to-mid October.",
+          "Late enough that the summer crowds in Petit-Champlain have thinned, early enough that everything is still running normal hours."
+        ],
+        "collision": "This clashes with the Georgian Bay trip (Oct 17-18). Pick one, or move Georgian Bay to Oct 30-31 - Scenic Caves and Old Baldy both run through October, though colour will be past peak by then.",
+        "data_source": {
+          "lodging": "Booking.com",
+          "checked": "2026-09-15"
+        }
+      },
+      "stats": {
+        "distance_km": 1600,
+        "drive_time_hours": 17,
+        "one_way_km": 800,
+        "one_way_hours": 8.5,
+        "nights": 2,
+        "shape": "Two nights minimum. Friday night out, Sunday back.",
+        "base_town": "Old Quebec"
+      },
+      "highlights": [
+        "Old Quebec - the only walled city north of Mexico, UNESCO listed",
+        "Montmorency Falls - 83 m, thirty metres taller than Niagara, with a footbridge across the top",
+        "Quartier Petit-Champlain and Place Royale, 17th-century stone streets",
+        "Ile d'Orleans - farms, cider houses and 300-year-old homes, 15 minutes from the city",
+        "Korean street food on Rue Saint-Jean, inside the old town"
+      ],
+      "scores": {
+        "nature": 3,
+        "architecture_history": 5,
+        "pottery": 4,
+        "korean_anime": 3,
+        "famous_landmark": 5,
+        "photo_spots": 5,
+        "relaxation": 3,
+        "value": 2
+      },
+      "budget": {
+        "currency": "CAD",
+        "for": "two people together",
+        "total": null,
+        "total_range": "1150-1350",
+        "default_variant": "flying",
+        "line_items": [
+          {
+            "label": "Flights, return, two people",
+            "amount": "600-1040",
+            "note": "$150-260 one-way per person. Watch for seat sales; Porter flies this route."
+          },
+          {
+            "label": "Hotel, 2 nights",
+            "amount": 308
+          },
+          {
+            "label": "Food, 6 meals",
+            "amount": 220
+          },
+          {
+            "label": "Local transit and airport transfers",
+            "amount": 60
+          },
+          {
+            "label": "Montmorency cable car",
+            "amount": 50
+          },
+          {
+            "label": "Pottery session",
+            "amount": 150,
+            "estimated": true
+          }
+        ],
+        "variants": [
+          {
+            "id": "flying",
+            "label": "Fly (recommended)",
+            "total": null,
+            "total_range": "1150-1350",
+            "line_items": [
+              {
+                "label": "Flights, return, two people",
+                "amount": "600-1040",
+                "note": "$150-260 one-way per person. Watch for seat sales; Porter flies this route."
+              },
+              {
+                "label": "Hotel, 2 nights",
+                "amount": 308
+              },
+              {
+                "label": "Food, 6 meals",
+                "amount": 220
+              },
+              {
+                "label": "Local transit and airport transfers",
+                "amount": 60
+              },
+              {
+                "label": "Montmorency cable car",
+                "amount": 50
+              },
+              {
+                "label": "Pottery session",
+                "amount": 150,
+                "estimated": true
+              }
+            ],
+            "note": "Flight cost is a range, not a quote."
+          },
+          {
+            "id": "driving",
+            "label": "Drive",
+            "total": 1103,
+            "line_items": [
+              {
+                "label": "Rental, 3 days from YYZ incl. airport fee",
+                "amount": 170
+              },
+              {
+                "label": "Gas, ~1,650 km",
+                "amount": 205
+              },
+              {
+                "label": "Hotel, 2 nights (Auberge St-Louis, live rate)",
+                "amount": 308,
+                "data_source": "Booking.com 2026-09-15"
+              },
+              {
+                "label": "Food, 6 meals",
+                "amount": 220
+              },
+              {
+                "label": "Montmorency cable car, two adults",
+                "amount": 50
+              },
+              {
+                "label": "Pottery session, two",
+                "amount": 150,
+                "estimated": true
+              }
+            ],
+            "note": "17 hours in the car for a two-day trip."
+          }
+        ],
+        "note": "The most expensive trip of the five either way. It is also the only one that feels like leaving the country."
+      },
+      "lodging": {
+        "searched_for": "2026-10-16 to 2026-10-18, 2 nights, 2 adults, Quebec City",
+        "prices_are": "total for the whole stay, two people",
+        "finding": "Location matters more here than anywhere else - the entire trip is Old Quebec on foot. Paying $70 more to sleep inside the walls is worth it.",
+        "options": [
+          {
+            "name": "Auberge St-Louis",
+            "total": 308,
+            "per_night": 154,
+            "score": 7.4,
+            "reviews": 1948,
+            "stars": 1,
+            "address": "48 rue St-Louis, Centre-Ville",
+            "pick": "best location - inside Old Quebec",
+            "note": "Right on rue Saint-Louis, steps from Chateau Frontenac. Basic, but you are walking out the door into the old town.",
+            "url": "https://www.booking.com/hotel/ca/auberge-st-louis.html"
+          },
+          {
+            "name": "Hotel et Motel Le Chateauguay",
+            "total": 238,
+            "per_night": 119,
+            "score": 7.2,
+            "reviews": 2881,
+            "stars": 3,
+            "address": "3842 Boulevard Sainte-Anne, Beauport",
+            "pick": "cheapest",
+            "note": "Beauport, so out of the old town - but close to Montmorency Falls, and it has a pool, sauna and hot tub.",
+            "url": "https://www.booking.com/hotel/ca/le-chateauguay-et-motel.html"
+          },
+          {
+            "name": "Hotel & Suites Monte-Cristo",
+            "total": 268,
+            "per_night": 134,
+            "score": 7.2,
+            "reviews": 2212,
+            "stars": 3,
+            "address": "6030 Boulevard Wilfrid Hamel",
+            "url": "https://www.booking.com/hotel/ca/and-suites-monte-cristo.html"
+          },
+          {
+            "name": "Econo Lodge Airport Quebec",
+            "total": 270,
+            "per_night": 135,
+            "score": 7.3,
+            "reviews": 1893,
+            "stars": 4,
+            "address": "7320 Boulevard Wilfrid Hamel",
+            "note": "Sensible if you fly and pick up a car, otherwise too far out.",
+            "url": "https://www.booking.com/hotel/ca/econo-lodge-airport.html"
+          },
+          {
+            "name": "Hotel Le Littoral",
+            "total": 331.2,
+            "per_night": 166,
+            "score": 7.9,
+            "reviews": 1093,
+            "stars": 3,
+            "address": "3710 Boulevard Sainte-Anne, Beauport",
+            "pick": "best reviewed",
+            "note": "Has a spa with couples massage.",
+            "url": "https://www.booking.com/hotel/ca/auberge-du-littoral.html"
+          },
+          {
+            "name": "Hotel du Nord",
+            "total": 340.1,
+            "per_night": 170,
+            "score": 7.6,
+            "reviews": 5483,
+            "stars": 3,
+            "address": "640 St-Vallier Ouest, Centre-Ville",
+            "note": "Indoor saltwater pool, free parking.",
+            "url": "https://www.booking.com/hotel/ca/du-nord.html"
+          }
+        ],
+        "recommended": "Auberge St-Louis if you fly - you will not want a car, and you can walk everywhere. Le Chateauguay if you drive, since parking is free and Montmorency is close.",
+        "data_source": {
+          "source": "Booking.com",
+          "checked": "2026-09-15"
+        }
+      },
+      "days": [
+        {
+          "day": 0,
+          "label": "Friday — travel",
+          "stops": [
+            {
+              "time": "18:00",
+              "name": "Toronto to Quebec City",
+              "type": "travel",
+              "description": "Fly (3-4 hr door to door, usually via Montreal) or drive (8-9 hr). See the_honest_problem above.",
+              "duration_min": 240,
+              "cost": {
+                "amount": null,
+                "note": "Depends on mode",
+                "per": "two"
+              },
+              "maps_query": "Quebec City, QC",
+              "tags": [],
+              "address": null
+            }
+          ]
+        },
+        {
+          "day": 1,
+          "label": "Saturday — inside the walls",
+          "stops": [
+            {
+              "time": "09:00",
+              "name": "Dufferin Terrace and Chateau Frontenac",
+              "type": "landmark",
+              "description": "The boardwalk along the cliff with the Chateau above it and the St Lawrence below. The most photographed view in Canada, and it costs nothing.",
+              "duration_min": 60,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Dufferin Terrace, Quebec City QC",
+              "tags": [
+                "famous",
+                "architecture",
+                "photos",
+                "free"
+              ],
+              "address": null
+            },
+            {
+              "time": "10:15",
+              "name": "Quartier Petit-Champlain and Place Royale",
+              "type": "architecture",
+              "description": "The oldest commercial street in North America, running down the cliff below the Chateau. Stone houses, the Escalier Casse-Cou (Breakneck Stairs), and Notre-Dame-des-Victoires on Place Royale, built 1688.",
+              "duration_min": 120,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Quartier Petit-Champlain, Quebec City QC",
+              "tags": [
+                "architecture",
+                "history",
+                "photos",
+                "free",
+                "shops"
+              ],
+              "address": null
+            },
+            {
+              "time": "12:30",
+              "name": "Lunch, Rue Saint-Jean",
+              "type": "food",
+              "description": "Oh mon kogo! at 1120 Rue Saint-Jean is Korean street food - corn dogs and counter food - 4.8 stars from 1,054 reviews, and it is inside the old town.",
+              "duration_min": 75,
+              "cost": {
+                "amount": 45,
+                "per": "two",
+                "note": null
+              },
+              "reviews": {
+                "source": "Google Places",
+                "rating": 4.8,
+                "count": 1054
+              },
+              "data_source": {
+                "source": "Google Places",
+                "checked": "2026-09-15"
+              },
+              "maps_query": "Oh mon kogo, Rue Saint-Jean, Quebec City QC",
+              "tags": [
+                "korean",
+                "food",
+                "cheap"
+              ],
+              "address": null
+            },
+            {
+              "time": "14:00",
+              "name": "The fortifications and Plains of Abraham",
+              "type": "history",
+              "description": "Walk the walls - Quebec is the only walled city north of Mexico - then out onto the battlefield park above the river.",
+              "duration_min": 120,
+              "cost": {
+                "amount": 0,
+                "note": "Walking the walls is free; guided tours and the Citadelle cost extra",
+                "per": "two"
+              },
+              "maps_query": "Plains of Abraham, Quebec City QC",
+              "tags": [
+                "history",
+                "architecture",
+                "free",
+                "walking"
+              ],
+              "address": null
+            },
+            {
+              "time": "16:30",
+              "name": "Pottery",
+              "type": "workshop",
+              "description": "Four operational studios in the city.",
+              "options": [
+                {
+                  "name": "Ceramic Cafe Studio Quebec",
+                  "address": "435 Rue Saint-Joseph E",
+                  "rating": 4.4,
+                  "count": 421,
+                  "note": "Most reviewed and most drop-in friendly by the look of it - a paint-your-own ceramic cafe. Walkable from the old town."
+                },
+                {
+                  "name": "Rang Nord",
+                  "address": "504 Chem. de la Canardiere",
+                  "rating": 4.9,
+                  "count": 102,
+                  "note": "Highest rated with real volume. Call about a wheel session."
+                },
+                {
+                  "name": "Pottery Terre Et Biscuit",
+                  "address": "8150 Boul. Henri-Bourassa Ste B",
+                  "rating": 4.8,
+                  "count": 94
+                },
+                {
+                  "name": "Ceramic Center of Sainte-Foy",
+                  "address": "2130 Rue de la Somme",
+                  "rating": 4.9,
+                  "count": 9
+                }
+              ],
+              "duration_min": 120,
+              "cost": {
+                "amount": 150,
+                "estimated": true,
+                "per": "two",
+                "note": null
+              },
+              "data_source": {
+                "source": "Google Places",
+                "checked": "2026-09-15"
+              },
+              "tags": [
+                "pottery",
+                "hands-on",
+                "needs-call"
+              ],
+              "maps_query": "Quebec City, QC",
+              "address": null
+            },
+            {
+              "time": "19:00",
+              "name": "Dinner in the old town",
+              "type": "food",
+              "description": "Quebecois classics, or Korean - Madang (4.7, 423 reviews) and Chicken & Bap (4.9, 717 reviews) are both strong but outside the walls.",
+              "duration_min": 120,
+              "cost": {
+                "amount": 90,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Old Quebec, QC",
+              "tags": [
+                "food",
+                "authentic"
+              ],
+              "address": null
+            }
+          ]
+        },
+        {
+          "day": 2,
+          "label": "Sunday — the falls and the island",
+          "stops": [
+            {
+              "time": "09:00",
+              "name": "Parc de la Chute-Montmorency",
+              "type": "nature",
+              "description": "83 metres, thirty metres taller than Niagara. A footbridge crosses directly above the lip, and a cable car runs up the cliff face in about two minutes. Park entry is free; you pay for the cable car.",
+              "duration_min": 150,
+              "cost": {
+                "amount": 50,
+                "per": "two",
+                "note": "About $25 per adult for return cable car. Guided version ~$35. Park entry free."
+              },
+              "transit": "12 km northeast of Old Quebec. Reachable by city bus if you have not got a car.",
+              "maps_query": "Parc de la Chute-Montmorency, Quebec QC",
+              "tags": [
+                "nature",
+                "waterfall",
+                "famous",
+                "photos"
+              ],
+              "address": null
+            },
+            {
+              "time": "12:00",
+              "name": "Ile d'Orleans",
+              "type": "drive-and-explore",
+              "description": "Cross the bridge just past the falls onto a farming island where some houses date to the 1600s. Cider houses, chocolatiers, bakeries, a single road around the edge with the river on one side.",
+              "duration_min": 180,
+              "cost": {
+                "amount": 70,
+                "note": "Lunch and tastings",
+                "per": "two"
+              },
+              "note": "Needs a car, or take the combined falls + island tour (~$60 per person) if you flew and did not rent.",
+              "maps_query": "Ile d'Orleans, QC",
+              "tags": [
+                "nature",
+                "authentic",
+                "food",
+                "architecture",
+                "photos"
+              ],
+              "address": null
+            },
+            {
+              "time": "15:30",
+              "name": "Travel home",
+              "type": "travel",
+              "description": "Flight out, or the long drive.",
+              "duration_min": 240,
+              "cost": {
+                "amount": null,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Quebec City, QC to Toronto, ON",
+              "tags": [],
+              "address": null
+            }
+          ]
+        }
+      ],
+      "bookings": [
+        {
+          "priority": 1,
+          "name": "Flights YYZ to YQB",
+          "note": "Book early. Porter flies the route; most itineraries connect through Montreal. This decides the whole budget."
+        },
+        {
+          "priority": 2,
+          "name": "Accommodation",
+          "note": "Auberge St-Louis, 48 rue St-Louis, if you want to be inside the walls."
+        },
+        {
+          "priority": 3,
+          "name": "Pottery studio",
+          "note": "Ceramic Cafe Studio Quebec (435 Rue Saint-Joseph E) is the most walk-in friendly; Rang Nord is the highest rated. Call either."
+        },
+        {
+          "priority": 4,
+          "name": "Montmorency cable car",
+          "note": "Buy at the park or online. Not usually necessary to pre-book off-season."
+        }
+      ],
+      "warnings": [
+        "800 km each way. Do not attempt this as a Saturday-Sunday drive.",
+        "If you fly, you will not have a car for Ile d'Orleans - either rent at YQB for one day or take the combined falls-and-island tour.",
+        "Quebec City is overwhelmingly French-speaking. English is understood in tourist areas but far less than Montreal. Neither of you speaks French - worth knowing, not a reason to skip it.",
+        "Flight costs here are a range, not a quote. They swing the total by several hundred dollars."
+      ],
+      "alternatives": [
+        {
+          "name": "Add it to the Montreal trip",
+          "note": "Montreal and Quebec City are 3 hours apart. As a single 4-day trip this is far more efficient than two separate journeys east - but it breaks the two-day rule."
+        },
+        {
+          "name": "Musee de la Civilisation",
+          "note": "Rain plan, in the lower town"
+        },
+        {
+          "name": "La Citadelle de Quebec",
+          "note": "Working military fortress, guided tours, paid admission"
+        }
+      ]
+    },
+    {
+      "id": "georgian-bay",
+      "slug": "beaver-valley-georgian-bay",
+      "featured": true,
+      "order": 3,
+      "name": "Beaver Valley & Georgian Bay",
+      "tagline": "Cliff lookouts, waterfalls and a suspension bridge",
+      "direction": "North-west",
+      "bearing_deg": 315,
+      "status": "planned",
+      "summary": "Collingwood is two hours out. Escarpment lookouts over a valley, waterfalls, apple orchards, a working harbour town, and Ontario's longest suspension footbridge. Almost none of it costs money.",
+      "why_this_trip": "The best fall-colour drive in southern Ontario, and the one that matches the original 'forget about work' brief. Cheapest of the three to run.",
+      "stats": {
+        "distance_km": 460,
+        "drive_time_hours": 4.5,
+        "nights": 1,
+        "shape": "Clean Saturday to Sunday",
+        "best_season": "Fall colour peaks early to mid October in Grey County",
+        "base_town": "Collingwood, or Owen Sound / Meaford for cheaper rooms"
+      },
+      "highlights": [
+        "Old Baldy cliff lookout over the Beaver Valley",
+        "420-foot suspension bridge, 82 feet above the forest, at Scenic Caves",
+        "Eugenia Falls and Inglis Falls",
+        "Irish Mountain Lookout — bay, orchards and escarpment in one frame"
+      ],
+      "scores": {
+        "nature": 5,
+        "architecture_history": 2,
+        "pottery": 2,
+        "korean_anime": 0,
+        "famous_landmark": 3,
+        "photo_spots": 5,
+        "relaxation": 4,
+        "value": 5
+      },
+      "budget": {
+        "currency": "CAD",
+        "for": "two people together",
+        "total": 565,
+        "total_range": null,
+        "default_variant": "full",
+        "line_items": [
+          {
+            "label": "Rental, 2 days from YYZ incl. airport concession fee",
+            "amount": 115
+          },
+          {
+            "label": "Gas, about 460 km",
+            "amount": 57
+          },
+          {
+            "label": "Hotel, 1 night (Nights Inn Owen Sound, live rate)",
+            "amount": 139,
+            "was_estimated": 120,
+            "data_source": "Booking.com 2026-09-15"
+          },
+          {
+            "label": "Food, 5 meals",
+            "amount": 165
+          },
+          {
+            "label": "Old Baldy parking",
+            "amount": 10
+          },
+          {
+            "label": "Scenic Caves, two adults",
+            "amount": 79,
+            "optional": true
+          }
+        ],
+        "variants": [
+          {
+            "id": "full",
+            "label": "With Scenic Caves",
+            "total": 565,
+            "line_items": [
+              {
+                "label": "Rental, 2 days from YYZ incl. airport concession fee",
+                "amount": 115
+              },
+              {
+                "label": "Gas, about 460 km",
+                "amount": 57
+              },
+              {
+                "label": "Hotel, 1 night (Nights Inn Owen Sound, live rate)",
+                "amount": 139,
+                "was_estimated": 120,
+                "data_source": "Booking.com 2026-09-15"
+              },
+              {
+                "label": "Food, 5 meals",
+                "amount": 165
+              },
+              {
+                "label": "Old Baldy parking",
+                "amount": 10
+              },
+              {
+                "label": "Scenic Caves, two adults",
+                "amount": 79,
+                "optional": true
+              }
+            ],
+            "note": null
+          },
+          {
+            "id": "lean",
+            "label": "Skip Scenic Caves",
+            "total": 486,
+            "line_items": [
+              {
+                "label": "Rental, 2 days from YYZ incl. airport concession fee",
+                "amount": 115
+              },
+              {
+                "label": "Gas, about 460 km",
+                "amount": 57
+              },
+              {
+                "label": "Hotel, 1 night (Nights Inn Owen Sound, live rate)",
+                "amount": 139,
+                "was_estimated": 120,
+                "data_source": "Booking.com 2026-09-15"
+              },
+              {
+                "label": "Food, 5 meals",
+                "amount": 165
+              },
+              {
+                "label": "Old Baldy parking",
+                "amount": 10
+              }
+            ],
+            "note": "Drop Scenic Caves. The lookouts and waterfalls are free and are the better half of the trip anyway."
+          },
+          {
+            "id": "with_pottery",
+            "label": "With pottery",
+            "total": null,
+            "total_range": "550-620",
+            "line_items": null,
+            "note": "Pottery is uncosted until Hello Pottery Co is called."
+          }
+        ],
+        "note": null
+      },
+      "days": [
+        {
+          "day": 1,
+          "label": "Saturday — the valley",
+          "stops": [
+            {
+              "time": "07:30",
+              "name": "Toronto to Kimberley",
+              "type": "drive",
+              "description": "Hwy 400 to 89 to 26.",
+              "duration_min": 135,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Kimberley, ON",
+              "tags": [],
+              "address": null
+            },
+            {
+              "time": "09:45",
+              "name": "Old Baldy Main Trail from Kimberley",
+              "type": "nature",
+              "description": "The Beaver Valley photograph. Limestone cliffs, a big drop-off, the village of Kimberley below. Also 100+ bolted climbing routes on the ridge.",
+              "duration_min": 165,
+              "cost": {
+                "amount": 10,
+                "per": "vehicle",
+                "note": "Pay online at greysauble.on.ca/parking"
+              },
+              "difficulty": "Hard",
+              "season": "April through October",
+              "maps_query": "Old Baldy Conservation Area, Kimberley ON",
+              "tags": [
+                "nature",
+                "hike",
+                "viewpoint",
+                "photos",
+                "strenuous"
+              ],
+              "trail": {
+                "length_km": 6.0,
+                "elevation_gain_m": 419,
+                "elevation_max_m": 516,
+                "average_time": "2.5-3 hr",
+                "route_type": "Out & back",
+                "rating": 4.7,
+                "reviews_count": 243,
+                "photos_count": 1080,
+                "url": "https://www.alltrails.com/trail/canada/ontario/old-baldy-main-trail-from-kimberly"
+              },
+              "tips": [
+                "Start early - reviewers stress parking fills",
+                "Muddy and wet in places, trekking poles help",
+                "Mosquitos",
+                "Well marked"
+              ],
+              "correction": "v1.0 listed this as 4.3 km and MODERATE, 1.5-2 hrs. Wrong. It is 6 km, HARD, with 419 m (1,374 ft) of climbing and takes 2.5-3 hours. The schedule after it was rebuilt around the real number.",
+              "data_source": {
+                "source": "AllTrails",
+                "trail_id": 11251901,
+                "checked": "2026-09-15"
+              },
+              "address": null
+            },
+            {
+              "time": "12:45",
+              "name": "Kimberley or Flesherton",
+              "type": "food",
+              "description": "Tiny village, general store, lunch.",
+              "duration_min": 75,
+              "cost": {
+                "amount": 45,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Kimberley, ON",
+              "tags": [
+                "food",
+                "locals"
+              ],
+              "address": null
+            },
+            {
+              "time": "14:00",
+              "name": "Eugenia Falls",
+              "type": "nature",
+              "description": "30 m drop into the Beaver Valley gorge. Short walk from the parking area.",
+              "duration_min": 60,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Eugenia Falls Conservation Area, ON",
+              "tags": [
+                "nature",
+                "waterfall",
+                "free",
+                "photos"
+              ],
+              "address": null
+            },
+            {
+              "time": "15:15",
+              "name": "Scenic Caves Nature Adventures",
+              "type": "attraction",
+              "description": "420-foot suspension bridge, 82 feet above the forest, with 360 degree views. Caves and crevasse trail, lookouts, 370 acres on top of the escarpment.",
+              "hours": "Mon-Fri 09:00-17:00, Sat-Sun 09:00-18:00",
+              "duration_min": 150,
+              "cost": {
+                "amount": 79,
+                "per": "two",
+                "note": "$35 per adult plus HST. Fall season pass $89 for unlimited visits through October."
+              },
+              "reviews": {
+                "source": "TripAdvisor",
+                "rating": 4.1,
+                "count": 837,
+                "praise": [
+                  "Suspension bridge and Georgian Bay views",
+                  "Self-guided cave and crevasse trails"
+                ],
+                "complaints": [
+                  "Consistently called expensive",
+                  "Limited parking with unclear lot assignments",
+                  "Steep, rocky trails needing sturdy footwear"
+                ]
+              },
+              "tips": [
+                "Arrive early on a weekend",
+                "Hiking or running shoes are mandatory for the caves"
+              ],
+              "maps_query": "Scenic Caves Nature Adventures, Blue Mountains ON",
+              "tags": [
+                "famous",
+                "photos",
+                "nature",
+                "optional"
+              ],
+              "address": null
+            },
+            {
+              "time": "17:30",
+              "name": "Thornbury",
+              "type": "town",
+              "description": "Harbour town on Georgian Bay. Fish ladder, pier, cider houses. Sunset over the bay from the pier.",
+              "duration_min": 90,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Thornbury, ON",
+              "tags": [
+                "town",
+                "sunset",
+                "free",
+                "photos"
+              ],
+              "address": null
+            },
+            {
+              "time": "19:00",
+              "name": "Dinner, Thornbury or Collingwood",
+              "type": "food",
+              "duration_min": 90,
+              "cost": {
+                "amount": 70,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Collingwood, ON",
+              "description": "Dinner after sunset on the bay.",
+              "tags": [],
+              "address": null
+            }
+          ]
+        },
+        {
+          "day": 2,
+          "label": "Sunday — water and the long way home",
+          "stops": [
+            {
+              "time": "09:00",
+              "name": "Inglis Falls",
+              "type": "nature",
+              "description": "18 m waterfall where the Sydenham River drops over the escarpment. Two trail options depending on how much walking you want.",
+              "duration_min": 90,
+              "cost": {
+                "amount": 0,
+                "note": "Small parking fee may apply",
+                "per": "two"
+              },
+              "maps_query": "Inglis Falls Conservation Area, Owen Sound ON",
+              "tags": [
+                "nature",
+                "waterfall",
+                "photos"
+              ],
+              "trail_options": [
+                {
+                  "name": "Bruce and Hub Loop",
+                  "length_km": 2.4,
+                  "duration_min": 43,
+                  "difficulty": "Moderate",
+                  "rating": 4.5,
+                  "elevation_gain_m": 86,
+                  "route_type": "Loop",
+                  "note": "RECOMMENDED for a relaxed morning. Still gets the waterfall, river and views.",
+                  "url": "https://www.alltrails.com/trail/canada/ontario/bruce-and-hub-loop"
+                },
+                {
+                  "name": "Inglis Falls Trail",
+                  "length_km": 6.3,
+                  "duration_min": 106,
+                  "difficulty": "Moderate",
+                  "rating": 4.7,
+                  "reviews_note": "highest rated in the area",
+                  "elevation_gain_m": 191,
+                  "route_type": "Out & back",
+                  "note": "The full version. Does not fit the 90-minute slot.",
+                  "url": "https://www.alltrails.com/trail/canada/ontario/inglis-falls-trail"
+                }
+              ],
+              "data_source": {
+                "source": "AllTrails",
+                "checked": "2026-09-15"
+              },
+              "address": null
+            },
+            {
+              "time": "11:00",
+              "name": "Irish Mountain Lookout",
+              "type": "viewpoint",
+              "description": "Roadside lookout — Georgian Bay, apple orchards and the Niagara Escarpment in one frame. Picnic pavilion, parking, seasonal washrooms.",
+              "duration_min": 45,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Irish Mountain Lookout, Meaford ON",
+              "tags": [
+                "viewpoint",
+                "free",
+                "photos"
+              ],
+              "address": null
+            },
+            {
+              "time": "12:30",
+              "name": "Lunch, Meaford or Collingwood",
+              "type": "food",
+              "description": "Collingwood's Hurontario St is the walkable historic main street — 1800s brick, independent shops.",
+              "duration_min": 90,
+              "cost": {
+                "amount": 50,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Hurontario Street, Collingwood ON",
+              "tags": [
+                "food",
+                "architecture"
+              ],
+              "address": null
+            },
+            {
+              "time": "14:00",
+              "name": "Hello Pottery Co.",
+              "type": "workshop",
+              "description": "Pottery studio right on Collingwood's historic main street, so it folds into the lunch stop with no extra driving.",
+              "duration_min": 120,
+              "cost": {
+                "amount": null,
+                "estimate": "80-150",
+                "note": "Unconfirmed",
+                "per": "two"
+              },
+              "status": "operational",
+              "caveat": "Still needs a phone call - they do not publish a drop-in schedule. But it is confirmed open and very well reviewed.",
+              "maps_query": "Hello Pottery Co, Collingwood ON",
+              "tags": [
+                "pottery",
+                "hands-on",
+                "needs-call"
+              ],
+              "address": "207 Hurontario St Unit 7, Collingwood, ON L9Y 2M1",
+              "reviews": {
+                "source": "Google Places",
+                "rating": 4.9,
+                "count": 137
+              },
+              "alternatives_nearby": [
+                {
+                  "name": "The Barn Studio",
+                  "address": "2968 Concession 10N Nottawasaga Rd, Collingwood",
+                  "rating": 5.0,
+                  "count": 4
+                },
+                {
+                  "name": "The Paint Bar",
+                  "address": "191 Hurontario St Unit 9, Collingwood",
+                  "rating": 4.6,
+                  "count": 82,
+                  "note": "Paint-your-own, not wheel throwing"
+                }
+              ],
+              "removed": "Georgian Bay Pottery was in v1.0. Google Places reports it CLOSED_PERMANENTLY. Removed.",
+              "data_source": {
+                "source": "Google Places",
+                "checked": "2026-09-15"
+              }
+            },
+            {
+              "time": "16:00",
+              "name": "Drive home",
+              "type": "drive",
+              "duration_min": 135,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Collingwood, ON to Toronto, ON",
+              "description": null,
+              "tags": [],
+              "address": null
+            }
+          ]
+        }
+      ],
+      "bookings": [
+        {
+          "priority": 1,
+          "name": "Hello Pottery Co., 207 Hurontario St Unit 7, Collingwood",
+          "note": "4.9 stars from 137 reviews, confirmed operational. Call to arrange a session - no published drop-ins. Georgian Bay Pottery is permanently closed, do not bother."
+        },
+        {
+          "priority": 2,
+          "name": "Accommodation",
+          "note": "Book early. Fall colour weekends sell out and Blue Mountain village prices spike. Look at Owen Sound and Meaford."
+        },
+        {
+          "priority": 3,
+          "name": "Scenic Caves",
+          "url": "https://sceniccaves.com",
+          "note": "Open daily through October."
+        },
+        {
+          "priority": 4,
+          "name": "Scandinave Spa",
+          "url": "https://www.scandinave.com/blue-mountain",
+          "note": "Reservation required on weekends.",
+          "optional": true
+        }
+      ],
+      "warnings": [
+        "Blue Mountain village accommodation spikes hard on fall colour weekends. Owen Sound and Meaford are noticeably cheaper.",
+        "Scenic Caves requires hiking or running shoes and has limited parking."
+      ],
+      "alternatives": [
+        {
+          "name": "Scandinave Spa Blue Mountain",
+          "type": "splurge",
+          "description": "Outdoor Nordic baths, hot pools, cold plunges, eucalyptus steam room, in the forest. Replaces everything else on Sunday.",
+          "cost": {
+            "amount": 305,
+            "range": "305-360",
+            "note": "$135 per person Sunday, $159 Saturday in high season Sep 4 - Dec 17, taxes extra. Wednesday is $95."
+          },
+          "reviews": {
+            "source": "TripAdvisor",
+            "rating": 4.1,
+            "count": 1359,
+            "praise": [
+              "Immaculate grounds, hammocks, fire pits, forest lounges",
+              "Thermal circuit of hot pools, cold plunges and steam room"
+            ],
+            "complaints": [
+              "Staff strictly enforce a no-talking policy, which reviewers specifically say limits the couple experience",
+              "No re-entry, so you are stuck buying expensive bistro food",
+              "Crowded at peak times despite high prices",
+              "No walk-ins on weekends before 6:30pm, not clearly advertised online"
+            ]
+          },
+          "recommendation": "Hesitate. The complaints land squarely on a couples trip. Wednesday at $95 is quieter if the trip ever shifts to a weekday.",
+          "maps_query": "Scandinave Spa Blue Mountain, Collingwood ON"
+        },
+        {
+          "name": "Tobermory and the Grotto",
+          "type": "rejected",
+          "reason": "4.5 hours each way and the town shuts down in October."
+        }
+      ],
+      "dates": {
+        "recommended": "2026-10-17 to 2026-10-18",
+        "depart": "Saturday 2026-10-17 morning",
+        "return": "Sunday 2026-10-18 evening",
+        "label": "Weekend after Thanksgiving",
+        "why": [
+          "Grey County and the Beaver Valley sit lower and slightly south of Muskoka, so colour holds about a week later.",
+          "Thanksgiving crowds have cleared - Scenic Caves reviewers specifically complain about weekend crowding and parking.",
+          "Everything is still open: Scenic Caves runs daily through October, Old Baldy's season is April-October."
+        ],
+        "data_source": {
+          "lodging": "Booking.com live rates",
+          "checked": "2026-09-15"
+        }
+      },
+      "lodging": {
+        "searched_for": "2026-10-17 to 2026-10-18, 1 night, 2 adults, Collingwood and Owen Sound",
+        "prices_are": "total for one night, two people",
+        "finding": "Owen Sound beats Collingwood on both price AND review score. The best-value room in the region is cheaper than anything in Collingwood and rated higher.",
+        "options": [
+          {
+            "name": "Sunrise Motel",
+            "town": "Owen Sound",
+            "total": 121.5,
+            "score": null,
+            "reviews": 0,
+            "address": "718020 Hwy 6, Owen Sound",
+            "pick": "cheapest",
+            "note": "No review score at all - unrated, not badly rated. A gamble, but it is the cheapest bed in the region.",
+            "url": "https://www.booking.com/hotel/ca/sunrise-motel-springmount.html"
+          },
+          {
+            "name": "Nights Inn Owen Sound",
+            "town": "Owen Sound",
+            "total": 139,
+            "score": 8.3,
+            "reviews": 432,
+            "stars": 2,
+            "address": "672 10th Street West, Owen Sound",
+            "pick": "best value",
+            "note": "Same price as the Collingwood motels but a better score across more reviews. This is the one.",
+            "url": "https://www.booking.com/hotel/ca/knights-inn-owen-sound.html"
+          },
+          {
+            "name": "Relax Inn",
+            "town": "Collingwood",
+            "total": 135,
+            "score": 7.0,
+            "reviews": 134,
+            "stars": 1,
+            "address": "9448 Beachwood Road, Collingwood",
+            "url": "https://www.booking.com/hotel/ca/relax-inn.html"
+          },
+          {
+            "name": "Milestone Motel",
+            "town": "Collingwood",
+            "total": 139,
+            "score": 7.9,
+            "reviews": 267,
+            "stars": 2,
+            "address": "327 First Street, Collingwood",
+            "url": "https://www.booking.com/hotel/ca/milestone-motel.html"
+          },
+          {
+            "name": "1 Bedroom Basement Apartment",
+            "town": "Owen Sound",
+            "total": 150,
+            "score": null,
+            "address": "750 16th Street East, Owen Sound",
+            "url": "https://www.booking.com/hotel/ca/comfy-and-cozy.html"
+          },
+          {
+            "name": "Comfort Inn",
+            "town": "Owen Sound",
+            "total": 170.05,
+            "score": 7.3,
+            "reviews": 448,
+            "stars": 4,
+            "address": "955 9th Avenue East, Owen Sound",
+            "url": "https://www.booking.com/hotel/ca/comfort-inn-owen-sound.html"
+          },
+          {
+            "name": "Luxury Inn",
+            "town": "Collingwood",
+            "total": 185,
+            "score": 8.2,
+            "reviews": 532,
+            "stars": 2,
+            "address": "530 First Street, Collingwood",
+            "url": "https://www.booking.com/hotel/ca/luxury-inn.html"
+          }
+        ],
+        "recommended": "Nights Inn Owen Sound, $139. Also puts you 10 minutes from Inglis Falls for the Sunday morning start.",
+        "data_source": {
+          "source": "Booking.com",
+          "checked": "2026-09-15"
+        }
+      }
+    },
+    {
+      "id": "kingston-pec",
+      "slug": "kingston-prince-edward-county",
+      "featured": false,
+      "order": 6,
+      "name": "Kingston & Prince Edward County",
+      "tagline": "Limestone city and a lake on a hill",
+      "direction": "East",
+      "bearing_deg": 90,
+      "status": "superseded",
+      "superseded_by": "montreal",
+      "superseded_note": "Covers the same direction as Montreal at a third of the distance. Kept as the budget option for the east — it fits under $500 all-in, which Montreal does not.",
+      "summary": "Kingston is Canada's first capital, built almost entirely of grey limestone. Day two loops home through Prince Edward County on a free cable ferry.",
+      "stats": {
+        "distance_km": 620,
+        "drive_time_hours": 6.5,
+        "one_way_km": 265,
+        "one_way_hours": 2.75,
+        "nights": 1,
+        "base_town": "Kingston"
+      },
+      "highlights": [
+        "Springer Market Square — Ontario's oldest continuously operating farmers' market, since 1801",
+        "Kingston Penitentiary tour",
+        "Free Wolfe Island ferry, best skyline shot in the city",
+        "Lake on the Mountain — a lake 60 m above the bay with no visible water source"
+      ],
+      "scores": {
+        "nature": 3,
+        "architecture_history": 5,
+        "pottery": 1,
+        "korean_anime": 1,
+        "famous_landmark": 3,
+        "photo_spots": 4,
+        "relaxation": 4,
+        "value": 4
+      },
+      "budget": {
+        "currency": "CAD",
+        "for": "two people together",
+        "total": 486,
+        "total_range": null,
+        "default_variant": "full",
+        "line_items": [
+          {
+            "label": "Rental, 2 days",
+            "amount": 130
+          },
+          {
+            "label": "Gas, about 620 km",
+            "amount": 77
+          },
+          {
+            "label": "Hotel, 1 night",
+            "amount": 105
+          },
+          {
+            "label": "Food, 5 meals",
+            "amount": 120
+          },
+          {
+            "label": "Kingston Penitentiary, Express tour x2",
+            "amount": 54
+          }
+        ],
+        "variants": [
+          {
+            "id": "full",
+            "label": "Everything",
+            "total": 486,
+            "line_items": [
+              {
+                "label": "Rental, 2 days",
+                "amount": 130
+              },
+              {
+                "label": "Gas, about 620 km",
+                "amount": 77
+              },
+              {
+                "label": "Hotel, 1 night",
+                "amount": 105
+              },
+              {
+                "label": "Food, 5 meals",
+                "amount": 120
+              },
+              {
+                "label": "Kingston Penitentiary, Express tour x2",
+                "amount": 54
+              }
+            ],
+            "note": null
+          }
+        ],
+        "note": null
+      },
+      "days": [
+        {
+          "day": 1,
+          "label": "Saturday — Kingston",
+          "stops": [
+            {
+              "time": "10:30",
+              "name": "Springer Market Square",
+              "type": "market",
+              "description": "Ontario's oldest continuously operating farmers' market, running since 1801. Saturdays. City Hall, an 1840s National Historic Site, is on the square with free guided tours.",
+              "duration_min": 90,
+              "cost": {
+                "amount": 25,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Springer Market Square, Kingston ON",
+              "tags": [
+                "market",
+                "history",
+                "food"
+              ],
+              "address": null
+            },
+            {
+              "time": "12:00",
+              "name": "Downtown limestone walk",
+              "type": "architecture",
+              "description": "Princess and King St, Queen's University campus, the City Hall dome, the waterfront pathway. Self-guided.",
+              "duration_min": 90,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Downtown Kingston, ON",
+              "tags": [
+                "architecture",
+                "free",
+                "photos",
+                "walking"
+              ],
+              "address": null
+            },
+            {
+              "time": "13:30",
+              "name": "Kingston Penitentiary tour",
+              "type": "history",
+              "description": "Canada's most famous former maximum-security prison, 1835 to 2013.",
+              "address": "560 King St W, Kingston, ON",
+              "duration_min": 45,
+              "cost": {
+                "amount": 54,
+                "per": "two",
+                "note": "Express 45 min $27.13, Standard 1.5 hr $42.13, all fees and HST included"
+              },
+              "season": "Closes for the season Oct 31",
+              "booking": "Book ahead, it sells out on fall weekends",
+              "maps_query": "Kingston Penitentiary, Kingston ON",
+              "tags": [
+                "history",
+                "famous"
+              ]
+            },
+            {
+              "time": "15:30",
+              "name": "Wolfe Island ferry",
+              "type": "sight",
+              "description": "Free, 20 minutes each way, cars and walk-ons. The best skyline-from-the-water shot in the city and it costs nothing.",
+              "duration_min": 90,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Wolfe Island Ferry, Kingston ON",
+              "tags": [
+                "free",
+                "photos",
+                "water"
+              ],
+              "address": null
+            },
+            {
+              "time": "18:00",
+              "name": "Dinner downtown",
+              "type": "food",
+              "description": "Princess St. Happy hour 3-5pm at several spots, $6.50-8.50 drinks. Burning Grill Korean Cuisine is the Korean option and reviews well.",
+              "duration_min": 120,
+              "cost": {
+                "amount": 70,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Princess Street, Kingston ON",
+              "tags": [
+                "food",
+                "korean"
+              ],
+              "address": null
+            }
+          ]
+        },
+        {
+          "day": 2,
+          "label": "Sunday — Prince Edward County, on the way home",
+          "stops": [
+            {
+              "time": "09:30",
+              "name": "Kingston to Adolphustown",
+              "type": "drive",
+              "description": "Hwy 33, the Loyalist Parkway. Slower and far prettier than the 401.",
+              "duration_min": 75,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Adolphustown, ON",
+              "tags": [],
+              "address": null
+            },
+            {
+              "time": "10:45",
+              "name": "Glenora Ferry",
+              "type": "sight",
+              "description": "Free 15-minute crossing of the Bay of Quinte. Runs frequently, year-round.",
+              "address": "11369 Loyalist Pkwy, Prince Edward, ON",
+              "duration_min": 25,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Glenora Ferry, Picton ON",
+              "tags": [
+                "free",
+                "water",
+                "photos"
+              ]
+            },
+            {
+              "time": "11:00",
+              "name": "Lake on the Mountain",
+              "type": "nature",
+              "description": "A lake sitting 60 m above the bay with no visible water source. Geologists think a collapsed sinkhole. Lookout platform and a short shoreline trail.",
+              "address": "296 County Rd 7, Prince Edward, ON",
+              "duration_min": 60,
+              "cost": {
+                "amount": 0,
+                "note": "Free day-use, free parking",
+                "per": "two"
+              },
+              "maps_query": "Lake on the Mountain Provincial Park, ON",
+              "tags": [
+                "nature",
+                "free",
+                "photos",
+                "famous"
+              ]
+            },
+            {
+              "time": "12:00",
+              "name": "Lunch at Lake on the Mountain Resort",
+              "type": "food",
+              "description": "Farm-to-table in a historic general store, or Miller House on the patio overlooking the bay.",
+              "duration_min": 90,
+              "cost": {
+                "amount": 60,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Lake on the Mountain Resort, Prince Edward County ON",
+              "tags": [
+                "food",
+                "authentic"
+              ],
+              "address": null
+            },
+            {
+              "time": "13:30",
+              "name": "Picton Main Street",
+              "type": "town",
+              "description": "The County's main town. Independent bookshop, bakeries, boutiques, old storefronts. Craft and pottery studios are scattered through the County — call ahead, most are by appointment off-season.",
+              "duration_min": 90,
+              "cost": {
+                "amount": 20,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Main Street, Picton ON",
+              "tags": [
+                "town",
+                "shops"
+              ],
+              "address": null
+            },
+            {
+              "time": "15:00",
+              "name": "Sandbanks Provincial Park",
+              "type": "nature",
+              "description": "The world's largest baymouth barrier dune formation.",
+              "duration_min": 90,
+              "cost": {
+                "amount": 21,
+                "per": "vehicle",
+                "note": null
+              },
+              "optional": true,
+              "booking": "Book the day pass in advance, up to 5 days ahead. It fills.",
+              "maps_query": "Sandbanks Provincial Park, Picton ON",
+              "tags": [
+                "nature",
+                "optional",
+                "photos"
+              ],
+              "address": null
+            }
+          ]
+        }
+      ],
+      "bookings": [
+        {
+          "priority": 1,
+          "name": "Kingston Penitentiary Tours",
+          "url": "https://www.kingstonpentours.com",
+          "note": "560 King St W. Sells out on fall weekends."
+        },
+        {
+          "priority": 2,
+          "name": "Hotel in downtown Kingston",
+          "note": "Book early. Queen's parents' weekends spike prices."
+        },
+        {
+          "priority": 3,
+          "name": "Kingston 1000 Islands Cruises",
+          "phone": "+1-613-549-5544",
+          "note": "1 Brock St. Rain plan or cruise swap."
+        },
+        {
+          "priority": 4,
+          "name": "Sandbanks day pass",
+          "note": "Ontario Parks reservation site, max 5 days ahead.",
+          "optional": true
+        },
+        {
+          "priority": 5,
+          "name": "Amaranth Stoneware",
+          "phone": "+1-613-541-1156",
+          "note": "#7-745 Development Dr, Kingston. Classes are multi-week evening courses — call to ask about a weekend intro session for two."
+        }
+      ],
+      "warnings": [
+        "Fort Henry's regular daytime season ends Sept 27. After that it is only the Fort Fright haunted event on select October nights.",
+        "Montreal itself was ruled out at this budget: 540 km each way, about 11 hours of driving round trip and roughly $135 in gas alone."
+      ],
+      "alternatives": [
+        {
+          "name": "Bellevue House NHS",
+          "note": "Sir John A. Macdonald's Tuscan-style villa, $10 per adult",
+          "replaces": "Kingston Penitentiary"
+        },
+        {
+          "name": "1000 Islands Tower, Hill Island",
+          "note": "$20 per adult plus $5 bridge toll. 10-4, May through October, closed Tuesdays and Wednesdays.",
+          "replaces": "Wolfe Island ferry"
+        }
+      ]
+    }
+  ],
+  "shared": {
+    "rental_car": {
+      "pickup": "Toronto Pearson (YYZ)",
+      "budget_per_day": 50,
+      "estimated_two_days": 115,
+      "note": "YYZ rates advertise from about $15-28/day base. Budget $50/day plus the airport concession fee, roughly 10-15% on top.",
+      "getting_there": {
+        "option": "UP Express from Union",
+        "cost_per_person_each_way": 12.35,
+        "return_for_two": 50,
+        "alternative": "Free if someone drops you off"
+      },
+      "tip": "Check whether returning to a city branch instead of the airport dodges the concession fee."
+    },
+    "gas_assumptions": {
+      "consumption_l_per_100km": 8,
+      "price_per_litre": 1.55
+    },
+    "traveller_interests": [
+      {
+        "key": "pottery",
+        "label": "Clay pottery and hands-on craft",
+        "weight": "high"
+      },
+      {
+        "key": "korean_anime",
+        "label": "Korean food and anime/manga culture",
+        "weight": "medium"
+      },
+      {
+        "key": "authentic_food",
+        "label": "Authentic local food",
+        "weight": "high"
+      },
+      {
+        "key": "nature",
+        "label": "Authentic nature",
+        "weight": "high"
+      },
+      {
+        "key": "architecture_history",
+        "label": "Architectural and historical places",
+        "weight": "high"
+      },
+      {
+        "key": "famous",
+        "label": "Famous places worth seeing",
+        "weight": "medium"
+      },
+      {
+        "key": "photos",
+        "label": "Good photo spots and lasting memories",
+        "weight": "high"
+      },
+      {
+        "key": "relaxation",
+        "label": "Relaxed pace, forget about work, catch up together",
+        "weight": "high"
+      }
+    ],
+    "constraints": [
+      "Two people",
+      "Maximum two days",
+      "No distance limit",
+      "$500 all-in ceiling, relaxed for Montreal only",
+      "Rental car from the airport, $50/day maximum",
+      "No Niagara — been too many times",
+      "No Torrance Barrens — already visited",
+      "Avoid the London direction",
+      "Prefer non-city places where you can meet locals"
+    ],
+    "open_questions": [
+      "Trip dates. Grey County fall colour peaks early to mid October; Muskoka peaks around Thanksgiving Oct 10-12; Montreal is better later in October.",
+      "Montreal: Friday night departure or not. It decides whether the trip is $620 or $1,000.",
+      "Collingwood pottery: needs a phone call, the only unverified anchor in the Georgian Bay plan.",
+      "Studio Mie Kim: how they handle the 5-6 week pickup for out-of-town students."
+    ],
+    "date_plan": {
+      "constraint": "Everything inside October 2026, nothing past Oct 31.",
+      "one_weekend_each": {
+        "2026-10-02 to 04": "Algonquin & Haliburton - golden encore in the Hwy 60 corridor",
+        "2026-10-09 to 11": "Muskoka - Thanksgiving peak, and the last weekend for the Portage Flyer",
+        "2026-10-16 to 18": "Quebec City - needs two nights, colour on Ile d'Orleans",
+        "2026-10-23 to 25": "Montreal - city trees peak latest",
+        "2026-10-30 to 31": "Georgian Bay - if you want all five. Past peak colour, but Scenic Caves and Old Baldy still run."
+      },
+      "collision": "Georgian Bay's own best date is Oct 17-18, which Quebec City wants. If you are only doing some of these, give Georgian Bay Oct 17-18 and drop Quebec or push it to a longer trip.",
+      "logic": "Colour peaks north-first and inland-first. Algonquin earliest (avg sugar maple peak Sept 27), then Muskoka, then Grey County, then the cities.",
+      "hard_deadlines": [
+        "Algonquin Art Centre closes about Oct 19",
+        "Algonquin Logging Museum closes mid-October",
+        "Muskoka Heritage Place closes Oct 10 (Portage Flyer runs Tue-Sat)",
+        "Old Baldy season April-October",
+        "Laura Secord Homestead season ends end of October",
+        "Kingston Penitentiary closes Oct 31"
+      ]
+    },
+    "what_changed_in_v1_1": [
+      "DATES CHOSEN for all three trips, all inside October.",
+      "Old Baldy corrected from moderate/4.3 km to HARD/6 km with 419 m of climbing. Saturday's schedule rebuilt around it.",
+      "Georgian Bay Pottery is permanently closed. Replaced with Hello Pottery Co (4.9 stars, 137 reviews), which is on the Collingwood main street already in the plan.",
+      "O-Taku Manga Lounge in Montreal is permanently closed. Five replacements found, two of them on the same Saint-Denis walk.",
+      "Every accommodation line replaced with live Booking.com rates. Muskoka went UP $108, Montreal went DOWN $193.",
+      "Inglis Falls now has two trail options - the 43-minute loop actually fits the schedule, the 106-minute one does not."
+    ],
+    "what_changed_in_v1_2": [
+      "Added 'algonquin-haliburton' - a second northern trip that shares no stops with Muskoka. Grouped via alternative_to.",
+      "Added 'quebec-city' - the far-east trip, with an honest breakdown of drive vs fly vs train vs bus.",
+      "Reordered: muskoka, algonquin-haliburton, georgian-bay, montreal, quebec-city, then kingston-pec (unfeatured).",
+      "Date plan now assigns one October weekend to each trip and names the one collision."
+    ],
+    "what_changed_in_v2_0": [
+      "Budget shape unified. Was six different key sets across six trips - now every trip has total, total_range, default_variant, line_items, variants[], note.",
+      "Stop shape unified. description, maps_query, tags, address and the three cost sub-keys now always present, null where unknown.",
+      "No content changed. This is purely so you can write one renderer instead of six."
+    ]
+  },
+  "research_notes": {
+    "reviews_reachable": [
+      {
+        "source": "TripAdvisor",
+        "status": "reachable",
+        "note": "Ratings and review text came through and are quoted in the data."
+      }
+    ],
+    "reviews_unreachable": [
+      {
+        "source": "Reddit",
+        "status": "blocked",
+        "note": "Direct fetches refused, domain-restricted searches rejected. Nothing in this data comes from an actual Reddit thread."
+      },
+      {
+        "source": "YouTube",
+        "status": "unavailable"
+      },
+      {
+        "source": "Instagram",
+        "status": "unavailable"
+      }
+    ],
+    "suggested_connectors": [
+      {
+        "name": "TripAdvisor",
+        "authless": true,
+        "tools": [
+          "search_hotels",
+          "hotel_details",
+          "compare_hotels"
+        ],
+        "why": "Would replace estimated accommodation lines with real review-backed bookable rates."
+      },
+      {
+        "name": "Expedia",
+        "authless": true,
+        "tools": [
+          "search_hotels",
+          "search_flights"
+        ]
+      },
+      {
+        "name": "DirectBooker",
+        "authless": true,
+        "tools": [
+          "hotel-search",
+          "hotel-availability-lowest-direct-rate",
+          "hotel-photos"
+        ]
+      }
+    ]
+  },
+  "sources": [
+    {
+      "trip": "muskoka",
+      "label": "Muskoka Bay Pottery",
+      "phone": "+1-705-687-7890"
+    },
+    {
+      "trip": "muskoka",
+      "label": "Muskoka Heritage Place",
+      "phone": "+1-705-789-7576"
+    },
+    {
+      "trip": "montreal",
+      "label": "Studio Mie Kim",
+      "url": "https://miekimstudio.com/products/introduction-to-wheel-throwing-1-day"
+    },
+    {
+      "trip": "montreal",
+      "label": "Notre-Dame Basilica hours and rates",
+      "url": "https://www.basiliquenotredame.ca/en/hours-and-rates"
+    },
+    {
+      "trip": "montreal",
+      "label": "Marche Jean-Talon reviews",
+      "url": "https://www.tripadvisor.com/Attraction_Review-g155032-d556600-Reviews-Marche_Jean_talon_jean_talon_Market-Montreal_Quebec.html"
+    },
+    {
+      "trip": "montreal",
+      "label": "Korean food in Montreal",
+      "url": "https://www.mtl.org/en/experience/where-eat-authentic-korean-food-montreal"
+    },
+    {
+      "trip": "montreal",
+      "label": "O-Taku Manga Lounge reviews",
+      "url": "https://www.tripadvisor.com/Restaurant_Review-g155032-d12413355-Reviews-O_Taku_Manga_Lounge-Montreal_Quebec.html"
+    },
+    {
+      "trip": "montreal",
+      "label": "Old Montreal parking costs",
+      "url": "https://montrealdiaries.ca/cheap-parking-old-port-montreal-best-spots-tips/"
+    },
+    {
+      "trip": "georgian-bay",
+      "label": "Old Baldy Lookout Trail",
+      "url": "https://www.10adventures.com/hikes/bruce-peninsula-and-grey-highlands/old-baldy-lookout-trail/"
+    },
+    {
+      "trip": "georgian-bay",
+      "label": "Grey County scenic lookouts",
+      "url": "https://visitgrey.ca/trip-ideas/a-guide-to-scenic-views-and-lookouts-in-grey-county"
+    },
+    {
+      "trip": "georgian-bay",
+      "label": "Scenic Caves pricing",
+      "url": "https://sceniccaves.com/collections/warm-seasons"
+    },
+    {
+      "trip": "georgian-bay",
+      "label": "Scenic Caves reviews",
+      "url": "https://www.tripadvisor.com/Attraction_Review-g1022639-d308746-Reviews-Scenic_Caves_Nature_Adventures-Blue_Mountains_Grey_County_Ontario.html"
+    },
+    {
+      "trip": "georgian-bay",
+      "label": "Scandinave Spa rates",
+      "url": "https://www.scandinave.com/blue-mountain/rates"
+    },
+    {
+      "trip": "georgian-bay",
+      "label": "Scandinave Spa reviews",
+      "url": "https://www.tripadvisor.co.uk/Attraction_Review-g1022639-d1008081-Reviews-Scandinave_Spa_Blue_Mountain-Blue_Mountains_Grey_County_Ontario.html"
+    },
+    {
+      "trip": "kingston-pec",
+      "label": "Kingston Penitentiary Tours",
+      "url": "https://www.kingstonpentours.com/visit/admissions/"
+    },
+    {
+      "trip": "kingston-pec",
+      "label": "Fort Henry admissions",
+      "url": "https://www.forthenry.com/visit/admissions/"
+    },
+    {
+      "trip": "kingston-pec",
+      "label": "Bellevue House fees",
+      "url": "https://parks.canada.ca/lhn-nhs/on/bellevue/visit/tarifs-fees"
+    },
+    {
+      "trip": "kingston-pec",
+      "label": "Lake on the Mountain and Glenora Ferry",
+      "url": "https://www.todocanada.ca/lake-on-the-mountain-provincial-park-glenora-ferry-lookout-mysterious-lake-and-scenic-view-of-bay-of-quinte/"
+    },
+    {
+      "trip": "shared",
+      "label": "YYZ car rentals",
+      "url": "https://www.momondo.com/car-rental/toronto-pearson-intl-YYZ-cap.ksp"
+    }
+  ]
+}
