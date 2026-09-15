@@ -4,6 +4,7 @@ import { useEffect, useRef, type JSX, type ReactNode } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LENS, beatAlpha, clockAt, project, sortForPaint, type Leg } from "@/lib/scene/corridor";
+import { makePath, STRAIGHT } from "@/lib/scene/path";
 import { skyAtTime } from "@/lib/sky";
 import { CORRIDOR_KINDS } from "./corridorKinds";
 
@@ -62,25 +63,58 @@ export function Corridor({
     const nodes = Array.from(stageEl.querySelectorAll<HTMLElement>("[data-prop]"));
     const beatEls = Array.from(stageEl.querySelectorAll<HTMLElement>("[data-beat]"));
     const rail = stageEl.querySelector<HTMLElement>("[data-rail]");
+    const road = stageEl.querySelector<SVGPathElement>("[data-road]");
+    const shoulder = stageEl.querySelector<SVGPathElement>("[data-shoulder]");
     const clockEl = stageEl.querySelector<HTMLElement>("[data-clock]");
     const root = document.documentElement;
 
     let wasMoving = false;
     let stopTimer: number | null = null;
+    const path = leg.path && leg.path.length > 1 ? makePath(leg.path, leg.depth) : STRAIGHT;
+    const cast = stageEl.querySelector<HTMLElement>("[data-cast]");
+
     let w = stageEl.clientWidth;
     let h = stageEl.clientHeight;
     const size = (): void => { w = stageEl.clientWidth; h = stageEl.clientHeight; };
     size();
 
+    /**
+     * The road surface, rebuilt each frame from the same curve the props use.
+     *
+     * Without this the markings bend while the tarmac stays a straight block,
+     * which reads as the road sliding sideways underneath itself. Sampling the
+     * edges and filling between them is what makes the bend look like a bend.
+     */
+    const ribbon = (cam: number, halfW: number): string => {
+      const STEPS = 26;
+      const left: string[] = [];
+      const right: string[] = [];
+      for (let i = 0; i <= STEPS; i += 1) {
+        // sample denser up close, where the curvature actually shows
+        const t = (i / STEPS) ** 1.9;
+        const d = 8 + t * (LENS.far - 8);
+        const z = cam + d;
+        const scale = LENS.focal / (LENS.focal + d);
+        const relX = path.bend(z) - path.bend(cam);
+        const relRise = path.rise(z) - path.rise(cam);
+        const y = h * LENS.horizon + h * LENS.ground * scale - relRise * scale;
+        left.push(`${(w / 2 + (relX - halfW) * scale).toFixed(1)},${y.toFixed(1)}`);
+        right.push(`${(w / 2 + (relX + halfW) * scale).toFixed(1)},${y.toFixed(1)}`);
+      }
+      return `M${left.join(" L")} L${right.reverse().join(" L")} Z`;
+    };
+
     const apply = (p: number): void => {
       const cam = p * leg.depth;
+      if (road) road.setAttribute("d", ribbon(cam, 250));
+      if (shoulder) shoulder.setAttribute("d", ribbon(cam, 340));
 
       for (const node of nodes) {
         const z = Number(node.dataset.z ?? 0);
         const x = Number(node.dataset.x ?? 0);
         const y = Number(node.dataset.y ?? 0);
         const s = Number(node.dataset.s ?? 1);
-        const pr = project({ z, x, y, kind: "", s }, cam, w, h, LENS);
+        const pr = project({ z, x, y, kind: "", s }, cam, w, h, LENS, path);
         if (!pr.visible || pr.opacity <= 0.004) {
           if (node.style.display !== "none") node.style.display = "none";
           continue;
@@ -99,6 +133,15 @@ export function Corridor({
         node.style.opacity = a.toFixed(3);
         node.style.transform = `translateY(${((1 - a) * 16).toFixed(1)}px)`;
         node.style.pointerEvents = a > 0.5 ? "auto" : "none";
+      }
+
+      /* The cast walks a little way ahead, so on a bend they are already into it
+         while the camera is still straightening — which is what following
+         someone round a corner actually looks like. */
+      if (cast) {
+        const lead = 170;
+        const shift = (path.bend(cam + lead) - path.bend(cam)) * (LENS.focal / (LENS.focal + lead));
+        cast.style.transform = `translateX(${shift.toFixed(1)}px)`;
       }
 
       if (rail) rail.style.width = `${(p * 100).toFixed(2)}%`;
@@ -144,6 +187,10 @@ export function Corridor({
     <div ref={spacer} className={`corridor ${className ?? ""}`} style={{ height: `${pace * 100}vh` }}>
       <div ref={stage} className="corridor__stage">
         <div className="corridor__ground" />
+        <svg className="corridor__surface" aria-hidden="true">
+          <path data-shoulder="" className="corridor__shoulder" />
+          <path data-road="" className="corridor__tarmac" />
+        </svg>
 
         <div className="corridor__world">
           {painted.map((it, i) => (

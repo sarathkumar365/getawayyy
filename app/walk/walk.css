@@ -143,8 +143,12 @@
 .prop { position: absolute; left: 0; top: 0; will-change: transform, opacity;
   transform-origin: 50% 100%; }
 .corridor__ground { position: absolute; left: 0; right: 0;
-  top: calc(var(--horizon, 47%)); bottom: 0;
-  background: linear-gradient(180deg, var(--road-far, #3A4450) 0%, var(--road-near, #1A2028) 100%); }
+  top: 47%; bottom: 0;
+  background: linear-gradient(180deg, var(--ground-far, #2C3830) 0%, var(--ground-near, #141C18) 100%); }
+/* the road itself, rebuilt from the curve every frame */
+.corridor__surface { position: absolute; inset: 0; width: 100%; height: 100%; }
+.corridor__shoulder { fill: var(--road-far, #3A4450); opacity: .55; }
+.corridor__tarmac { fill: var(--road-near, #1A2028); }
 
 .corridor__script { position: absolute; left: 0; right: 0; bottom: 16vh;
   display: grid; place-items: start center; padding: 0 1.25rem; pointer-events: none; }
@@ -162,12 +166,12 @@
 .corridor__rail i { position: absolute; inset: 0 auto 0 0; border-radius: 2px; display: block;
   background: color-mix(in srgb, var(--on-sky, #F2EEE6) 70%, transparent); }
 
-.corridor--city    { --w-near: #232B36; --road-far: #3A4450; --road-near: #171D26; }
-.corridor--highway { --w-near: #22303A; --road-far: #36434C; --road-near: #151C22; }
-.corridor--town    { --w-near: #2A323C; --road-far: #3E4752; --road-near: #1A2028; }
-.corridor--forest  { --w-near: #22301F; --road-far: #3D4A3A; --road-near: #161E16; }
-.corridor--water   { --w-near: #1F2E38; --road-far: #35505F; --road-near: #131E26; }
-.corridor--indoor  { --w-near: #2C2620; --road-far: #4A4038; --road-near: #1A1612; }
+.corridor--city    { --w-near: #232B36; --road-far: #4A5462; --road-near: #22282F; --ground-far: #2E3640; --ground-near: #15191F; }
+.corridor--highway { --w-near: #22303A; --road-far: #46525C; --road-near: #1F262C; --ground-far: #2A352E; --ground-near: #131A16; }
+.corridor--town    { --w-near: #2A323C; --road-far: #4E5762; --road-near: #242A32; --ground-far: #303842; --ground-near: #171C22; }
+.corridor--forest  { --w-near: #22301F; --road-far: #4A5448; --road-near: #23281F; --ground-far: #26351F; --ground-near: #121A10; }
+.corridor--water   { --w-near: #1F2E38; --road-far: #45606E; --road-near: #1E2A32; --ground-far: #2A3F4A; --ground-near: #111C22; }
+.corridor--indoor  { --w-near: #2C2620; --road-far: #55483C; --road-near: #292219; --ground-far: #3A322A; --ground-near: #17130F; }
 
 /* the cast, walking into the corridor ahead of her */
 .corridor__cast { position: absolute; inset: 0; pointer-events: none; }

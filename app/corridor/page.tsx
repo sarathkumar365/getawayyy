@@ -22,7 +22,7 @@ export default function CorridorPage(): JSX.Element {
 
       <Corridor leg={MUSKOKA_LEG_1} pace={10} onMoving={onMoving}
         className={`corridor--${MUSKOKA_LEG_1.terrain ?? "highway"}`}>
-        <div className="corridor__cast">
+        <div className="corridor__cast" data-cast="">
           <RearActor id="curse" walking={moving} className="rear rear--b" />
           <RearActor id="sun" walking={moving} className="rear rear--a" />
         </div>

@@ -12,10 +12,13 @@
  * primary target.
  */
 
+import { STRAIGHT, type Control, type Path } from "./path";
+
 export type SceneItem = {
   /** distance along the path */
   z: number;
-  /** lateral offset from the centre line, at z = 0 scale */
+  /** lateral offset FROM THE ROAD CENTRE, at z = 0 scale — not an absolute
+   *  position, so props follow the curve without being re-authored */
   x: number;
   /** height above the ground plane, at z = 0 scale */
   y?: number;
@@ -69,7 +72,8 @@ export type Projected = {
  * like — until they are culled.
  */
 export function project(
-  item: SceneItem, cameraZ: number, w: number, h: number, lens: Lens = LENS,
+  item: SceneItem, cameraZ: number, w: number, h: number,
+  lens: Lens = LENS, path: Path = STRAIGHT,
 ): Projected {
   const d = item.z - cameraZ;
   if (d > lens.far || d < lens.near) {
@@ -83,8 +87,12 @@ export function project(
   const horizonPx = h * lens.horizon;
   const groundPx = h * lens.ground;
 
-  const left = w / 2 + item.x * scale;
-  const base = horizonPx + groundPx * scale - (item.y ?? 0) * scale;
+  // where this sits relative to the camera, which is itself ON the road
+  const relX = item.x + path.bend(item.z) - path.bend(cameraZ);
+  const relRise = path.rise(item.z) - path.rise(cameraZ);
+
+  const left = w / 2 + relX * scale;
+  const base = horizonPx + groundPx * scale - ((item.y ?? 0) + relRise) * scale;
 
   // fade in from the far plane, and out over the last stretch before the camera
   const inK = Math.min(1, (lens.far - d) / lens.fadeIn);
@@ -169,6 +177,8 @@ export type Leg = {
   clock: { z: number; time: string }[];
   items: SceneItem[];
   beats: LegBeat[];
+  /** control points for the road; omit for a straight run */
+  path?: Control[];
   /** wet-day rate, only where the data earns it */
   rain?: number;
 };

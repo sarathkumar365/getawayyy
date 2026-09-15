@@ -1,4 +1,5 @@
 import { along, verge, type Leg, type SceneItem } from "./corridor";
+import type { Control } from "./path";
 
 /**
  * Muskoka, leg 1 — leaving Toronto, rebuilt as a corridor.
@@ -28,11 +29,33 @@ function thinningLamps(from: number, to: number, g0: number, g1: number): SceneI
 const CITY_END = 1500;
 const LAST_LAMP_AT = 3050;
 
+/**
+ * The road out of the city.
+ *
+ * Tight and nearly straight while the grid still has hold of it, then longer,
+ * looser swings once it is out — and it starts climbing, because everything
+ * north of Toronto does. The rise is what stops a bend from reading as the whole
+ * world sliding sideways.
+ */
+const ROAD: Control[] = [
+  { z: -600, x: 0, y: 0 },
+  { z: 0, x: 0, y: 0 },
+  { z: 900, x: -110, y: 8 },
+  { z: 1800, x: 130, y: -12 },
+  { z: 2700, x: -60, y: 26 },
+  { z: 3700, x: -430, y: 54 },
+  { z: 4600, x: 90, y: 38 },
+  { z: 5500, x: 420, y: -18 },
+  { z: 6400, x: 120, y: 30 },
+  { z: 7200, x: 0, y: 40 },
+];
+
 export const MUSKOKA_LEG_1: Leg = {
   id: "muskoka-leg-1",
   title: "1 · Departure",
   terrain: "city",
   depth: DEPTH,
+  path: ROAD,
   clock: [
     { z: 0, time: "18:00" },
     { z: 3000, time: "19:10" },
