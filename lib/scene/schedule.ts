@@ -41,7 +41,15 @@ export type ScheduleOpts = {
   stationScreens?: (s: Station) => number;
 };
 
-const DEFAULT_DEPTH_PER_SCREEN = 900;
+/**
+ * How much ground one viewport of scroll covers.
+ *
+ * This is the ONE number that sets how long the walking is, and raising it
+ * shortens every run by the same factor — so the runs keep their proportions
+ * exactly: the drive up from Toronto stays the longest thing in the trip, and
+ * the two streets between the walking tour and Bethune House stay the shortest.
+ */
+const DEFAULT_DEPTH_PER_SCREEN = 1900;
 const defaultStationScreens = (s: Station): number =>
   2.0 + Math.min(2.2, s.richness * 0.32);
 
@@ -94,7 +102,11 @@ export function buildSchedule(
       // cover that ground or the stations would sit on top of each other. It
       // just passes through bare world rather than being cut out.
       const depth = leg?.depth ?? node.depth;
-      const screens = Math.max(1.4, depth / perScreen);
+      // The floor exists only so a degenerate run cannot be zero-height. It is
+      // deliberately below the shortest real run (700 units, 0.37 screens),
+      // because a floor that actually bit would stretch the short runs and
+      // break the proportions this is all built on.
+      const screens = Math.max(0.35, depth / perScreen);
 
       if (leg) {
         for (const it of leg.items) items.push({ ...it, z: it.z + z });
