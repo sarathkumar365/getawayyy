@@ -5,9 +5,8 @@ import { budgetHeadline } from "@/lib/money";
 import { itineraryFor } from "@/lib/scene/itinerary";
 
 /**
- * The front door. Muskoka is the trip that is built, so it is the one the
- * opening leads into; the other four are listed honestly as researched but
- * not yet walkable.
+ * The front door. All five are walkable now; Muskoka is simply the one the
+ * opening leads into, because the north trip is the one it was built around.
  */
 const WALKABLE = "muskoka";
 

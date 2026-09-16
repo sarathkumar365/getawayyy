@@ -153,9 +153,14 @@ export function JourneyEnd(
             )}
           </div>
 
-          <Link className="ending__again" href={`/panel/${trip.id}`}>
-            See every stop on one page
-          </Link>
+          <div className="ending__more">
+            <Link className="ending__again" href={`/panel/${trip.id}`}>
+              See every stop on one page
+            </Link>
+            <Link className="ending__again" href="/">
+              Walk a different one
+            </Link>
+          </div>
         </div>
       )}
     </section>

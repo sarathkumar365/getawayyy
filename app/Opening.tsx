@@ -116,11 +116,11 @@ export function Opening({ walkable, rest }: { walkable: TripCard; rest: TripCard
       </div>
 
       <details className="opening__rest">
-        <summary>The other four</summary>
+        <summary>Or one of the other four</summary>
         <ul>
           {rest.map((t) => (
             <li key={t.id}>
-              <Link href={`/panel/${t.id}`}>
+              <Link href={`/journey/${t.id}`}>
                 <span className="dir">{t.direction}</span>
                 <span>{t.name}</span>
                 <span className="meta">{t.stops} stops · {t.budget}</span>

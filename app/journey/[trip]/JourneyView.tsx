@@ -13,22 +13,20 @@ import { Celestial } from "@/components/scene/Celestial";
 import { Journey } from "@/components/scene/Journey";
 import { tripById } from "@/lib/data";
 import { itineraryFor } from "@/lib/scene/itinerary";
-import { muskokaLegs } from "@/lib/scene/muskoka-journey";
+import { stageFor, hasScript } from "@/lib/scene/journeys";
 import { JourneyEnd } from "./JourneyEnd";
 import { TripMap } from "@/components/scene/TripMap";
 
 /**
- * The trip, walked.
- *
- * Only Muskoka has its runs authored. The other four are deliberately absent
- * until this one has been reviewed — doing one properly first was the point.
+ * The trip, walked. All five are written; the script for each lives in
+ * `lib/scene/journeys/`.
  */
 export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
   const [mapOpen, setMapOpen] = useState(false);
   const trip = tripById(tripId);
   const itinerary = useMemo(() => (trip ? itineraryFor(trip) : null), [trip]);
-  const legs = useMemo(
-    () => (itinerary && tripId === "muskoka" ? muskokaLegs(itinerary) : {}),
+  const stage = useMemo(
+    () => (itinerary ? stageFor(tripId, itinerary) : null),
     [itinerary, tripId],
   );
 
@@ -58,7 +56,13 @@ export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
           Map
         </button>
 
-        <Journey trip={trip} itinerary={itinerary} legs={legs} />
+        <Journey
+          trip={trip}
+          itinerary={itinerary}
+          legs={stage?.legs ?? {}}
+          pace={stage?.pace}
+          arrivals={stage?.arrivals}
+        />
 
         <TripMap open={mapOpen} onClose={() => setMapOpen(false)} />
 

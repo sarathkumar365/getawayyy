@@ -7,7 +7,7 @@ import { LENS, beatAlpha, clockAt, project, sortForPaint } from "@/lib/scene/cor
 import { makePath, STRAIGHT } from "@/lib/scene/path";
 import { skyAtTime } from "@/lib/sky";
 import { buildSchedule, cameraAt } from "@/lib/scene/schedule";
-import { muskokaArrivals, muskokaPace } from "@/lib/scene/muskoka-journey";
+
 import { hexToRgb, propColour } from "@/lib/scene/palette";
 import { scrollToY } from "@/lib/lenis";
 import { CORRIDOR_KINDS } from "./corridorKinds";
@@ -18,13 +18,16 @@ import { StationPanel } from "@/components/station/StationPanel";
 import { DetailedCharacter } from "@/components/characters/DetailedCharacter";
 import { useAnswers } from "@/lib/answers";
 import type { Itinerary } from "@/lib/scene/itinerary";
-import type { BeatFace, Leg } from "@/lib/scene/corridor";
+import type { ArrivalLine, BeatFace, Leg } from "@/lib/scene/corridor";
 import type { Trip } from "@/lib/types";
 
 export type JourneyProps = {
   trip: Trip;
   itinerary: Itinerary;
   legs: Record<string, Leg>;
+  /** per-run camera pace, and what they say on arriving */
+  pace?: Record<string, number>;
+  arrivals?: Record<string, readonly ArrivalLine[]>;
   depthPerScreen?: number;
 };
 
@@ -112,7 +115,7 @@ function priorityFor(map: Map<string, number>, name: string): number | undefined
  * in step with the scroll rather than a frame behind it.
  */
 export function Journey({
-  trip, itinerary, legs, depthPerScreen,
+  trip, itinerary, legs, pace, arrivals, depthPerScreen,
 }: JourneyProps): JSX.Element {
   const spacer = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -132,12 +135,8 @@ export function Journey({
   const bookings = useMemo(() => bookingPriorities(trip), [trip]);
 
   const schedule = useMemo(
-    () => buildSchedule(itinerary, legs, {
-      depthPerScreen,
-      arrivals: muskokaArrivals(),
-      pace: muskokaPace(itinerary, depthPerScreen),
-    }),
-    [itinerary, legs, depthPerScreen],
+    () => buildSchedule(itinerary, legs, { depthPerScreen, arrivals, pace }),
+    [itinerary, legs, arrivals, pace, depthPerScreen],
   );
   const painted = useMemo(() => sortForPaint(schedule.items), [schedule]);
 
