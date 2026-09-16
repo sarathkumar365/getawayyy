@@ -144,6 +144,13 @@
 
 html { -webkit-text-size-adjust: 100%; }
 
+/* No scrollbar anywhere. This is a walk, not a document: a 15px grey rail down
+   the right of a sunset is the one piece of browser chrome the scene cannot
+   absorb. The page still scrolls by every means it did before — wheel, drag,
+   keyboard, and the Lenis smoothing on top. */
+html, body { scrollbar-width: none; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
 body {
   margin: 0;
   background: var(--paper);

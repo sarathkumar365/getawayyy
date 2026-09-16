@@ -213,7 +213,9 @@
   padding: var(--s-4);
   overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-width: none;
 }
+.tripmap::-webkit-scrollbar { display: none; }
 
 .tripmap__sheet {
   width: min(560px, 100%);
