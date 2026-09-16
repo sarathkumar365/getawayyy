@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type JSX } from "react";
+import "@/styles/bubble.css";
 import type { DetailId } from "@/lib/characters/detailed";
 import { blip, chirp, wakeVoice } from "@/lib/audio/voice";
 

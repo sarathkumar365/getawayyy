@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type JSX } from "react";
+import "@/styles/ambience.css";
 import { createAmbient, type Ambient } from "@/lib/audio/ambient";
 import { setVoiceEnabled } from "@/lib/audio/voice";
 

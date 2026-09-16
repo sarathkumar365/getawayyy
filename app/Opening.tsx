@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useCallback, useMemo, useState, type JSX } from "react";
 import { useRouter } from "next/navigation";
-import "@/styles/bubble.css";
 import "@/styles/opening.css";
 import { Actor } from "@/components/characters/Actor";
 import { SpeechBubble } from "@/components/characters/SpeechBubble";

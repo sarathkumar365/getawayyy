@@ -1,0 +1,40 @@
+/* =========================================================================
+   The sound toggle.
+
+   Its own file, imported by the component itself. These rules used to sit in
+   journey.css, and the opening does not load journey.css -- so on the front
+   page the speaker icon rendered at its natural size, which is the whole
+   screen. An SVG with no width is not a small bug.
+   ========================================================================= */
+
+.ambience {
+  position: fixed;
+  top: max(var(--s-3), env(safe-area-inset-top));
+  /* Flush right by default. Only the journey has a Map button beside it, and
+     that page shifts this along to make room. */
+  right: var(--ambience-right, var(--s-3));
+  z-index: 100;
+  font: inherit;
+  font-size: var(--step--1);
+  font-weight: 600;
+  cursor: pointer;
+  padding: var(--s-2) var(--s-4);
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, .34);
+  background: rgba(16, 22, 30, .58);
+  color: #F2EFE8;
+  backdrop-filter: blur(8px);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.ambience:hover { background: rgba(16, 22, 30, .85); border-color: rgba(255, 255, 255, .7); }
+.ambience:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+.ambience svg { width: 14px; height: 14px; flex: none; }
+.ambience.is-on { border-color: rgba(255, 216, 154, .75); color: #FFE6B4; }
+
+@media (max-width: 560px) {
+  /* Only the icons fit alongside each other on a phone. */
+  .ambience__label { display: none; }
+  .ambience { padding: var(--s-2) var(--s-3); }
+}
