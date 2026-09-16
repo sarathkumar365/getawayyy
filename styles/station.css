@@ -14,6 +14,18 @@
   box-shadow: 0 -12px 40px -24px rgba(0, 0, 0, .5);
 }
 
+/* Links inside a card take the trip's own accent. Default link blue on the
+   address and phone was the one colour in the whole panel that belonged to no
+   palette at all. */
+.panel a {
+  color: var(--w-accent, var(--ink));
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--w-accent, currentColor) 38%, transparent);
+  text-underline-offset: 2px;
+}
+.panel a:hover { text-decoration-color: currentColor; }
+.panel a:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; border-radius: 3px; }
+
 .panel__grip {
   width: 46px; height: 4px; border-radius: 99px;
   background: var(--rule-strong);
@@ -47,11 +59,15 @@
    Pulled to the panel's edges: a gallery that stops short of the edge looks
    like a component, one that runs off it looks like somewhere to go. */
 .strip {
-  display: flex; gap: var(--s-2); list-style: none; margin: 0; padding: 0 var(--s-5) var(--s-2);
+  display: flex; gap: var(--s-2); list-style: none; margin: 0; padding: 0 var(--s-5) var(--s-1);
   margin-inline: calc(var(--s-5) * -1);
   overflow-x: auto; scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  /* The bar is pure chrome across the width of the photos, and the snap points
+     already say it scrolls. */
+  scrollbar-width: none;
 }
+.strip::-webkit-scrollbar { display: none; }
 .strip__cell {
   flex: 0 0 auto; width: min(74%, 420px); scroll-snap-align: start;
   display: flex; flex-direction: column; gap: var(--s-1);
@@ -92,12 +108,9 @@
 .cost--unknown { color: var(--unknown); font-weight: 600; }
 .cost--priced { font-weight: 600; }
 
-.tags { display: flex; flex-wrap: wrap; gap: var(--s-1); }
-.tag {
-  font-size: var(--step--1); padding: 1px var(--s-2); border-radius: 99px;
-  background: var(--w-accent-soft, var(--paper-sunk));
-  color: var(--w-accent, var(--ink-soft)); font-weight: 600;
-}
+/* Plain text, not pills. Seven pill-shaped words under every stop read as
+   interface; they are just what the place is. */
+.tags { color: var(--ink-soft); }
 
 .badge {
   font-size: var(--step--1); font-weight: 600; border-radius: 99px;

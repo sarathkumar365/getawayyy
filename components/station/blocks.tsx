@@ -69,10 +69,8 @@ export function PracticalRow({ stop }: { stop: Stop }): JSX.Element {
 
       {stop.tags.length > 0 && (
         <div className="fact fact--wide">
-          <dt>Tags</dt>
-          <dd className="tags">
-            {stop.tags.map((t) => <span key={t} className="tag">{t}</span>)}
-          </dd>
+          <dt>What it is</dt>
+          <dd className="tags">{stop.tags.join(" · ")}</dd>
         </div>
       )}
     </dl>

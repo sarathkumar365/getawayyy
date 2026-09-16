@@ -51,9 +51,12 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+  /* No track down the right edge of a card that is meant to look like paper. */
+  scrollbar-width: none;
   border-radius: var(--radius-lg);
   box-shadow: 0 30px 70px -34px rgba(0, 0, 0, .7);
 }
+.journey__card::-webkit-scrollbar { display: none; }
 .journey__card > .panel { border-radius: var(--radius-lg); }
 
 /* Outside the scroller, so it stays put however far down she has read. */
@@ -171,7 +174,7 @@
   position: fixed;
   top: max(var(--s-3), env(safe-area-inset-top));
   right: var(--s-3);
-  z-index: 20;
+  z-index: 100;
   font: inherit;
   font-size: var(--step--1);
   font-weight: 600;
@@ -193,7 +196,8 @@
 .tripmap {
   position: fixed;
   inset: 0;
-  z-index: 40;
+  /* Above the dev nav (80), which is the thing it has to beat. */
+  z-index: 120;
   background: rgba(10, 12, 16, .72);
   backdrop-filter: blur(3px);
   display: flex;
@@ -277,4 +281,104 @@
   .tripmap__head { flex-direction: column; }
   .tripmap__close { margin-left: 0; align-self: flex-start; }
   .daylinks .btn { width: 100%; justify-content: center; }
+}
+
+/* =========================================================================
+   Speech bubbles.
+
+   The dialogue used to sit in the same caption slot as the narration, at
+   bottom:16vh — which is level with the cast's feet, so both voices read as
+   subtitles printed across their shoes. A line someone SAYS belongs over the
+   head of whoever said it.
+   ========================================================================= */
+
+.bubbles {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.bubble {
+  position: absolute;
+  /* the handler owns `transform` (centring included) — never set it here */
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+
+  max-width: min(23ch, 42vw);
+  padding: var(--s-3) var(--s-4);
+  border-radius: 18px;
+  background: #FCFAF5;
+  color: #1A1714;
+  border: 2.5px solid #1A1714;
+  box-shadow: 3px 4px 0 rgba(26, 23, 20, .82);
+  font-size: clamp(.82rem, 2.5vw, 1rem);
+  line-height: 1.34;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* the tail: two stacked triangles, ink behind paper, so the outline carries
+   all the way around the bubble the way an inked panel does */
+.bubble::before,
+.bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  width: 0; height: 0;
+  border-style: solid;
+}
+.bubble::before {
+  border-width: 17px 13px 0 5px;
+  border-color: #1A1714 transparent transparent transparent;
+}
+.bubble::after {
+  border-width: 13px 9px 0 4px;
+  border-color: #FCFAF5 transparent transparent transparent;
+  margin-top: -3.5px;
+}
+
+/* A — the one who thinks it will be fine. Sits over the left figure. */
+.bubble--sun {
+  left: 44%;
+  bottom: 52vh;
+  border-color: #8A3B10;
+  box-shadow: 3px 4px 0 rgba(138, 59, 16, .8);
+}
+.bubble--sun::before { left: 22%; border-color: #8A3B10 transparent transparent transparent; }
+.bubble--sun::after { left: calc(22% + 1px); }
+
+/* B — the one who has read the opening hours. Over the right figure. */
+.bubble--curse {
+  left: 57%;
+  bottom: 57vh;
+  border-color: #7A0C14;
+  box-shadow: 3px 4px 0 rgba(122, 12, 20, .8);
+}
+.bubble--curse::before { right: 22%; border-width: 17px 5px 0 13px; border-color: #7A0C14 transparent transparent transparent; }
+.bubble--curse::after { right: calc(22% + 1px); border-width: 13px 4px 0 9px; }
+
+/* Narration moves off the cast entirely and reads as a caption over the sky. */
+.journey__stage .corridor__script {
+  bottom: auto;
+  top: 16vh;
+}
+
+@media (max-width: 640px) {
+  .bubble {
+    max-width: min(20ch, 62vw);
+    padding: var(--s-2) var(--s-3);
+    border-width: 2px;
+    border-radius: 15px;
+  }
+  .bubble--sun { left: 36%; bottom: 46vh; }
+  .bubble--curse { left: 64%; bottom: 53vh; }
+  .journey__stage .corridor__script { top: 11vh; }
+}
+
+/* Short screens: there is no room above a head, so they tuck in closer. */
+@media (max-height: 560px) {
+  .bubble--sun { bottom: 44vh; }
+  .bubble--curse { bottom: 50vh; }
+  .journey__stage .corridor__script { top: 8vh; }
 }

@@ -102,11 +102,11 @@ export function buildSchedule(
       // cover that ground or the stations would sit on top of each other. It
       // just passes through bare world rather than being cut out.
       const depth = leg?.depth ?? node.depth;
-      // The floor exists only so a degenerate run cannot be zero-height. It is
-      // deliberately below the shortest real run (700 units, 0.37 screens),
-      // because a floor that actually bit would stretch the short runs and
-      // break the proportions this is all built on.
-      const screens = Math.max(0.35, depth / perScreen);
+      // The floor exists only so a degenerate run cannot be zero-height, and it
+      // must stay BELOW the shortest real run — the moment it bites it stretches
+      // that run and the proportions stop being true. It has caught the two
+      // streets to Bethune House twice now; at 0.12 it is well clear.
+      const screens = Math.max(0.12, depth / perScreen);
 
       if (leg) {
         for (const it of leg.items) items.push({ ...it, z: it.z + z });

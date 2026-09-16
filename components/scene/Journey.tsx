@@ -219,8 +219,17 @@ export function Journey({
         const hold = Number(node.dataset.hold ?? 420);
         const a = beatAlpha({ z: bz, hold, voice: "narrate", text: "" }, cam);
         node.style.opacity = a.toFixed(3);
-        node.style.transform = `translateY(${((1 - a) * 16).toFixed(1)}px)`;
-        node.style.pointerEvents = a > 0.5 ? "auto" : "none";
+        if (node.dataset.bubble === undefined) {
+          node.style.transform = `translateY(${((1 - a) * 16).toFixed(1)}px)`;
+        } else {
+          // A bubble pops out from the speaker's head rather than sliding: it
+          // overshoots very slightly, which is what makes it read as spoken.
+          const pop = a < 0.35 ? a / 0.35 : 1;
+          const scale = 0.72 + pop * 0.3 - Math.max(0, pop - 0.86) * 0.14;
+          node.style.transform =
+            `translate(-50%, ${((1 - a) * 10).toFixed(1)}px) scale(${scale.toFixed(3)})`;
+        }
+        node.style.pointerEvents = "none";
       }
 
       // The panels. Each is parked below the fold and slides up over the view
@@ -361,16 +370,26 @@ export function Journey({
           <RearActor id="sun" walking={walking} sitting={sitting} className="rear rear--a" />
         </div>
 
+        {/* Narration is the voice over the scene; it sits clear of the cast. */}
         <div className="corridor__script">
-          {schedule.beats.map((b, i) => (
-            <p key={i} data-beat="" data-z={b.z} data-hold={b.hold ?? 420}
-              className={`beat beat--${b.voice}`} style={{ opacity: 0 }}>
-              {b.voice !== "narrate" && (
-                <span className="beat__who">{b.voice === "sun" ? "A" : "B"}</span>
-              )}
-              <span className="beat__t">{b.text}</span>
-            </p>
-          ))}
+          {schedule.beats.map((b, i) =>
+            b.voice !== "narrate" ? null : (
+              <p key={i} data-beat="" data-z={b.z} data-hold={b.hold ?? 420}
+                className="beat beat--narrate" style={{ opacity: 0 }}>
+                {b.text}
+              </p>
+            ))}
+        </div>
+
+        {/* What the two of them actually say, over whichever of them said it. */}
+        <div className="bubbles" aria-hidden="false">
+          {schedule.beats.map((b, i) =>
+            b.voice === "narrate" ? null : (
+              <div key={i} data-beat="" data-bubble="" data-z={b.z} data-hold={b.hold ?? 420}
+                className={`bubble bubble--${b.voice}`} style={{ opacity: 0 }}>
+                <span className="bubble__body">{b.text}</span>
+              </div>
+            ))}
         </div>
 
         {/* Every panel lives in the stage, parked below the fold. None of them

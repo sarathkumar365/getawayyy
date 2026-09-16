@@ -97,6 +97,17 @@ export type Itinerary = {
  * one — while pulling the ratio down to about 2x. The clock label on screen
  * still reports the real time, so nothing is being claimed falsely.
  */
+/**
+ * One factor on the whole world.
+ *
+ * Shortening the walk by moving the camera FASTER would have broken the look:
+ * at 1900 units of ground per viewport the camera already covers most of what
+ * it can see in a single screen, and any faster makes props appear and vanish
+ * within one. So the ground itself gets shorter instead. Applied to every term
+ * below, so the runs keep their proportions exactly.
+ */
+const DEPTH_SCALE = 0.6;
+
 const DEPTH_FLOOR = 1500;
 const DEPTH_K = 260;
 const DEPTH_CEIL = 6200;
@@ -110,10 +121,11 @@ const NIGHT_DEPTH = 2600;
 const LINK_FLOOR = 700;
 
 function depthFor(minutes: number, overnight: boolean, empty: boolean): number {
-  if (overnight) return NIGHT_DEPTH;
+  if (overnight) return Math.round(NIGHT_DEPTH * DEPTH_SCALE);
   const m = Math.max(0, minutes);
   const floor = empty ? LINK_FLOOR : DEPTH_FLOOR;
-  return Math.min(DEPTH_CEIL, Math.round(floor + DEPTH_K * Math.sqrt(m)));
+  const d = Math.min(DEPTH_CEIL, floor + DEPTH_K * Math.sqrt(m));
+  return Math.round(d * DEPTH_SCALE);
 }
 
 /* -------------------------------------------------------------- photos -- */
