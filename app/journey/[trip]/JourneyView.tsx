@@ -8,7 +8,6 @@ import "@/styles/journey.css";
 import "@/styles/ending.css";
 import { SmoothScroll } from "@/components/feel/SmoothScroll";
 import { PointerTrail } from "@/components/feel/PointerTrail";
-import { Ambience } from "@/components/feel/Ambience";
 import { Celestial } from "@/components/scene/Celestial";
 import { Journey } from "@/components/scene/Journey";
 import { tripById } from "@/lib/data";
@@ -41,8 +40,6 @@ export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
         <PointerTrail />
         <div className="sky" aria-hidden="true" />
 
-        <Ambience />
-
         <button
           type="button"
           className="journey__mapbtn"
@@ -64,7 +61,7 @@ export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
           arrivals={stage?.arrivals}
         />
 
-        <TripMap open={mapOpen} onClose={() => setMapOpen(false)} />
+        <TripMap trip={trip} open={mapOpen} onClose={() => setMapOpen(false)} />
 
         <JourneyEnd trip={trip} stations={itinerary.stations} />
       </div>

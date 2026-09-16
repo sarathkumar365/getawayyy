@@ -7,13 +7,6 @@
 
 .journey { position: relative; }
 
-/* The walk carries a Map button in the top right, so the sound toggle sits
-   along from it. Nowhere else needs the gap. */
-[data-world] { --ambience-right: calc(var(--s-3) + 5.4rem); }
-@media (max-width: 560px) {
-  [data-world] { --ambience-right: calc(var(--s-3) + 4.6rem); }
-}
-
 .journey__stage {
   position: sticky;
   top: 0;
@@ -270,6 +263,44 @@
   display: inline-block; width: 22px; height: 3px; border-radius: 2px;
   margin-right: 7px; vertical-align: middle;
 }
+
+.maplegend__note { text-transform: none; letter-spacing: 0; opacity: .8; }
+
+/* ---- the city trips: no plot, just the day in order ----
+   Montreal and Quebec City resolve to one coordinate each, so their map is the
+   sequence rather than the geography. */
+.dayline { display: flex; flex-direction: column; gap: var(--s-4); }
+.dayline__label {
+  font-size: var(--step--1); font-family: var(--font-body); font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint);
+  margin: 0 0 var(--s-2);
+}
+.dayline__stops { list-style: none; margin: 0; padding: 0 0 0 var(--s-4); }
+.dayline__stop {
+  position: relative;
+  display: flex; gap: var(--s-3); align-items: baseline;
+  padding: var(--s-2) 0;
+}
+/* The line down the day, and a node on it per stop. The day's colour arrives
+   as --day-ink, NOT --ink: --ink is the body text token, and setting that on a
+   section repaints every word inside it. */
+.dayline__stop::before {
+  content: ""; position: absolute; left: calc(var(--s-4) * -1 + 3px); top: 0; bottom: 0;
+  width: 2px; background: var(--day-ink, var(--rule-strong));
+}
+.dayline__stop::after {
+  content: ""; position: absolute; left: calc(var(--s-4) * -1); top: 50%;
+  width: 8px; height: 8px; margin-top: -4px; border-radius: 99px;
+  background: var(--paper-raised); border: 2px solid var(--day-ink, var(--rule-strong));
+}
+.dayline__stop:first-child::before { top: 50%; }
+.dayline__stop:last-child::before { bottom: 50%; }
+.dayline__time {
+  flex: 0 0 auto; font-family: var(--font-mono); font-weight: 600;
+  font-size: var(--step--1); font-variant-numeric: tabular-nums;
+  color: var(--ink-faint);
+}
+.dayline__name { color: var(--ink); }
 
 .daylinks { display: flex; flex-wrap: wrap; gap: var(--s-2); }
 .daylinks .btn {

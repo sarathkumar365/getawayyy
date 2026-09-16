@@ -6,9 +6,7 @@ import { useRouter } from "next/navigation";
 import "@/styles/opening.css";
 import { Actor } from "@/components/characters/Actor";
 import { SpeechBubble } from "@/components/characters/SpeechBubble";
-import { Ambience } from "@/components/feel/Ambience";
 import { beat, type Line } from "@/lib/characters/dialogue";
-import { wakeVoice } from "@/lib/audio/voice";
 import type { DetailId } from "@/lib/characters/detailed";
 import type { Expression } from "@/components/characters/Actor";
 import type { ArmPose } from "@/lib/characters/rig";
@@ -60,15 +58,12 @@ export function Opening({ walkable, rest }: { walkable: TripCard; rest: TripCard
 
   /** They turn away, and then the walk starts. */
   const start = useCallback(() => {
-    void wakeVoice();
     setLeaving(true);
     window.setTimeout(() => router.push(`/journey/${walkable.id}`), 760);
   }, [router, walkable.id]);
 
   return (
     <main className={`opening ${leaving ? "is-leaving" : ""}`}>
-      <Ambience />
-
       <header className="opening__head">
         <p className="opening__eyebrow">For Anjali</p>
         <h1 className="opening__title">Five directions, one October</h1>
