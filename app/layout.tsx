@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import "@/styles/tokens.css";
-import "@/styles/devnav.css";
-import { DevNav } from "@/components/DevNav";
 
 export const metadata: Metadata = {
   title: "Five directions, one October",
@@ -24,7 +22,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <DevNav />
         {children}
       </body>
     </html>

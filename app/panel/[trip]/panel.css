@@ -1,5 +1,5 @@
-/* Review surface for the station panels. Not the journey — the journey is
-   step 6. This exists so every block can be seen against real data. */
+/* Every stop on one page — the way back to one card without walking the whole
+   weekend again to reach it. */
 
 .panel-page {
   max-width: 900px;
@@ -17,11 +17,6 @@
   color: var(--ink-faint); font-weight: 600; margin: 0;
 }
 .panel-page .lede { margin: 0; color: var(--ink-soft); max-width: 60ch; }
-.panel-page code {
-  font-family: var(--font-mono); font-size: .9em;
-  background: var(--paper-sunk); padding: 0 .3em; border-radius: 4px;
-}
-
 .picker { display: flex; flex-wrap: wrap; gap: var(--s-2); }
 .picker a {
   font: inherit; font-size: var(--step--1); cursor: pointer; text-decoration: none;
@@ -45,3 +40,12 @@
   background: linear-gradient(180deg, var(--w-deep) 0%, var(--w-accent) 140%);
   padding-top: var(--s-7);
 }
+
+.panel-page__back {
+  display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5);
+  margin: 0; font-size: var(--step--1);
+}
+.panel-page__back a {
+  color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px;
+}
+.panel-page__back a:hover { color: var(--w-accent, var(--ink)); }

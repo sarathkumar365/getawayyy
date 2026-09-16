@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type JSX } from "react";
 import { gsap } from "gsap";
+import "@/styles/rain.css";
 
 export type RainProps = {
   /**

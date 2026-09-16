@@ -1,0 +1,4 @@
+/* The rain canvas, with the component that draws it — one leg of one trip
+   earns real rain, and it covers the whole stage while it falls. */
+.rain { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .rain { display: none } }

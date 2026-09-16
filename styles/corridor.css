@@ -1,0 +1,79 @@
+/* =========================================================================
+   The corridor: the ground, the road, the props on it, and the two of them
+   walking away from you down the middle.
+
+   Extracted from app/walk/walk.css, which was a scratch page's stylesheet that
+   the real journey happened to be borrowing from.
+   ========================================================================= */
+
+.corridor__world { position: absolute; inset: 0; }
+
+/* Every tree, house and lamp post. Placed from JavaScript every frame. */
+.prop {
+  position: absolute; left: 0; top: 0;
+  will-change: transform, opacity;
+  transform-origin: 50% 100%;
+}
+
+.corridor__ground {
+  position: absolute; left: 0; right: 0; top: 47%; bottom: 0;
+  background: linear-gradient(180deg,
+    var(--ground-far, #2C3830) 0%, var(--ground-near, #141C18) 100%);
+}
+
+/* The road itself, rebuilt from the curve every frame. */
+.corridor__surface { position: absolute; inset: 0; width: 100%; height: 100%; }
+.corridor__shoulder { fill: var(--road-far, #3A4450); opacity: .55; }
+.corridor__tarmac { fill: var(--road-near, #1A2028); }
+
+/* ---- the cast, walking into the corridor ahead of her ---- */
+.corridor__cast { position: absolute; inset: 0; pointer-events: none; }
+/* Close enough to be following them, not watching from across the road. */
+.rear { position: absolute; bottom: 9vh; height: 42vh; }
+.rear svg { height: 100%; width: auto; display: block; }
+.rear--a { left: 44%; transform: translateX(-50%); z-index: 3; }
+.rear--b { left: 57%; transform: translateX(-50%); z-index: 2; height: 45vh; bottom: 10vh; }
+@media (max-width: 700px) {
+  .rear { height: 34vh; }
+  .rear--b { height: 36vh; }
+}
+
+/* ---- what they say, and what the walk says ---- */
+.corridor__script {
+  position: absolute; left: 0; right: 0; bottom: 16vh;
+  display: grid; place-items: start center; padding: 0 1.25rem;
+  pointer-events: none;
+}
+.beat {
+  grid-area: 1 / 1; margin: 0; max-width: 34ch; text-align: center;
+  will-change: opacity, transform;
+}
+.beat--narrate {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.15rem, 3.2vw, 1.62rem); line-height: 1.45;
+  color: var(--on-sky, #F2EEE6);
+  text-shadow: 0 1px 18px rgba(0, 0, 0, .28); text-wrap: balance;
+}
+
+/* ---- where she is, and what time it is there ---- */
+.corridor__clock {
+  position: absolute; right: 1.25rem; bottom: 2.1rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: .68rem; letter-spacing: .12em;
+  color: var(--on-sky-2, #C6C7CE); opacity: .6;
+}
+.corridor__rail {
+  position: absolute; left: 1.25rem; right: 1.25rem; bottom: 1.1rem;
+  height: 2px; border-radius: 2px;
+  background: color-mix(in srgb, var(--on-sky-2, #C6C7CE) 22%, transparent);
+}
+.corridor__rail i {
+  position: absolute; inset: 0 auto 0 0; border-radius: 2px; display: block;
+  background: color-mix(in srgb, var(--on-sky, #F2EEE6) 70%, transparent);
+}
+
+/* The only thing a bad trip id can produce. */
+.journey__missing {
+  min-height: 80vh; display: grid; place-items: center;
+  padding: 4rem 1.5rem; background: #12141A; color: #A9A79F;
+}

@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState, type JSX } from "react";
-import "@/app/feel/feel.css";
-import "@/app/walk/walk.css";
+import "@/styles/world.css";
+import "@/styles/corridor.css";
 import "@/styles/station.css";
 import "@/styles/journey.css";
 import "@/styles/ending.css";
@@ -30,7 +30,7 @@ export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
   );
 
   if (!trip || !itinerary) {
-    return <main className="walk__after"><p>No trip called {tripId}.</p></main>;
+    return <main className="journey__missing"><p>No trip called {tripId}.</p></main>;
   }
 
   return (

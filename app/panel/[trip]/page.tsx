@@ -1,25 +1,24 @@
 "use client";
 
-import { useMemo, type JSX } from "react";
+import { useEffect, useMemo, useRef, useState, type JSX } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import "@/styles/station.css";
 import "./panel.css";
-import { tripById } from "@/lib/data";
+import { featuredTrips, tripById } from "@/lib/data";
 import { itineraryFor, type Station } from "@/lib/scene/itinerary";
 import { StationPanel } from "@/components/station/StationPanel";
 import { useAnswers } from "@/lib/answers";
 import type { Trip } from "@/lib/types";
 
 /**
- * Step 4 review surface. Not the journey — the journey is step 6.
+ * Every stop on one page.
  *
- * Muskoka is what ships first, so it is the default. The other trips are here
- * only because Muskoka has no reviews, no trails and no venue choices, and a
- * block nobody has ever rendered is a block that does not work.
+ * The walk is the way in; this is for afterwards, when she wants to go back to
+ * the one with the bridge without scrolling a whole weekend to reach it. The
+ * reactions are the same ones the walk writes, so a heart left here is a heart
+ * left there.
  */
-
-const TRIPS = ["muskoka", "algonquin-haliburton", "georgian-bay", "montreal", "quebec-city"];
 
 /** Booking priority for a stop, matched by name against the trip's own list. */
 function bookingPriorities(trip: Trip): Map<string, number> {
@@ -37,9 +36,6 @@ function priorityFor(map: Map<string, number>, name: string): number | undefined
 }
 
 export default function PanelPage(): JSX.Element {
-  // One URL per trip, so each is directly reachable and can be checked without
-  // driving a browser — which matters, since the rich blocks live in the trips
-  // Muskoka has none of.
   const params = useParams<{ trip: string }>();
   const tripId = params?.trip ?? "muskoka";
   const { answers, loaded, reactToStop, setNote } = useAnswers();
@@ -50,39 +46,54 @@ export default function PanelPage(): JSX.Element {
   );
   const bookings = useMemo(() => (trip ? bookingPriorities(trip) : new Map()), [trip]);
 
-  if (!trip) return <main className="panel-page"><p>No trip {tripId}.</p></main>;
+  const host = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState<Set<number>>(() => new Set());
+
+  useEffect(() => {
+    const root = host.current;
+    if (!root) return undefined;
+    const io = new IntersectionObserver((entries) => {
+      const hit: number[] = [];
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        hit.push(Number(e.target.getAttribute("data-slot")));
+        io.unobserve(e.target);
+      }
+      if (hit.length > 0) setNear((p) => new Set([...p, ...hit]));
+    }, { rootMargin: "400px 0px" });
+    for (const s of root.querySelectorAll("[data-slot]")) io.observe(s);
+    return () => io.disconnect();
+  }, [tripId, stations.length]);
+
+  if (!trip) return <main className="panel-page"><p>No trip called {tripId}.</p></main>;
 
   const reacted = Object.keys(answers.stops).length;
-  const noted = Object.keys(answers.notes).filter((k) => k.includes(":")).length;
 
   return (
     <main className="panel-page" data-world={tripId}>
       <header className="panel-page__head">
-        <p className="eyebrow">Step 4 · station panels</p>
+        <p className="eyebrow">Every stop</p>
         <h1>{trip.name}</h1>
-        <p className="lede">
-          Every station this trip has, rendered from <code>trips.json</code> through
-          the derivation in <code>lib/scene/itinerary.ts</code>. The reactions are live —
-          they write to localStorage and survive a reload.
-        </p>
+        <p className="lede">{trip.tagline ?? trip.summary}</p>
 
         <div className="picker">
-          {TRIPS.map((id) => (
-            <Link key={id} href={`/panel/${id}`} aria-current={id === tripId ? "page" : undefined}>
-              {id}
+          {featuredTrips.map((t) => (
+            <Link key={t.id} href={`/panel/${t.id}`}
+              aria-current={t.id === tripId ? "page" : undefined}>
+              {t.name}
             </Link>
           ))}
         </div>
 
         <p className="tally">
-          {stations.length} stations
-          {loaded && <> · {reacted} reacted to · {noted} with a note</>}
+          {stations.length} stops
+          {loaded && reacted > 0 && <> · {reacted} you have marked</>}
         </p>
       </header>
 
-      <div className="panel-page__list">
-        {stations.map((s) => (
-          <div key={s.id} className="panel-page__slot">
+      <div className="panel-page__list" ref={host}>
+        {stations.map((s, i) => (
+          <div key={s.id} className="panel-page__slot" data-slot={i}>
             <StationPanel
               station={s}
               bookingPriority={priorityFor(bookings, s.stop.name)}
@@ -90,10 +101,16 @@ export default function PanelPage(): JSX.Element {
               note={answers.notes[s.key]}
               onReact={reactToStop}
               onNote={setNote}
+              active={near.has(i)}
             />
           </div>
         ))}
       </div>
+
+      <p className="panel-page__back">
+        <Link href={`/journey/${trip.id}`}>Walk this one</Link>
+        <Link href="/">All five</Link>
+      </p>
     </main>
   );
 }
