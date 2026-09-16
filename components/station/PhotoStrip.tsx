@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useState, type JSX } from "react";
+import { useCallback, useRef, useState, type JSX } from "react";
 import { usePhotos, useEscape, apiSrc } from "@/components/media/usePhotos";
 
 export type PhotoStripProps = {
@@ -37,6 +37,18 @@ export function PhotoStrip({ name, local, query, active = false }: PhotoStripPro
   const api = extra.state === "ok" ? extra.photos : [];
   const count = local.length + api.length;
 
+  const rail = useRef<HTMLUListElement>(null);
+  /** Page by a whole photo. Arrows exist because a swipe is not guaranteed —
+   *  a drag that starts on an image or a button is easy for a browser to claim
+   *  as something else, and then the gallery looks like it has one photo. */
+  const page = useCallback((dir: -1 | 1) => {
+    const el = rail.current;
+    if (!el) return;
+    const cell = el.querySelector<HTMLElement>(".strip__cell");
+    const step = cell ? cell.getBoundingClientRect().width + 8 : el.clientWidth * 0.8;
+    el.scrollBy({ left: dir * step, behavior: "smooth" });
+  }, []);
+
   if (count === 0) {
     return (
       <div className="strip__empty">
@@ -55,11 +67,11 @@ export function PhotoStrip({ name, local, query, active = false }: PhotoStripPro
 
   return (
     <>
-      <ul className="strip" aria-label={`Photos of ${name}`}>
+      <ul className="strip" ref={rail} aria-label={`Photos of ${name}`}>
         {local.map((src, i) => (
           <li key={src} className="strip__cell">
             <button type="button" onClick={() => setOpen(src)} aria-label={`${name}, photo ${i + 1}`}>
-              <Image src={src} alt={`${name} — photo ${i + 1}`} fill
+              <Image src={src} alt={`${name} — photo ${i + 1}`} fill draggable={false}
                 sizes="(max-width: 700px) 80vw, 420px"
                 style={{ objectFit: "cover" }} priority={i === 0} />
             </button>
@@ -73,7 +85,7 @@ export function PhotoStrip({ name, local, query, active = false }: PhotoStripPro
               <button type="button" onClick={() => setOpen(apiSrc(p.ref, 1600))}
                 aria-label={`${name}, visitor photo`}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={apiSrc(p.ref, 800)} alt={`${name} — visitor photo`} loading="lazy" />
+                <img src={apiSrc(p.ref, 800)} alt={`${name} — visitor photo`} loading="lazy" draggable={false} />
               </button>
               {/* Google requires the credit to sit with the photo. Not optional. */}
               {credit?.name && <span className="strip__credit">{credit.name} · Google</span>}
@@ -82,11 +94,21 @@ export function PhotoStrip({ name, local, query, active = false }: PhotoStripPro
         })}
       </ul>
 
-      <p className="strip__foot">
-        {count} photo{count === 1 ? "" : "s"}
+      <div className="strip__nav">
+        {count > 1 && (
+          <>
+            <button type="button" className="strip__arrow" onClick={() => page(-1)}
+              aria-label="Previous photo">‹</button>
+            <button type="button" className="strip__arrow" onClick={() => page(1)}
+              aria-label="Next photo">›</button>
+          </>
+        )}
+        <p className="strip__foot">
+          {count} photo{count === 1 ? "" : "s"}
         {local.length > 0 && api.length > 0 && ` · ${local.length} his, ${api.length} from Google`}
-        {local.length === 0 && api.length > 0 && " from Google"}
-      </p>
+          {local.length === 0 && api.length > 0 && " from Google"}
+        </p>
+      </div>
 
       {open && (
         <div className="lightbox" role="dialog" aria-modal="true"

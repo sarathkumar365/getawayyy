@@ -63,6 +63,11 @@
   margin-inline: calc(var(--s-5) * -1);
   overflow-x: auto; scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  /* Tell the browser this strip pans HORIZONTALLY. Without it a drag that
+     begins on a photo is ambiguous — the browser can read it as the start of a
+     vertical page scroll, or as dragging the image itself, and the gallery
+     then looks like it holds one photo. */
+  touch-action: pan-x;
   /* The bar is pure chrome across the width of the photos, and the snap points
      already say it scrolls. */
   scrollbar-width: none;
@@ -76,11 +81,29 @@
   position: relative; display: block; width: 100%; aspect-ratio: 4 / 3;
   padding: 0; border: 1px solid var(--rule); border-radius: var(--radius);
   background: var(--paper-sunk); overflow: hidden; cursor: zoom-in;
+  /* A button swallows a drag on some browsers; the strip must get it. */
+  touch-action: pan-x;
+  -webkit-user-select: none; user-select: none;
 }
+.strip__cell img { -webkit-user-drag: none; user-select: none; }
 .strip__cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .strip__cell > button:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
 .strip__credit { font-size: var(--step--1); color: var(--ink-faint); }
 .strip__foot { margin: 0; font-size: var(--step--1); color: var(--ink-faint); }
+
+/* Arrows, because a swipe is never guaranteed on a given device. */
+.strip__nav { display: flex; align-items: center; gap: var(--s-2); }
+.strip__arrow {
+  flex: 0 0 auto;
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  font: inherit; font-size: 1.1rem; line-height: 1; cursor: pointer;
+  border-radius: 99px; border: 1px solid var(--rule-strong);
+  background: transparent; color: var(--ink-soft);
+}
+.strip__arrow:hover { border-color: var(--w-accent, var(--ink)); color: var(--w-accent, var(--ink)); }
+.strip__arrow:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+.strip__nav .strip__foot { margin-left: auto; }
 
 .strip__empty {
   border: 1px dashed var(--rule-strong); border-radius: var(--radius);

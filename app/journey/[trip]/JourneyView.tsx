@@ -7,6 +7,7 @@ import "@/styles/station.css";
 import "@/styles/journey.css";
 import { SmoothScroll } from "@/components/feel/SmoothScroll";
 import { PointerTrail } from "@/components/feel/PointerTrail";
+import { Ambience } from "@/components/feel/Ambience";
 import { Celestial } from "@/components/scene/Celestial";
 import { Journey } from "@/components/scene/Journey";
 import { tripById } from "@/lib/data";
@@ -40,6 +41,8 @@ export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
         <Celestial />
         <PointerTrail />
         <div className="sky" aria-hidden="true" />
+
+        <Ambience />
 
         <button
           type="button"

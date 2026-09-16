@@ -382,3 +382,37 @@
   .bubble--curse { bottom: 50vh; }
   .journey__stage .corridor__script { top: 8vh; }
 }
+
+/* =========================================================================
+   The sound toggle. Sits beside the Map button, same weight, same manner.
+   ========================================================================= */
+
+.ambience {
+  position: fixed;
+  top: max(var(--s-3), env(safe-area-inset-top));
+  right: calc(var(--s-3) + 5.4rem);
+  z-index: 100;
+  font: inherit;
+  font-size: var(--step--1);
+  font-weight: 600;
+  cursor: pointer;
+  padding: var(--s-2) var(--s-4);
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, .34);
+  background: rgba(16, 22, 30, .58);
+  color: #F2EFE8;
+  backdrop-filter: blur(8px);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.ambience:hover { background: rgba(16, 22, 30, .85); border-color: rgba(255, 255, 255, .7); }
+.ambience:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+.ambience svg { width: 14px; height: 14px; }
+.ambience.is-on { border-color: rgba(255, 216, 154, .75); color: #FFE6B4; }
+
+@media (max-width: 560px) {
+  /* Only the icons fit alongside each other on a phone. */
+  .ambience__label { display: none; }
+  .ambience { right: calc(var(--s-3) + 4.6rem); padding: var(--s-2) var(--s-3); }
+}
