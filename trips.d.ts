@@ -186,11 +186,14 @@ export interface Reviews {
 
 export interface Trail {
   name?: string;
-  length_km: number;
-  duration_min: number;
-  difficulty: string;
-  route_type: string;
-  rating: number;
+  /* Optional because the research is honest about its gaps: the Old Baldy entry
+     has no difficulty and no duration_min, only an average_time string. Typing
+     them as required made the renderer print labels over empty values. */
+  length_km?: number;
+  duration_min?: number;
+  difficulty?: string;
+  route_type?: string;
+  rating?: number;
   elevation_gain_m?: number;
   elevation_max_m?: number;
   average_time?: string;

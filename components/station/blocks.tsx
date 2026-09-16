@@ -10,8 +10,12 @@ import type { Stop, Reviews, Trail, PlaceOption, DataSource } from "@/lib/types"
  */
 export function CostLine({ stop }: { stop: Stop }): JSX.Element {
   const c = formatCost(stop.cost);
+  /* The cost is one short word; its footnote is a sentence. In a fixed grid
+     track that sentence wraps to five lines, so a cost that carries one takes
+     the full row instead. */
+  const wide = Boolean(c.note || c.estimate);
   return (
-    <div className="fact">
+    <div className={wide ? "fact fact--wide" : "fact"}>
       <dt>Cost</dt>
       <dd>
         <span className={`cost cost--${c.kind}`}>{c.label}</span>
@@ -48,8 +52,10 @@ export function PracticalRow({ stop }: { stop: Stop }): JSX.Element {
       {stop.schedule && <div className="fact"><dt>Schedule</dt><dd>{stop.schedule}</dd></div>}
       {stop.difficulty && <div className="fact"><dt>Difficulty</dt><dd>{stop.difficulty}</dd></div>}
 
+      {/* An address is a sentence, not a datum: in a shared track it wraps to
+          five lines and drags the whole row down with it. */}
       {stop.address && (
-        <div className="fact">
+        <div className="fact fact--wide">
           <dt>Where</dt>
           <dd>
             {stop.maps_query
@@ -61,7 +67,7 @@ export function PracticalRow({ stop }: { stop: Stop }): JSX.Element {
       )}
 
       {stop.phone && (
-        <div className="fact">
+        <div className="fact fact--phone">
           <dt>Phone</dt>
           <dd><a href={`tel:${stop.phone.replace(/[^+\d]/g, "")}`}>{stop.phone}</a></dd>
         </div>
@@ -188,27 +194,36 @@ export function ReviewBlock({ reviews }: { reviews: Reviews }): JSX.Element {
 export function TrailStats({ trails }: { trails: Trail[] }): JSX.Element {
   return (
     <section className="trails">
-      {trails.map((t, i) => (
-        <article key={t.url || i} className="trail">
-          {t.name && <h4 className="trail__name">{t.name}</h4>}
-          <dl className="trail__stats">
-            <div><dt>Length</dt><dd>{t.length_km} km</dd></div>
-            <div><dt>Time</dt><dd>{t.average_time ?? minutes(t.duration_min)}</dd></div>
-            <div><dt>Difficulty</dt><dd>{t.difficulty}</dd></div>
-            <div><dt>Shape</dt><dd>{t.route_type}</dd></div>
-            {t.elevation_gain_m !== undefined && (
-              <div><dt>Climb</dt><dd>{t.elevation_gain_m} m</dd></div>
+      {trails.map((t, i) => {
+        /* Only the numbers this trail actually has. A label standing over an
+           empty value reads as a hole punched in the row — and half the trails
+           in the data are missing one field or another. */
+        const stats: [string, string][] = [
+          ["Length", t.length_km !== undefined ? `${t.length_km} km` : ""],
+          ["Time", t.average_time ?? (t.duration_min !== undefined ? minutes(t.duration_min) : "")],
+          ["Difficulty", t.difficulty ?? ""],
+          ["Shape", t.route_type ?? ""],
+          ["Climb", t.elevation_gain_m !== undefined ? `${t.elevation_gain_m} m` : ""],
+          ["Rating", t.rating !== undefined ? `${t.rating.toFixed(1)} \u2605` : ""],
+        ];
+        const shown = stats.filter(([, v]) => v);
+        return (
+          <article key={t.url || i} className="trail">
+            {t.name && <h4 className="trail__name">{t.name}</h4>}
+            <dl className="trail__stats">
+              {shown.map(([label, value]) => (
+                <div key={label}><dt>{label}</dt><dd>{value}</dd></div>
+              ))}
+            </dl>
+            {t.note && <p className="trail__note">{t.note}</p>}
+            {t.url && (
+              <a className="trail__link" href={t.url} target="_blank" rel="noreferrer noopener">
+                AllTrails
+              </a>
             )}
-            <div><dt>Rating</dt><dd>{t.rating.toFixed(1)} ★</dd></div>
-          </dl>
-          {t.note && <p className="trail__note">{t.note}</p>}
-          {t.url && (
-            <a className="trail__link" href={t.url} target="_blank" rel="noreferrer noopener">
-              AllTrails
-            </a>
-          )}
-        </article>
-      ))}
+          </article>
+        );
+      })}
     </section>
   );
 }

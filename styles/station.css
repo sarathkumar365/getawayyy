@@ -7,7 +7,7 @@
 .panel {
   background: var(--paper-raised);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  padding: var(--s-5) var(--s-5) var(--s-6);
+  padding: var(--s-6) var(--s-5) var(--s-7);
   display: flex;
   flex-direction: column;
   gap: var(--s-5);
@@ -114,11 +114,15 @@
 
 /* ---- facts ---- */
 .facts {
-  display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-5); margin: 0;
+  display: grid; margin: 0;
+  grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+  gap: var(--s-3) var(--s-4);
   padding-top: var(--s-4); border-top: 1px solid var(--rule);
 }
 .fact { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.fact--wide { flex-basis: 100%; }
+.fact--wide { grid-column: 1 / -1; }
+/* A number broken across two lines stops being a number you can read back. */
+.fact--phone dd { white-space: nowrap; }
 .fact dt {
   font-size: var(--step--1); letter-spacing: .1em; text-transform: uppercase;
   color: var(--ink-faint); font-weight: 600;
@@ -186,23 +190,44 @@
 .reviews__note { margin: 0; font-size: var(--step--1); color: var(--ink-soft); }
 .reviews__note--warn { color: var(--warn); }
 
-/* ---- trails ---- */
+/* ---- trails ----
+   Two trails under one stop are two things to choose between, so each is its
+   own surface rather than a run of headings down the same sheet. */
 .trails {
-  display: flex; flex-direction: column; gap: var(--s-4);
+  display: flex; flex-direction: column; gap: var(--s-3);
   padding-top: var(--s-4); border-top: 1px solid var(--rule);
 }
-.trail__name { font-size: var(--step-1); margin: 0 0 var(--s-2); }
+.trail {
+  display: flex; flex-direction: column; gap: var(--s-3);
+  padding: var(--s-4); border-radius: var(--radius);
+  background: var(--paper-sunk); border: 1px solid var(--rule);
+  min-width: 0;
+}
+.trail__name { font-size: var(--step-1); margin: 0; line-height: 1.2; }
+
+/* A GRID, not wrapping flex. Flex sized every column to its own content, so
+   the second row's labels landed nowhere near the first row's — six numbers
+   arranged as a ragged staircase. Fixed tracks put LENGTH over SHAPE and read
+   as a spec sheet. */
 .trail__stats {
-  display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); margin: 0;
+  display: grid; margin: 0;
+  grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+  gap: var(--s-3) var(--s-4);
 }
-.trail__stats > div { display: flex; flex-direction: column; gap: 2px; }
+.trail__stats > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .trail__stats dt {
-  font-size: var(--step--1); letter-spacing: .1em; text-transform: uppercase;
+  font-size: var(--step--1); letter-spacing: .08em; text-transform: uppercase;
   color: var(--ink-faint); font-weight: 600;
+  /* The labels are the widest thing in a 6.5rem track; let them break rather
+     than push the track and overflow the card. */
+  overflow-wrap: anywhere;
 }
-.trail__stats dd { margin: 0; font-variant-numeric: tabular-nums; }
-.trail__note { margin: var(--s-2) 0 0; font-size: var(--step--1); color: var(--ink-soft); }
-.trail__link { font-size: var(--step--1); color: var(--w-accent, var(--ink-soft)); }
+.trail__stats dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.trail__note { margin: 0; font-size: var(--step--1); color: var(--ink-soft); }
+.trail__link {
+  align-self: flex-start;
+  font-size: var(--step--1); color: var(--w-accent, var(--ink-soft));
+}
 
 /* ---- options ---- */
 .options { padding-top: var(--s-4); border-top: 1px solid var(--rule); }
