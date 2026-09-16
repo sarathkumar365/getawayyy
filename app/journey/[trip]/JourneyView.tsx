@@ -5,6 +5,7 @@ import "@/app/feel/feel.css";
 import "@/app/walk/walk.css";
 import "@/styles/station.css";
 import "@/styles/journey.css";
+import "@/styles/bubble.css";
 import "@/styles/ending.css";
 import { SmoothScroll } from "@/components/feel/SmoothScroll";
 import { PointerTrail } from "@/components/feel/PointerTrail";

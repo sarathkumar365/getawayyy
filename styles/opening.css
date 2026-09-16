@@ -1,7 +1,6 @@
 /* =========================================================================
    The opening: they face you, say their piece, then turn and walk.
-   Bubble rules are shared with /stage; they live here so this page owns
-   everything it needs and does not depend on a review route's stylesheet.
+   The bubble itself is in styles/bubble.css, because the ending needs it too.
    ========================================================================= */
 
 .opening {
@@ -45,40 +44,6 @@
   margin: 0 auto;
   min-height: 9.5rem;
 }
-
-.bubble {
-  position: relative; max-width: 54ch; padding: .85rem 1rem 1.6rem;
-  border: 1.5px solid #1E1E24; border-radius: 12px;
-  background: #FFFDF8; color: #1A1714; cursor: pointer; user-select: none;
-  box-shadow: 3px 3px 0 var(--bubble-accent, #1e1e24);
-}
-.bubble--sun { --bubble-accent: #FF7A2F; margin-right: auto; }
-.bubble--curse { --bubble-accent: #C1121F; margin-left: auto; }
-.bubble::after {
-  content: ""; position: absolute; top: -9px; width: 14px; height: 14px;
-  background: #FFFDF8; border-left: 1.5px solid #1E1E24; border-top: 1.5px solid #1E1E24;
-  transform: rotate(45deg);
-}
-.bubble--left::after { left: 26px; }
-.bubble--right::after { right: 26px; }
-.bubble__text { margin: 0; font-size: 1.02rem; line-height: 1.55; min-height: 1.55em; }
-.bubble__caret {
-  display: inline-block; width: .5ch; height: 1.05em; margin-left: 1px;
-  background: var(--bubble-accent); vertical-align: -.16em;
-  animation: caret .8s steps(1) infinite;
-}
-@keyframes caret { 50% { opacity: 0 } }
-.bubble__sr {
-  position: absolute; width: 1px; height: 1px; overflow: hidden;
-  clip-path: inset(50%); white-space: nowrap;
-}
-.bubble__more {
-  position: absolute; right: .8rem; bottom: .45rem;
-  font-family: var(--font-mono); font-size: .6rem; letter-spacing: .08em;
-  text-transform: uppercase; color: #857C71;
-}
-.bubble:focus-visible { outline: 2px solid var(--bubble-accent); outline-offset: 3px; }
-@media (prefers-reduced-motion: reduce) { .bubble__caret { animation: none } }
 
 /* ---- the title, and the way out ---- */
 .opening__head {
