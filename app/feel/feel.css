@@ -16,7 +16,6 @@
     color-mix(in srgb, var(--sky-light, #fff) 46%, transparent) 0%,
     transparent 62%);
 }
-.trail { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
 
 /* ---------- page ---------- */
 .feel { position: relative; z-index: 1; }

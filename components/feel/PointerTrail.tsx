@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type JSX } from "react";
 import { gsap } from "gsap";
+import "@/styles/pointer-trail.css";
 
 export type PointerTrailProps = {
   /** Which pointer types leave a mark. Touch is off by default — a finger on an
@@ -125,5 +126,5 @@ export function PointerTrail({
     };
   }, [accept, life, weight]);
 
-  return <canvas ref={ref} className={`trail ${className ?? ""}`} aria-hidden="true" />;
+  return <canvas ref={ref} className={`pointer-trail ${className ?? ""}`} aria-hidden="true" />;
 }

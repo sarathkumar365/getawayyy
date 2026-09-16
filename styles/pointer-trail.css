@@ -1,0 +1,14 @@
+/* =========================================================================
+   The pointer trail's own canvas.
+
+   It used to be styled from app/feel/feel.css under the bare class name
+   `trail`, which is also the obvious name for a hiking trail — and the station
+   panel took that name for its trail card. A background meant for a small card
+   landed on a fixed, full-viewport canvas at z-index 60 and painted the whole
+   journey black. Hence both the specific name and the fact that the rule now
+   lives with the component that uses it.
+   ========================================================================= */
+
+.pointer-trail {
+  position: fixed; inset: 0; z-index: 60; pointer-events: none;
+}

@@ -193,7 +193,7 @@ export function ReviewBlock({ reviews }: { reviews: Reviews }): JSX.Element {
 
 export function TrailStats({ trails }: { trails: Trail[] }): JSX.Element {
   return (
-    <section className="trails">
+    <section className="trailcards">
       {trails.map((t, i) => {
         /* Only the numbers this trail actually has. A label standing over an
            empty value reads as a hole punched in the row — and half the trails
@@ -208,16 +208,16 @@ export function TrailStats({ trails }: { trails: Trail[] }): JSX.Element {
         ];
         const shown = stats.filter(([, v]) => v);
         return (
-          <article key={t.url || i} className="trail">
-            {t.name && <h4 className="trail__name">{t.name}</h4>}
-            <dl className="trail__stats">
+          <article key={t.url || i} className="trailcard">
+            {t.name && <h4 className="trailcard__name">{t.name}</h4>}
+            <dl className="trailcard__stats">
               {shown.map(([label, value]) => (
                 <div key={label}><dt>{label}</dt><dd>{value}</dd></div>
               ))}
             </dl>
-            {t.note && <p className="trail__note">{t.note}</p>}
+            {t.note && <p className="trailcard__note">{t.note}</p>}
             {t.url && (
-              <a className="trail__link" href={t.url} target="_blank" rel="noreferrer noopener">
+              <a className="trailcard__link" href={t.url} target="_blank" rel="noreferrer noopener">
                 AllTrails
               </a>
             )}
