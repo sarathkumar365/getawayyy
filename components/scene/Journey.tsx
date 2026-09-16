@@ -80,10 +80,10 @@ function Bust({ who, face }: { who: "sun" | "curse"; face?: BeatFace }): JSX.Ele
         id={who}
         uid={`bust-${who}-${face?.eye ?? "o"}-${face?.mouth ?? "s"}-${face?.brow ?? "n"}`}
         crop="head"
-        brow={(face?.brow ?? "neutral") as never}
-        eye={(face?.eye ?? "open") as never}
-        mouth={(face?.mouth ?? "smile") as never}
-        emote={(face?.emote ?? "none") as never}
+        brow={face?.brow ?? "neutral"}
+        eye={face?.eye ?? "open"}
+        mouth={face?.mouth ?? "smile"}
+        emote={face?.emote ?? "none"}
       />
     </span>
   );

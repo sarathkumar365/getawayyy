@@ -13,6 +13,7 @@
  */
 
 import { STRAIGHT, type Control, type Path } from "./path";
+import type { DBrow, DEmote, DEye, DMouth } from "@/lib/characters/detailed";
 
 export type SceneItem = {
   /** distance along the path */
@@ -155,12 +156,20 @@ export function verge(
 
 export type BeatVoice = "narrate" | "sun" | "curse";
 
-/** What their face is doing while they say it. Keys are the front rig's. */
+/**
+ * What their face is doing while they say it.
+ *
+ * Typed against the rig's own unions rather than plain strings. Loose strings
+ * here, plus a cast at the point of use, let two mouths that do not exist
+ * ("frown", "flat") reach the renderer and take the whole page down with
+ * "mouthEl is not a function" — a runtime crash for something the compiler
+ * could have caught on the spot.
+ */
 export type BeatFace = {
-  brow?: string;
-  eye?: string;
-  mouth?: string;
-  emote?: string;
+  brow?: DBrow;
+  eye?: DEye;
+  mouth?: DMouth;
+  emote?: DEmote;
 };
 
 export type LegBeat = {
