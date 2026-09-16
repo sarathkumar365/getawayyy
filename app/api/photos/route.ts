@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { searchPlace, hasKey } from "@/lib/places";
+import { isKnownQuery } from "@/lib/data";
 
 /**
  * GET /api/photos?q=<maps_query>
@@ -15,6 +16,10 @@ export const revalidate = 604800; // 7 days — venue photos barely change
 export async function GET(request: Request) {
   const q = new URL(request.url).searchParams.get("q")?.trim();
   if (!q) return NextResponse.json({ error: "missing q" }, { status: 400 });
+
+  // Only the places this site actually has. Google charges per search and this
+  // route has no auth on it, so an arbitrary q is someone else spending the key.
+  if (!isKnownQuery(q)) return NextResponse.json({ error: "unknown place" }, { status: 404 });
 
   // No key configured is a normal state, not an error: the site falls back to
   // the bundled photos and the 23 ratings already in trips.json.

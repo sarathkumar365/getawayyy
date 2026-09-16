@@ -9,7 +9,10 @@ import { photoMediaUrl, hasKey } from "@/lib/places";
 export async function GET(request: Request) {
   const params = new URL(request.url).searchParams;
   const ref = params.get("ref");
-  const w = Math.min(Math.max(Number(params.get("w") ?? 1024), 200), 1600);
+  // Number("wide") is NaN, and NaN survives min/max — which put maxWidthPx=NaN
+  // in the upstream URL and turned a typo into a 502.
+  const asked = Number(params.get("w"));
+  const w = Math.min(Math.max(Number.isFinite(asked) ? asked : 1024, 200), 1600);
 
   if (!ref) return new Response("missing ref", { status: 400 });
   // Photo resource names look like "places/<id>/photos/<token>". Anything else

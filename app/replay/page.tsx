@@ -38,8 +38,20 @@ export default function ReplayPage(): JSX.Element {
   const stopEntries = Object.entries(a.stops);
   const noteEntries = Object.entries(a.notes);
 
+  /**
+   * A stop key is `<trip>:<day>:<time>` — and the TIME HAS A COLON IN IT.
+   * Splitting on every colon gave four parts and a time of "22", which matched
+   * nothing, so every stop she marked came back to him as the raw key
+   * `muskoka:0:22:15` instead of "Bracebridge Falls night walk". Split on the
+   * first two only.
+   */
   const nameOf = (key: string): string => {
-    const [tripId, day, time] = key.split(":");
+    const a1 = key.indexOf(":");
+    const a2 = key.indexOf(":", a1 + 1);
+    if (a1 < 0 || a2 < 0) return key;
+    const tripId = key.slice(0, a1);
+    const day = key.slice(a1 + 1, a2);
+    const time = key.slice(a2 + 1);
     const t = allTrips.find((x) => x.id === tripId);
     const stop = t?.days.find((d) => String(d.day) === day)?.stops.find((s) => s.time === time);
     return stop?.name ?? key;

@@ -73,7 +73,7 @@ export function PhotoStrip({ name, local, query, active = false }: PhotoStripPro
             <button type="button" onClick={() => setOpen(src)} aria-label={`${name}, photo ${i + 1}`}>
               <Image src={src} alt={`${name} — photo ${i + 1}`} fill draggable={false}
                 sizes="(max-width: 700px) 80vw, 420px"
-                style={{ objectFit: "cover" }} priority={i === 0} />
+                style={{ objectFit: "cover" }} priority={active && i === 0} />
             </button>
           </li>
         ))}

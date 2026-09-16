@@ -90,3 +90,21 @@ export function coordFor(mapsQuery: string | null): Coord | undefined {
 /** Google Maps deep link. The query string is what the file gives us. */
 export const mapsUrl = (mapsQuery: string): string =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}`;
+
+/**
+ * Every `maps_query` the site will ever ask for.
+ *
+ * /api/photos calls a BILLED Google endpoint and sits on a public URL with no
+ * auth in front of it, so without this anyone who finds the link can spend the
+ * key on arbitrary searches. The site itself only ever looks up a stop's own
+ * query, and every one of them is in this file — so the allowlist is exact
+ * rather than a guess, and a query that is not in it is not a query this site
+ * makes.
+ */
+const QUERIES: ReadonlySet<string> = new Set(
+  allTrips.flatMap((t) => allStops(t))
+    .map((s) => s.maps_query)
+    .filter((q): q is string => Boolean(q)),
+);
+
+export const isKnownQuery = (q: string): boolean => QUERIES.has(q);

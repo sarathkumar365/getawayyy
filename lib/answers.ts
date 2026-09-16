@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from "lz-string";
 
 /**
@@ -100,82 +100,129 @@ export function readReplayFragment(): Answers | null {
   return m?.[1] ? decodeAnswers(m[1]) : null;
 }
 
+/* ----------------------------------------------------------------- store -- */
+
+/**
+ * ONE store, shared by every component that asks for it.
+ *
+ * This used to be a plain `useState` inside the hook, which meant each caller
+ * got its own copy of her answers over one localStorage key. On the journey
+ * page there are two callers — the station panels inside `Journey`, and the
+ * questions in `JourneyEnd` — and both were mounted the whole time. So she
+ * would walk the trip hearting stops (Journey's copy writes the whole object
+ * to storage), reach the end, tap "Yes, this one", and JourneyEnd would write
+ * ITS copy: the one hydrated at page load, before any of those hearts existed.
+ * Every stop reaction was silently erased, the end screen counted zero, and
+ * the link she sent back carried none of it.
+ *
+ * A module-level store with subscribers fixes it at the root: there is one
+ * value, every caller sees the same one, and a write is a write. The `storage`
+ * listener extends that to a second tab.
+ */
+
+type Store = { answers: Answers; loaded: boolean };
+
+const EMPTY_STORE: Store = { answers: emptyAnswers(), loaded: false };
+
+let store: Store = EMPTY_STORE;
+let hydrated = false;
+const subs = new Set<() => void>();
+
+function publish(next: Store): void {
+  store = next;
+  for (const fn of subs) fn();
+}
+
+function readStored(): Answers | null {
+  try {
+    const raw = window.localStorage.getItem(KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Answers;
+    return parsed?.v === 1 ? parsed : null;
+  } catch {
+    // Private mode, disabled storage, corrupt JSON — start clean rather than
+    // breaking the page. Her answers just won't survive a reload.
+    return null;
+  }
+}
+
+/**
+ * Hydrate after mount, never during render: localStorage does not exist while
+ * prerendering, and reading it in render desyncs the server and client markup.
+ */
+function hydrate(): void {
+  if (hydrated) return;
+  hydrated = true;
+  publish({ answers: readStored() ?? store.answers, loaded: true });
+}
+
+function subscribe(fn: () => void): () => void {
+  subs.add(fn);
+  return () => { subs.delete(fn); };
+}
+
+const getSnapshot = (): Store => store;
+const getServerSnapshot = (): Store => EMPTY_STORE;
+
+/** Another tab wrote; take its version rather than fighting over the key. */
+if (typeof window !== "undefined") {
+  window.addEventListener("storage", (e) => {
+    if (e.key !== KEY) return;
+    const next = readStored();
+    if (next) publish({ answers: next, loaded: true });
+  });
+}
+
+function update(patch: (prev: Answers) => Answers): void {
+  const next = { ...patch(store.answers), updatedAt: new Date().toISOString() };
+  try {
+    window.localStorage.setItem(KEY, JSON.stringify(next));
+  } catch {
+    /* nothing we can do; keep it in memory */
+  }
+  publish({ answers: next, loaded: true });
+}
+
 /* ------------------------------------------------------------------ hook -- */
 
+const setName = (name: string): void => update((p) => ({ ...p, name }));
+
+const setWeight = (key: string, value: number): void =>
+  update((p) => ({ ...p, weights: { ...p.weights, [key]: value } }));
+
+const reactToTrip = (tripId: string, r: Reaction): void =>
+  update((p) => ({ ...p, trips: { ...p.trips, [tripId]: r } }));
+
+const reactToStop = (key: string, r: StopReaction): void =>
+  update((p) => {
+    const stops = { ...p.stops };
+    // Tapping the same reaction again clears it.
+    if (stops[key] === r) delete stops[key];
+    else stops[key] = r;
+    return { ...p, stops };
+  });
+
+const setNote = (tripId: string, note: string): void =>
+  update((p) => ({ ...p, notes: { ...p.notes, [tripId]: note } }));
+
+const setHonest = (id: string, changed: boolean, note?: string): void =>
+  update((p) => ({ ...p, honest: { ...p.honest, [id]: { changed, note } } }));
+
+const setWeekend = (weekend: string): void => update((p) => ({ ...p, weekend }));
+
+const setPick = (tripId: string, why: string): void =>
+  update((p) => ({ ...p, pick: { tripId, why } }));
+
+const setMissing = (missing: string): void => update((p) => ({ ...p, missing }));
+
+const reset = (): void => {
+  try { window.localStorage.removeItem(KEY); } catch { /* ignore */ }
+  publish({ answers: emptyAnswers(), loaded: true });
+};
+
 export function useAnswers() {
-  const [answers, setAnswers] = useState<Answers>(emptyAnswers);
-  const [loaded, setLoaded] = useState(false);
-
-  // Hydrate after mount — localStorage doesn't exist during prerender, and
-  // reading it in render would desync the server and client markup.
-  useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem(KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as Answers;
-        if (parsed?.v === 1) setAnswers(parsed);
-      }
-    } catch {
-      // Private mode, disabled storage, corrupt JSON — start clean rather than
-      // breaking the page. Her answers just won't survive a reload.
-    }
-    setLoaded(true);
-  }, []);
-
-  const update = useCallback((patch: (prev: Answers) => Answers) => {
-    setAnswers((prev) => {
-      const next = { ...patch(prev), updatedAt: new Date().toISOString() };
-      try {
-        window.localStorage.setItem(KEY, JSON.stringify(next));
-      } catch {
-        /* nothing we can do; keep it in memory */
-      }
-      return next;
-    });
-  }, []);
-
-  const setName = useCallback(
-    (name: string) => update((p) => ({ ...p, name })), [update]);
-
-  const setWeight = useCallback(
-    (key: string, value: number) =>
-      update((p) => ({ ...p, weights: { ...p.weights, [key]: value } })), [update]);
-
-  const reactToTrip = useCallback(
-    (tripId: string, r: Reaction) =>
-      update((p) => ({ ...p, trips: { ...p.trips, [tripId]: r } })), [update]);
-
-  const reactToStop = useCallback(
-    (key: string, r: StopReaction) =>
-      update((p) => {
-        const stops = { ...p.stops };
-        // Tapping the same reaction again clears it.
-        if (stops[key] === r) delete stops[key];
-        else stops[key] = r;
-        return { ...p, stops };
-      }), [update]);
-
-  const setNote = useCallback(
-    (tripId: string, note: string) =>
-      update((p) => ({ ...p, notes: { ...p.notes, [tripId]: note } })), [update]);
-
-  const setHonest = useCallback(
-    (id: string, changed: boolean, note?: string) =>
-      update((p) => ({ ...p, honest: { ...p.honest, [id]: { changed, note } } })), [update]);
-
-  const setWeekend = useCallback(
-    (weekend: string) => update((p) => ({ ...p, weekend })), [update]);
-
-  const setPick = useCallback(
-    (tripId: string, why: string) => update((p) => ({ ...p, pick: { tripId, why } })), [update]);
-
-  const setMissing = useCallback(
-    (missing: string) => update((p) => ({ ...p, missing })), [update]);
-
-  const reset = useCallback(() => {
-    try { window.localStorage.removeItem(KEY); } catch { /* ignore */ }
-    setAnswers(emptyAnswers());
-  }, []);
+  const { answers, loaded } = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  useEffect(hydrate, []);
 
   return {
     answers,

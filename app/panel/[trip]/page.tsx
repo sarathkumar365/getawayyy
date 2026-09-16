@@ -27,6 +27,9 @@ function bookingPriorities(trip: Trip): Map<string, number> {
   return m;
 }
 
+/** Shared empty set, so switching trips does not allocate one per render. */
+const EMPTY_SLOTS: ReadonlySet<number> = new Set<number>();
+
 function priorityFor(map: Map<string, number>, name: string): number | undefined {
   const key = name.toLowerCase();
   for (const [b, p] of map) {
@@ -47,7 +50,17 @@ export default function PanelPage(): JSX.Element {
   const bookings = useMemo(() => (trip ? bookingPriorities(trip) : new Map()), [trip]);
 
   const host = useRef<HTMLDivElement>(null);
-  const [near, setNear] = useState<Set<number>>(() => new Set());
+  /**
+   * Which panels are near enough to be worth their photos. Keyed by trip,
+   * because the picker is a client-side navigation: the component instance is
+   * reused, and a bare Set carried the previous trip's indices into the new one
+   * — which fired photo lookups for stops she had not scrolled to yet, the very
+   * thing the gating exists to prevent.
+   */
+  const [near, setNear] = useState<{ trip: string; slots: Set<number> }>(
+    () => ({ trip: tripId, slots: new Set() }),
+  );
+  const seen = near.trip === tripId ? near.slots : EMPTY_SLOTS;
 
   useEffect(() => {
     const root = host.current;
@@ -59,7 +72,12 @@ export default function PanelPage(): JSX.Element {
         hit.push(Number(e.target.getAttribute("data-slot")));
         io.unobserve(e.target);
       }
-      if (hit.length > 0) setNear((p) => new Set([...p, ...hit]));
+      if (hit.length > 0) {
+        setNear((p) => ({
+          trip: tripId,
+          slots: new Set(p.trip === tripId ? [...p.slots, ...hit] : hit),
+        }));
+      }
     }, { rootMargin: "400px 0px" });
     for (const s of root.querySelectorAll("[data-slot]")) io.observe(s);
     return () => io.disconnect();
@@ -67,7 +85,10 @@ export default function PanelPage(): JSX.Element {
 
   if (!trip) return <main className="panel-page"><p>No trip called {tripId}.</p></main>;
 
-  const reacted = Object.keys(answers.stops).length;
+  // Only this trip's stops. The count sits under this trip's name, and
+  // answers.stops holds every trip she has walked.
+  const keys = new Set(stations.map((s) => s.key));
+  const reacted = Object.keys(answers.stops).filter((k) => keys.has(k)).length;
 
   return (
     <main className="panel-page" data-world={tripId}>
@@ -101,7 +122,7 @@ export default function PanelPage(): JSX.Element {
               note={answers.notes[s.key]}
               onReact={reactToStop}
               onNote={setNote}
-              active={near.has(i)}
+              active={seen.has(i)}
             />
           </div>
         ))}
