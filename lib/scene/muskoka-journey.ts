@@ -124,6 +124,14 @@ type Authored = {
   terrain: Terrain;
   amp: number;
   climb: number;
+  /**
+   * Whether it rains on THIS run. Muskoka's October wet-day rate is 0.31, and
+   * that number means 31% of October days see rain — not that it rains for 31%
+   * of a weekend. Applying it to every run made it rain the entire trip, which
+   * is both wrong and miserable. One afternoon carries it, which is what a
+   * 31% chance actually looks like when it lands.
+   */
+  wet?: true;
   /** positions are FRACTIONS of the run, so a depth change cannot strand a line */
   beats: { at: number; voice: LegBeat["voice"]; text: string; hold?: number }[];
 };
@@ -173,7 +181,7 @@ const RUNS: Record<string, Authored> = {
     ],
   },
   "muskoka-t5": {
-    title: "Up to the lookout", terrain: "forest", amp: 240, climb: 20,
+    title: "Up to the lookout", terrain: "forest", amp: 240, climb: 20, wet: true,
     beats: [
       { at: 0.28, voice: "narrate", text: "You climb for half an hour as the light goes orange." },
       { at: 0.74, voice: "curse", text: "If we miss the sun it was still worth the climb." },
@@ -240,10 +248,16 @@ function legFor(travel: Travel, index: number): Leg | null {
       z: b.at * d,
       voice: b.voice,
       text: b.text,
-      hold: b.hold ?? Math.max(340, Math.min(620, d * 0.09)),
+      // A line has to survive long enough to be READ. The world shrank by 40%
+      // when the walking was cut, and these holds shrank with it — every line
+      // was on screen for about a third of a screen of scrolling, which is why
+      // none of them landed. Measured against the camera's 1900 units per
+      // screen, this puts a line up for roughly one full screen.
+      hold: b.hold ?? Math.max(620, Math.min(1000, d * 0.3)),
     })),
-    // Muskoka's October wet-day rate, from the Phase 0 archive pass.
-    rain: travel.overnight ? undefined : 0.31,
+    // Only the run authored as the wet one, and never overnight — rain you
+    // cannot see is just noise on the screen.
+    rain: a.wet && !travel.overnight ? 0.31 : undefined,
   };
 }
 
