@@ -11,6 +11,8 @@ import { hexToRgb, propColour } from "@/lib/scene/palette";
 import { scrollToY } from "@/lib/lenis";
 import { CORRIDOR_KINDS } from "./corridorKinds";
 import { RearActor } from "@/components/characters/RearActor";
+import { Flock } from "./Flock";
+import { Rain } from "./Rain";
 import { StationPanel } from "@/components/station/StationPanel";
 import { useAnswers } from "@/lib/answers";
 import type { Itinerary } from "@/lib/scene/itinerary";
@@ -91,6 +93,14 @@ export function Journey({
   const [walking, setWalking] = useState(false);
   const [sitting, setSitting] = useState(false);
   const [nearId, setNearId] = useState<string | null>(null);
+  /** Daylight, read off the same clock the sky uses. */
+  const [daylight, setDaylight] = useState(0.6);
+  /**
+   * The wet-day rate of the run she is actually on. Muskoka's October figure
+   * from the Phase 0 archive pass — not a dial anyone turned for mood. The
+   * overnight runs carry none, because rain you cannot see is just noise.
+   */
+  const [rain, setRain] = useState(0);
 
   const { answers, reactToStop, setNote } = useAnswers();
   const bookings = useMemo(() => bookingPriorities(trip), [trip]);
@@ -100,6 +110,8 @@ export function Journey({
     [itinerary, legs, depthPerScreen],
   );
   const painted = useMemo(() => sortForPaint(schedule.items), [schedule]);
+
+
 
   /** Scroll position, in page pixels, where a station's hold ends. */
   const endOfStation = useMemo(() => {
@@ -160,6 +172,8 @@ export function Journey({
     let wasWalking = false;
     let wasSitting = false;
     let wasNear: string | null = null;
+    let lastBand = -1;
+    let lastRain = -1;
     let stopTimer: number | null = null;
 
     const ribbon = (cam: number, halfW: number): string => {
@@ -271,6 +285,14 @@ export function Journey({
 
       if (near !== wasNear) { wasNear = near; setNearId(near); }
 
+      // Whichever run the camera is inside owns the weather.
+      let wet = 0;
+      for (const seg of schedule.segs) {
+        if (seg.kind !== "travel") continue;
+        if (cam >= seg.z0 && cam <= seg.z1) { wet = seg.leg.rain ?? 0; break; }
+      }
+      if (wet !== lastRain) { lastRain = wet; setRain(wet); }
+
       const seated = sit > 0.45;
       if (seated !== wasSitting) { wasSitting = seated; setSitting(seated); }
 
@@ -301,6 +323,11 @@ export function Journey({
       root.style.setProperty("--sky-3", sky.gradient[2]);
       root.style.setProperty("--sky-light", sky.light);
       root.style.setProperty("--sky-t", sky.t.toFixed(3));
+      // Geese fly in daylight and rain falls on the legs that earn it. Both are
+      // stepped, not continuous, so this is a handful of re-renders across a
+      // whole trip rather than one a frame.
+      const band = Math.round(sky.t * 4) / 4;
+      if (band !== lastBand) { lastBand = band; setDaylight(band); }
       const dark = 1 - Math.min(1, Math.max(0, (luma(sky.gradient[1]) - 0.06) / 0.34));
       root.style.setProperty("--on-sky", mix(INK_LIGHT, INK_DARK, dark));
       root.style.setProperty("--on-sky-2", mix(DIM_LIGHT, DIM_DARK, dark));
@@ -365,6 +392,18 @@ export function Journey({
           ))}
         </div>
 
+        {/* Geese, only while there is light to see them by. October at these
+            latitudes is migration and all five trips sit under a flyway, so
+            this is the same kind of fact as the fall colour. */}
+        {daylight > 0.45 && (
+          <Flock top={16} duration={46} count={7} direction="right" />
+        )}
+        {daylight > 0.55 && (
+          <Flock top={27} duration={58} delay={19} count={5} direction="right" />
+        )}
+
+        {rain > 0 && daylight > 0.2 && <Rain intensity={rain} />}
+
         <div className="corridor__cast" data-cast="">
           <RearActor id="curse" walking={walking} sitting={sitting} className="rear rear--b" />
           <RearActor id="sun" walking={walking} sitting={sitting} className="rear rear--a" />
@@ -382,12 +421,12 @@ export function Journey({
         </div>
 
         {/* What the two of them actually say, over whichever of them said it. */}
-        <div className="bubbles" aria-hidden="false">
+        <div className="saybubbles" aria-hidden="false">
           {schedule.beats.map((b, i) =>
             b.voice === "narrate" ? null : (
               <div key={i} data-beat="" data-bubble="" data-z={b.z} data-hold={b.hold ?? 420}
-                className={`bubble bubble--${b.voice}`} style={{ opacity: 0 }}>
-                <span className="bubble__body">{b.text}</span>
+                className={`saybubble saybubble--${b.voice}`} style={{ opacity: 0 }}>
+                <span className="saybubble__body">{b.text}</span>
               </div>
             ))}
         </div>

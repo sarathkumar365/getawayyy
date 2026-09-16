@@ -1,0 +1,151 @@
+/* =========================================================================
+   The opening: they face you, say their piece, then turn and walk.
+   Bubble rules are shared with /stage; they live here so this page owns
+   everything it needs and does not depend on a review route's stylesheet.
+   ========================================================================= */
+
+.opening {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background:
+    linear-gradient(180deg, #2B4A63 0%, #6E6A78 44%, #C8763C 74%, #E8B06B 100%);
+  overflow: hidden;
+  position: relative;
+}
+@supports not (min-height: 100svh) { .opening { min-height: 100vh; } }
+
+/* ---- the two of them ---- */
+.opening__stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 42svh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+/* ground they stand on */
+.opening__stage::after {
+  content: "";
+  position: absolute; inset: auto 0 0 0; height: 22%;
+  background: linear-gradient(180deg, rgba(20, 30, 26, .34), rgba(12, 20, 18, .75));
+}
+.opening__cast { position: relative; width: min(680px, 100%); height: min(46svh, 360px); }
+.opening__cast [data-actor] > svg { height: 100%; width: auto; }
+
+/* They turn and go when the walk begins. */
+.opening__cast { transition: transform 900ms var(--ease-in), opacity 700ms ease; }
+.opening.is-leaving .opening__cast { transform: translateY(6%) scale(.86); opacity: 0; }
+
+/* ---- what they say ---- */
+.opening__talk {
+  flex: 0 0 auto;
+  padding: var(--s-4) var(--s-4) var(--s-5);
+  width: min(620px, 100%);
+  margin: 0 auto;
+  min-height: 9.5rem;
+}
+
+.bubble {
+  position: relative; max-width: 54ch; padding: .85rem 1rem 1.6rem;
+  border: 1.5px solid #1E1E24; border-radius: 12px;
+  background: #FFFDF8; color: #1A1714; cursor: pointer; user-select: none;
+  box-shadow: 3px 3px 0 var(--bubble-accent, #1e1e24);
+}
+.bubble--sun { --bubble-accent: #FF7A2F; margin-right: auto; }
+.bubble--curse { --bubble-accent: #C1121F; margin-left: auto; }
+.bubble::after {
+  content: ""; position: absolute; top: -9px; width: 14px; height: 14px;
+  background: #FFFDF8; border-left: 1.5px solid #1E1E24; border-top: 1.5px solid #1E1E24;
+  transform: rotate(45deg);
+}
+.bubble--left::after { left: 26px; }
+.bubble--right::after { right: 26px; }
+.bubble__text { margin: 0; font-size: 1.02rem; line-height: 1.55; min-height: 1.55em; }
+.bubble__caret {
+  display: inline-block; width: .5ch; height: 1.05em; margin-left: 1px;
+  background: var(--bubble-accent); vertical-align: -.16em;
+  animation: caret .8s steps(1) infinite;
+}
+@keyframes caret { 50% { opacity: 0 } }
+.bubble__sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+.bubble__more {
+  position: absolute; right: .8rem; bottom: .45rem;
+  font-family: var(--font-mono); font-size: .6rem; letter-spacing: .08em;
+  text-transform: uppercase; color: #857C71;
+}
+.bubble:focus-visible { outline: 2px solid var(--bubble-accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .bubble__caret { animation: none } }
+
+/* ---- the title, and the way out ---- */
+.opening__head {
+  padding: max(var(--s-5), env(safe-area-inset-top)) var(--s-4) 0;
+  width: min(620px, 100%); margin: 0 auto;
+  color: #F4F0E8;
+}
+.opening__eyebrow {
+  margin: 0; font-family: var(--font-mono); font-size: var(--step--1);
+  letter-spacing: .16em; text-transform: uppercase; opacity: .72;
+}
+.opening__title {
+  margin: var(--s-2) 0 0; font-size: var(--step-3); line-height: 1.04;
+  color: #FFF8EC; text-wrap: balance;
+}
+
+.opening__go {
+  width: min(620px, 100%); margin: 0 auto;
+  padding: 0 var(--s-4) max(var(--s-6), env(safe-area-inset-bottom));
+  display: flex; flex-direction: column; gap: var(--s-3); align-items: flex-start;
+}
+.opening__start {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
+  font-family: var(--font-display); font-size: var(--step-1);
+  text-decoration: none; cursor: pointer;
+  padding: var(--s-3) var(--s-7); border-radius: 99px; border: 0;
+  background: #FFF8EC; color: #1A1714;
+  box-shadow: 0 14px 34px -18px rgba(0, 0, 0, .8);
+  transition: transform var(--t-fast) var(--ease-out);
+}
+.opening__start:hover { transform: translateY(-2px); }
+.opening__start:focus-visible { outline: 2px solid #FF7A2F; outline-offset: 3px; }
+
+.opening__skip {
+  font: inherit; font-size: var(--step--1); cursor: pointer;
+  background: none; border: 0; padding: 0;
+  color: rgba(244, 240, 232, .72); text-decoration: underline; text-underline-offset: 3px;
+}
+.opening__skip:hover { color: #FFF8EC; }
+
+.opening__rest {
+  width: min(620px, 100%); margin: 0 auto;
+  padding: 0 var(--s-4) var(--s-6);
+}
+.opening__rest summary {
+  font-family: var(--font-mono); font-size: var(--step--1);
+  letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(244, 240, 232, .7); cursor: pointer; padding: var(--s-2) 0;
+}
+.opening__rest ul { list-style: none; margin: var(--s-2) 0 0; padding: 0; }
+.opening__rest li + li { border-top: 1px solid rgba(244, 240, 232, .18); }
+.opening__rest a {
+  display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); align-items: baseline;
+  padding: var(--s-3) 0; text-decoration: none; color: #F4F0E8;
+}
+.opening__rest a:hover { color: #FFD79A; }
+.opening__rest .dir {
+  font-family: var(--font-mono); font-size: var(--step--1);
+  letter-spacing: .06em; text-transform: uppercase; opacity: .6; min-width: 6.5rem;
+}
+.opening__rest .meta {
+  margin-left: auto; font-size: var(--step--1); opacity: .6;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 560px) {
+  .opening__cast { height: min(38svh, 300px); }
+  .opening__start { width: 100%; }
+  .bubble__text { font-size: .96rem; }
+}

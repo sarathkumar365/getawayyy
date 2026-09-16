@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type JSX } from "react";
 import { createAmbient, type Ambient } from "@/lib/audio/ambient";
+import { setVoiceEnabled } from "@/lib/audio/voice";
 
 const KEY = "trip-getaway:sound";
 
@@ -26,6 +27,9 @@ export function Ambience(): JSX.Element {
   }, []);
 
   const toggle = useCallback(async (next: boolean) => {
+    // One switch for everything audible — music and voices together. Two
+    // controls for "sound" is one more than anyone wants.
+    setVoiceEnabled(next);
     if (next) await engine.current?.start();
     else engine.current?.stop();
     setOn(next);

@@ -292,14 +292,14 @@
    head of whoever said it.
    ========================================================================= */
 
-.bubbles {
+.saybubbles {
   position: absolute;
   inset: 0;
   z-index: 5;
   pointer-events: none;
 }
 
-.bubble {
+.saybubble {
   position: absolute;
   /* the handler owns `transform` (centring included) — never set it here */
   transform-origin: 50% 100%;
@@ -320,43 +320,43 @@
 
 /* the tail: two stacked triangles, ink behind paper, so the outline carries
    all the way around the bubble the way an inked panel does */
-.bubble::before,
-.bubble::after {
+.saybubble::before,
+.saybubble::after {
   content: "";
   position: absolute;
   top: 100%;
   width: 0; height: 0;
   border-style: solid;
 }
-.bubble::before {
+.saybubble::before {
   border-width: 17px 13px 0 5px;
   border-color: #1A1714 transparent transparent transparent;
 }
-.bubble::after {
+.saybubble::after {
   border-width: 13px 9px 0 4px;
   border-color: #FCFAF5 transparent transparent transparent;
   margin-top: -3.5px;
 }
 
 /* A — the one who thinks it will be fine. Sits over the left figure. */
-.bubble--sun {
+.saybubble--sun {
   left: 44%;
   bottom: 52vh;
   border-color: #8A3B10;
   box-shadow: 3px 4px 0 rgba(138, 59, 16, .8);
 }
-.bubble--sun::before { left: 22%; border-color: #8A3B10 transparent transparent transparent; }
-.bubble--sun::after { left: calc(22% + 1px); }
+.saybubble--sun::before { left: 22%; border-color: #8A3B10 transparent transparent transparent; }
+.saybubble--sun::after { left: calc(22% + 1px); }
 
 /* B — the one who has read the opening hours. Over the right figure. */
-.bubble--curse {
+.saybubble--curse {
   left: 57%;
   bottom: 57vh;
   border-color: #7A0C14;
   box-shadow: 3px 4px 0 rgba(122, 12, 20, .8);
 }
-.bubble--curse::before { right: 22%; border-width: 17px 5px 0 13px; border-color: #7A0C14 transparent transparent transparent; }
-.bubble--curse::after { right: calc(22% + 1px); border-width: 13px 4px 0 9px; }
+.saybubble--curse::before { right: 22%; border-width: 17px 5px 0 13px; border-color: #7A0C14 transparent transparent transparent; }
+.saybubble--curse::after { right: calc(22% + 1px); border-width: 13px 4px 0 9px; }
 
 /* Narration moves off the cast entirely and reads as a caption over the sky. */
 .journey__stage .corridor__script {
@@ -365,21 +365,21 @@
 }
 
 @media (max-width: 640px) {
-  .bubble {
+  .saybubble {
     max-width: min(20ch, 62vw);
     padding: var(--s-2) var(--s-3);
     border-width: 2px;
     border-radius: 15px;
   }
-  .bubble--sun { left: 36%; bottom: 46vh; }
-  .bubble--curse { left: 64%; bottom: 53vh; }
+  .saybubble--sun { left: 36%; bottom: 46vh; }
+  .saybubble--curse { left: 64%; bottom: 53vh; }
   .journey__stage .corridor__script { top: 11vh; }
 }
 
 /* Short screens: there is no room above a head, so they tuck in closer. */
 @media (max-height: 560px) {
-  .bubble--sun { bottom: 44vh; }
-  .bubble--curse { bottom: 50vh; }
+  .saybubble--sun { bottom: 44vh; }
+  .saybubble--curse { bottom: 50vh; }
   .journey__stage .corridor__script { top: 8vh; }
 }
 

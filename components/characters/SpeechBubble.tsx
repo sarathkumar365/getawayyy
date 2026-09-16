@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type JSX } from "react";
 import type { DetailId } from "@/lib/characters/detailed";
+import { blip, chirp, wakeVoice } from "@/lib/audio/voice";
 
 export type SpeechBubbleProps = {
   speaker: DetailId;
@@ -52,9 +53,12 @@ export function SpeechBubble({
     const step = (): void => {
       i += 1;
       setShown(i);
+      // One blip per letter revealed — the voice IS the typing.
+      blip(speaker, text.charAt(i - 1));
       if (i >= text.length) {
         setDone(true);
         notify.current?.(false);
+        chirp(speaker);
         return;
       }
       timer.current = window.setTimeout(step, delayAfter(text.charAt(i - 1)));
@@ -64,13 +68,16 @@ export function SpeechBubble({
       if (timer.current !== null) window.clearTimeout(timer.current);
       notify.current?.(false);
     };
-  }, [text]);
+  }, [text, speaker]);
 
   useEffect(() => {
     if (done) notify.current?.(false);
   }, [done]);
 
   const handle = useCallback(() => {
+    // Any tap is a gesture, which is the only moment a browser will let audio
+    // start. Cheap to call repeatedly; it no-ops once running.
+    void wakeVoice();
     if (!done) finish();
     else onAdvance?.();
   }, [done, finish, onAdvance]);
