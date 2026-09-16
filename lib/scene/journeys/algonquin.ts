@@ -1,4 +1,5 @@
 import type { Script, Authored } from "./kit";
+import { ALGONQUIN_COUNTRY, ALGONQUIN_HORIZON } from "./country";
 import type { ArrivalLine } from "../corridor";
 
 /**
@@ -19,6 +20,10 @@ const RUNS: Record<string, Authored> = {
       { at: 0, voice: "curse", text: "The park says it's one of the busiest weekends of its year. We get there first or we queue.",
         face: { mouth: "closed" } },
       { at: 0, voice: "sun", text: "Fine. But dinner first.", face: { eye: "half", mouth: "smirk" } },
+      { at: 0, voice: "sun", text: "The hills have gone completely red.",
+        face: { eye: "sparkle", mouth: "grin" } },
+      { at: 0, voice: "curse", text: "Hardwood. That's the whole reason the weekend is this weekend and not the next one.",
+        face: { mouth: "smile" } },
     ],
   },
   "algonquin-haliburton-t2": {
@@ -26,6 +31,10 @@ const RUNS: Record<string, Authored> = {
     beats: [
       { at: 0, voice: "sun", text: "That gallery had a whole path for one painter.", face: { mouth: "smile" } },
       { at: 0, voice: "curse", text: "Tom Thomson. This next bit is the photograph everyone means by Algonquin.",
+        face: { mouth: "smile" } },
+      { at: 0, voice: "sun", text: "The dark skinny ones look like a different country to the red ones.",
+        face: { brow: "raised", eye: "open" } },
+      { at: 0, voice: "curse", text: "Black spruce. They take the wet ground the maples won't touch.",
         face: { mouth: "smile" } },
     ],
   },
@@ -36,6 +45,10 @@ const RUNS: Record<string, Authored> = {
         face: { brow: "worried", eye: "closed", emote: "sweat" } },
       { at: 0, voice: "curse", text: "Good, because this one's a boardwalk. Flat the whole way.",
         face: { mouth: "smirk" } },
+      { at: 0, voice: "sun", text: "The forest just stopped. It's all open.",
+        face: { eye: "wide", mouth: "open" } },
+      { at: 0, voice: "curse", text: "Bog. Nothing grows tall in it. The gold ones are tamarack — the only conifer that turns.",
+        face: { mouth: "smile" } },
     ],
   },
   "algonquin-haliburton-t4": {
@@ -61,6 +74,10 @@ const RUNS: Record<string, Authored> = {
       { at: 0, voice: "sun", text: "How many more trails are there?", face: { brow: "worried", mouth: "grimace" } },
       { at: 0, voice: "curse", text: "One. This is the one the whole day was for.", face: { mouth: "closed" } },
       { at: 0, voice: "sun", text: "You said that about the last two.", face: { brow: "flat", mouth: "grimace" } },
+      { at: 0, voice: "sun", text: "There's another moose sign.",
+        face: { brow: "raised", eye: "open" } },
+      { at: 0, voice: "curse", text: "On this road they're not decorative.",
+        face: { eye: "half", mouth: "smirk" } },
     ],
   },
   "algonquin-haliburton-t7": {
@@ -122,4 +139,9 @@ const ARRIVALS: Record<string, readonly ArrivalLine[]> = {
   ],
 };
 
-export const ALGONQUIN: Script = { runs: RUNS, arrivals: ARRIVALS };
+export const ALGONQUIN: Script = {
+  runs: RUNS,
+  arrivals: ARRIVALS,
+  scenery: ALGONQUIN_COUNTRY,
+  horizon: ALGONQUIN_HORIZON,
+};

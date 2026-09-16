@@ -11,6 +11,7 @@ import { buildSchedule, cameraAt } from "@/lib/scene/schedule";
 import { hexToRgb, propColour } from "@/lib/scene/palette";
 import { scrollToY } from "@/lib/lenis";
 import { CORRIDOR_KINDS } from "./corridorKinds";
+import { Horizon } from "./Horizon";
 import { RearActor } from "@/components/characters/RearActor";
 import { Flock } from "./Flock";
 import { Rain } from "./Rain";
@@ -20,6 +21,7 @@ import { useAnswers } from "@/lib/answers";
 import type { Itinerary } from "@/lib/scene/itinerary";
 import type { ArrivalLine, BeatFace, Leg } from "@/lib/scene/corridor";
 import type { Trip } from "@/lib/types";
+import type { HorizonSpec } from "@/lib/scene/journeys/kit";
 
 export type JourneyProps = {
   trip: Trip;
@@ -28,6 +30,8 @@ export type JourneyProps = {
   /** per-run camera pace, and what they say on arriving */
   pace?: Record<string, number>;
   arrivals?: Record<string, readonly ArrivalLine[]>;
+  /** the far country this trip is walked against */
+  horizon?: HorizonSpec;
   depthPerScreen?: number;
 };
 
@@ -115,7 +119,7 @@ function priorityFor(map: Map<string, number>, name: string): number | undefined
  * in step with the scroll rather than a frame behind it.
  */
 export function Journey({
-  trip, itinerary, legs, pace, arrivals, depthPerScreen,
+  trip, itinerary, legs, pace, arrivals, horizon, depthPerScreen,
 }: JourneyProps): JSX.Element {
   const spacer = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
@@ -186,6 +190,7 @@ export function Journey({
     const sayEls = Array.from(stageEl.querySelectorAll<HTMLElement>("[data-say]"));
     const rail = stageEl.querySelector<HTMLElement>("[data-rail]");
     const road = stageEl.querySelector<SVGPathElement>("[data-road]");
+    const horizonEl = stageEl.querySelector<SVGElement>("[data-horizon]");
     const shoulder = stageEl.querySelector<SVGPathElement>("[data-shoulder]");
     const clockEl = stageEl.querySelector<HTMLElement>("[data-clock]");
     const root = document.documentElement;
@@ -235,6 +240,11 @@ export function Journey({
       const sky = skyAtTime(time);
       const skyRgb = hexToRgb(sky.gradient[1] ?? "#8090A0");
 
+      // The far country slides a little as the road bends, and never scales.
+      if (horizonEl) {
+        horizonEl.style.transform = `translateX(${(-path.bend(cam) * 0.045).toFixed(1)}px)`;
+      }
+
       if (road) road.setAttribute("d", ribbon(cam, 250));
       if (shoulder) shoulder.setAttribute("d", ribbon(cam, 340));
 
@@ -251,7 +261,7 @@ export function Journey({
         if (node.style.display === "none") node.style.display = "";
         // Aerial perspective. Without it every tree reads at the same distance
         // however small it is drawn.
-        node.style.color = propColour(node.dataset.kind ?? "", z - cam, LENS.far, skyRgb);
+        node.style.color = propColour(node.dataset.kind ?? "", z - cam, LENS.far, skyRgb, trip.id);
         node.style.transform =
           `translate3d(${pr.left.toFixed(1)}px, ${pr.base.toFixed(1)}px, 0) ` +
           `translate(-50%, -100%) scale(${(pr.scale * s).toFixed(4)})`;
@@ -408,7 +418,7 @@ export function Journey({
       if (stopTimer !== null) window.clearTimeout(stopTimer);
       st.kill();
     };
-  }, [schedule]);
+  }, [schedule, trip.id]);
 
   return (
     <div
@@ -417,6 +427,7 @@ export function Journey({
       style={{ height: `${schedule.screens * 100}vh` }}
     >
       <div ref={stage} className="journey__stage">
+        {horizon && <Horizon spec={horizon} seed={trip.id.length * 131 + 7} />}
         <div className="corridor__ground" />
         <svg className="corridor__surface" aria-hidden="true">
           <path data-shoulder="" className="corridor__shoulder" />

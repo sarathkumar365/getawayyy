@@ -1,4 +1,5 @@
 import type { Script, Authored } from "./kit";
+import { MUSKOKA_COUNTRY, MUSKOKA_HORIZON } from "./country";
 import type { ArrivalLine } from "../corridor";
 
 /**
@@ -20,6 +21,10 @@ const RUNS: Record<string, Authored> = {
         face: { brow: "raised", eye: "open" } },
       { at: 0.68, voice: "curse", text: "Gravenhurst by eight, if the 400 behaves. Dinner's in an old sawmill — open till eleven.",
         face: { mouth: "smile" } },
+      { at: 0, voice: "sun", text: "The buildings stop after Barrie, don't they.",
+        face: { brow: "raised", eye: "open" } },
+      { at: 0, voice: "curse", text: "Stop is the word. One minute it's warehouses, the next it's rock and pine.",
+        face: { mouth: "closed" } },
       { at: 0.92, voice: "sun", text: "Wake me up for that bit.",
         face: { eye: "closed", mouth: "smile" } },
     ],
@@ -38,6 +43,10 @@ const RUNS: Record<string, Authored> = {
         face: { brow: "raised", mouth: "smile" } },
       { at: 0.42, voice: "curse", text: "Today was the last day it runs this year. One day later and we'd have missed it.",
         face: { brow: "flat", mouth: "smirk" } },
+      { at: 0, voice: "sun", text: "They cut the road straight through that rock.",
+        face: { eye: "wide", mouth: "open" } },
+      { at: 0, voice: "curse", text: "Blasted it. The vertical scores are the drill holes — same rock the whole way to Huntsville.",
+        face: { mouth: "smile" } },
       { at: 0.70, voice: "sun", text: "You planned that.", face: { eye: "half", mouth: "smirk" } },
       { at: 0.92, voice: "curse", text: "Lunch is standing up on the main street. The afternoon's tight.",
         face: { mouth: "closed" } },
@@ -49,6 +58,10 @@ const RUNS: Record<string, Authored> = {
       { at: 0.16, voice: "sun", text: "Okay, the paintings on the buildings were good. I'll give you that one.",
         face: { mouth: "grin" } },
       { at: 0.52, voice: "curse", text: "Fifteen minutes and the town just stops.", face: { mouth: "closed" } },
+      { at: 0, voice: "sun", text: "Every second driveway has a canoe on a rack.",
+        face: { brow: "raised", mouth: "smile" } },
+      { at: 0, voice: "curse", text: "Nobody up here keeps one indoors. There's a lake at the end of most of them.",
+        face: { mouth: "smile" } },
       { at: 0.86, voice: "sun", text: "How far is the waterfall from the car?",
         face: { brow: "furrowed", eye: "half" } },
     ],
@@ -73,6 +86,8 @@ const RUNS: Record<string, Authored> = {
         face: { mouth: "smile" } },
       { at: 0.50, voice: "curse", text: "Coffee on the wharf before anything opens. Today's the slow one.",
         face: { mouth: "smile" } },
+      { at: 0, voice: "sun", text: "The white ones have gone completely gold.",
+        face: { eye: "sparkle", mouth: "smile" } },
       { at: 0.84, voice: "sun", text: "Define slow.", face: { brow: "raised", eye: "half" } },
     ],
   },
@@ -146,4 +161,9 @@ const ARRIVALS: Record<string, readonly ArrivalLine[]> = {
 };
 
 
-export const MUSKOKA: Script = { runs: RUNS, arrivals: ARRIVALS };
+export const MUSKOKA: Script = {
+  runs: RUNS,
+  arrivals: ARRIVALS,
+  scenery: MUSKOKA_COUNTRY,
+  horizon: MUSKOKA_HORIZON,
+};

@@ -8,6 +8,16 @@
 
 .corridor__world { position: absolute; inset: 0; }
 
+/* The far country. Sits on the horizon line — the same 47% the projection uses
+   for its vanishing point — and is painted before the ground, so the ground
+   covers its feet the way ground does. */
+.corridor__horizon {
+  position: absolute; left: -6%; right: -6%; top: 0;
+  width: 112%; height: 47%;
+  display: block; pointer-events: none;
+  will-change: transform;
+}
+
 /* Every tree, house and lamp post. Placed from JavaScript every frame. */
 .prop {
   position: absolute; left: 0; top: 0;

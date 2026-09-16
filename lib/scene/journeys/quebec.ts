@@ -1,4 +1,5 @@
 import type { Script, Authored } from "./kit";
+import { QUEBEC_COUNTRY, QUEBEC_HORIZON } from "./country";
 import type { ArrivalLine } from "../corridor";
 
 /**
@@ -20,6 +21,10 @@ const RUNS: Record<string, Authored> = {
         face: { brow: "furrowed", mouth: "grimace" } },
       { at: 0, voice: "curse", text: "Which is why this is the one we fly. Three to four hours, door to door.",
         face: { mouth: "closed" } },
+      { at: 0, voice: "sun", text: "Every village has one of those silver steeples.",
+        face: { brow: "raised", eye: "open" } },
+      { at: 0, voice: "curse", text: "Tin. It's the only roof that survives these winters, and every church on the river has one.",
+        face: { mouth: "smile" } },
     ],
   },
   "quebec-city-t2": {
@@ -45,6 +50,10 @@ const RUNS: Record<string, Authored> = {
     beats: [
       { at: 0, voice: "curse", text: "Only walled city north of Mexico. We walk the walls, then the battlefield.",
         face: { mouth: "smile" } },
+      { at: 0, voice: "sun", text: "There are still cannons on it.",
+        face: { eye: "wide", mouth: "open" } },
+      { at: 0, voice: "curse", text: "Pointed at a river nobody has come up since seventeen seventy-five.",
+        face: { eye: "half", mouth: "smirk" } },
       { at: 0, voice: "sun", text: "How much walking is left in this day?", face: { brow: "worried", eye: "half" } },
     ],
   },
@@ -59,6 +68,10 @@ const RUNS: Record<string, Authored> = {
     title: "The night, and the falls", terrain: "town", amp: 130, climb: 8,
     beats: [
       { at: 0, voice: "sun", text: "I could stay inside these walls all weekend.", face: { eye: "closed", mouth: "smile" } },
+      { at: 0, voice: "sun", text: "The roofs are almost vertical.",
+        face: { brow: "raised" } },
+      { at: 0, voice: "curse", text: "So the snow comes off them on its own. Everything here is built for February.",
+        face: { mouth: "smile" } },
       { at: 0, voice: "curse", text: "Tomorrow's outside them. There's a waterfall taller than Niagara.",
         face: { mouth: "smile" } },
       { at: 0, voice: "sun", text: "Taller than — no there isn't.", face: { brow: "furrowed", eye: "wide", mouth: "open" } },
@@ -70,6 +83,10 @@ const RUNS: Record<string, Authored> = {
       { at: 0, voice: "sun", text: "Eighty-three metres. Thirty metres taller. You were right.",
         face: { eye: "sparkle", mouth: "grin" } },
       { at: 0, voice: "curse", text: "Island next, over the bridge. Some of those farmhouses are from the sixteen hundreds.",
+        face: { mouth: "smile" } },
+      { at: 0, voice: "sun", text: "The fields are all long thin strips running back from the road.",
+        face: { brow: "raised", eye: "open" } },
+      { at: 0, voice: "curse", text: "Seigneurial lots. Everyone wanted river frontage, and nobody has re-drawn them in four hundred years.",
         face: { mouth: "smile" } },
       { at: 0, voice: "sun", text: "And then a flight home in the dark.", face: { eye: "closed", mouth: "smile" } },
     ],
@@ -98,4 +115,9 @@ const ARRIVALS: Record<string, readonly ArrivalLine[]> = {
   ],
 };
 
-export const QUEBEC: Script = { runs: RUNS, arrivals: ARRIVALS };
+export const QUEBEC: Script = {
+  runs: RUNS,
+  arrivals: ARRIVALS,
+  scenery: QUEBEC_COUNTRY,
+  horizon: QUEBEC_HORIZON,
+};

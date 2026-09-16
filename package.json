@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "geocode": "bun run scripts/geocode.ts",
     "photos": "bun run scripts/index-photos.ts",
-    "photo-audit": "bun run scripts/photo-audit.ts"
+    "photo-audit": "bun run scripts/photo-audit.ts",
+    "measure": "bun run scripts/measure-walk.ts"
   },
   "dependencies": {
     "next": "^15.5.4",

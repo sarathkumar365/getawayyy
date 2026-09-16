@@ -1,4 +1,5 @@
 import type { Script, Authored } from "./kit";
+import { GEORGIAN_COUNTRY, GEORGIAN_HORIZON } from "./country";
 import type { ArrivalLine } from "../corridor";
 
 /**
@@ -17,6 +18,10 @@ const RUNS: Record<string, Authored> = {
       { at: 0, voice: "curse", text: "Two and a quarter hours, and then the whole day is ours.", face: { mouth: "closed" } },
       { at: 0, voice: "sun", text: "What's first?", face: { brow: "raised" } },
       { at: 0, voice: "curse", text: "A cliff above a village. It's the photograph of the valley.", face: { mouth: "smile" } },
+      { at: 0, voice: "sun", text: "There's a wall of rock along the whole left side.",
+        face: { eye: "wide", mouth: "open" } },
+      { at: 0, voice: "curse", text: "The escarpment. It runs the whole valley, and it's four hundred and fifty million years old.",
+        face: { mouth: "smile" } },
     ],
   },
   "georgian-bay-t2": {
@@ -24,6 +29,10 @@ const RUNS: Record<string, Authored> = {
     beats: [
       { at: 0, voice: "sun", text: "My legs are shaking.", face: { brow: "worried", eye: "closed", emote: "sweat" } },
       { at: 0, voice: "curse", text: "Two and three quarter hours on the escarpment will do that. Lunch is a general store.",
+        face: { mouth: "smile" } },
+      { at: 0, voice: "sun", text: "It's all apples down here. Rows and rows of them.",
+        face: { brow: "raised", mouth: "smile" } },
+      { at: 0, voice: "curse", text: "A good part of the country's crop comes off this one valley.",
         face: { mouth: "smile" } },
       { at: 0, voice: "sun", text: "A general store. Perfect.", face: { mouth: "grin" } },
     ],
@@ -43,6 +52,10 @@ const RUNS: Record<string, Authored> = {
       { at: 0, voice: "sun", text: "I did cross it. I want that noted.", face: { mouth: "grin", emote: "sparkle" } },
       { at: 0, voice: "curse", text: "Noted. Harbour town next, and the sun goes down over the water from the pier.",
         face: { mouth: "smile" } },
+      { at: 0, voice: "sun", text: "What are the bare stripes up the hill?",
+        face: { brow: "raised", eye: "open" } },
+      { at: 0, voice: "curse", text: "Ski runs. In ten weeks that's where everyone here will be.",
+        face: { mouth: "smirk" } },
     ],
   },
   "georgian-bay-t5": {
@@ -66,6 +79,10 @@ const RUNS: Record<string, Authored> = {
       { at: 0, voice: "sun", text: "Bay on one side, orchards on the other. That was one frame.",
         face: { eye: "sparkle", mouth: "grin" } },
       { at: 0, voice: "curse", text: "Lunch on the old main street, and the pottery studio is on the same street.",
+        face: { mouth: "smile" } },
+      { at: 0, voice: "sun", text: "Those big concrete tubes by the water.",
+        face: { brow: "raised" } },
+      { at: 0, voice: "curse", text: "Grain elevators. That's the whole skyline of this town and everyone photographs them.",
         face: { mouth: "smile" } },
       { at: 0, voice: "sun", text: "So no driving between them.", face: { mouth: "smile" } },
     ],
@@ -105,4 +122,9 @@ const ARRIVALS: Record<string, readonly ArrivalLine[]> = {
   ],
 };
 
-export const GEORGIAN_BAY: Script = { runs: RUNS, arrivals: ARRIVALS };
+export const GEORGIAN_BAY: Script = {
+  runs: RUNS,
+  arrivals: ARRIVALS,
+  scenery: GEORGIAN_COUNTRY,
+  horizon: GEORGIAN_HORIZON,
+};

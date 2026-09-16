@@ -59,6 +59,7 @@ export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
           legs={stage?.legs ?? {}}
           pace={stage?.pace}
           arrivals={stage?.arrivals}
+          horizon={stage?.horizon}
         />
 
         <TripMap trip={trip} open={mapOpen} onClose={() => setMapOpen(false)} />

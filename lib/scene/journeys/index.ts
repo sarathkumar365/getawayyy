@@ -1,6 +1,6 @@
 import type { ArrivalLine, Leg } from "../corridor";
 import type { Itinerary } from "../itinerary";
-import { legsFor, paceFor, type Script } from "./kit";
+import { legsFor, paceFor, type HorizonSpec, type Script } from "./kit";
 import { MUSKOKA } from "./muskoka";
 import { ALGONQUIN } from "./algonquin";
 import { GEORGIAN_BAY } from "./georgianBay";
@@ -29,6 +29,8 @@ export type Staged = {
   legs: Record<string, Leg>;
   pace: Record<string, number>;
   arrivals: Record<string, readonly ArrivalLine[]>;
+  /** the far country this trip is walked against */
+  horizon?: HorizonSpec;
 };
 
 const EMPTY: Staged = { legs: {}, pace: {}, arrivals: {} };
@@ -41,5 +43,6 @@ export function stageFor(tripId: string, itinerary: Itinerary, perScreen = 1900)
     legs: legsFor(itinerary, script),
     pace: paceFor(itinerary, script, perScreen),
     arrivals: script.arrivals,
+    horizon: script.horizon,
   };
 }

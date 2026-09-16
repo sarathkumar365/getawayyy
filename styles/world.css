@@ -63,12 +63,42 @@
 @keyframes cross-right { from { transform: translateX(-30vw) } to { transform: translateX(125vw) } }
 @keyframes cross-left { from { transform: translateX(125vw) } to { transform: translateX(-30vw) } }
 
-/* ---- each trip's own country ---- */
-[data-world="muskoka"] { --w-far: #9BB0BE; --w-mid: #5B7A6E; --w-near: #35494A; --w-ground: #263231; }
-[data-world="algonquin-haliburton"] { --w-far: #B79A72; --w-mid: #A4632E; --w-near: #5E3A22; --w-ground: #33231A; }
-[data-world="montreal"] { --w-far: #9AA3B8; --w-mid: #6C6F86; --w-near: #3C3B4E; --w-ground: #26252F; }
-[data-world="quebec-city"] { --w-far: #A6AEB8; --w-mid: #77808C; --w-near: #454C57; --w-ground: #2A2E36; }
-[data-world="georgian-bay"] { --w-far: #8EA9B8; --w-mid: #6E8A6A; --w-near: #3F5341; --w-ground: #27332A; }
+/* ---- each trip's own country ----
+   --w-*      the parallax bands (kept for the layered scenes)
+   --ground-* what you are walking on, far and near
+   --road-*   the shoulder and the tarmac
+
+   These are the difference between five roads and one road with five scripts
+   over it. Muskoka is granite and pine; Algonquin is a 56 km hardwood corridor
+   with its leaf litter down by the third week of October; the Beaver Valley is
+   limestone and orchard; Montréal is asphalt and brick; Québec is stone under
+   river light, which is the coldest of the five. */
+
+[data-world="muskoka"] {
+  --w-far: #9BB0BE; --w-mid: #5B7A6E; --w-near: #35494A; --w-ground: #263231;
+  --ground-far: #33403A; --ground-near: #151E1A;
+  --road-far: #4A4A45; --road-near: #1C2026;
+}
+[data-world="algonquin-haliburton"] {
+  --w-far: #B79A72; --w-mid: #A4632E; --w-near: #5E3A22; --w-ground: #33231A;
+  --ground-far: #4A3B24; --ground-near: #2C2216;
+  --road-far: #4E463A; --road-near: #1F2124;
+}
+[data-world="georgian-bay"] {
+  --w-far: #8EA9B8; --w-mid: #6E8A6A; --w-near: #3F5341; --w-ground: #27332A;
+  --ground-far: #4B5739; --ground-near: #26301F;
+  --road-far: #6A6555; --road-near: #22262A;
+}
+[data-world="montreal"] {
+  --w-far: #9AA3B8; --w-mid: #6C6F86; --w-near: #3C3B4E; --w-ground: #26252F;
+  --ground-far: #56535F; --ground-near: #3A3844;
+  --road-far: #43424C; --road-near: #1A1A1F;
+}
+[data-world="quebec-city"] {
+  --w-far: #A6AEB8; --w-mid: #77808C; --w-near: #454C57; --w-ground: #2A2E36;
+  --ground-far: #47525A; --ground-near: #2C343A;
+  --road-far: #565A57; --road-near: #1D2124;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .flock, .flock__bird, .celestial__stars circle, .celestial__clouds > g {

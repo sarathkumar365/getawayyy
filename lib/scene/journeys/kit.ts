@@ -48,14 +48,14 @@ function road(depth: number, seed: number, amp: number, climb: number): Control[
 /* --------------------------------------------------------- the scenery -- */
 
 /** Road markings and verge posts. Every run has these; they carry the speed. */
-function surface(depth: number): SceneItem[] {
+export function surface(depth: number): SceneItem[] {
   return [
     ...along(60, depth, 95).map((z) => ({ z, x: 0, kind: "dash" })),
     ...along(120, depth, 150).map((z, i) => ({ z, x: i % 2 ? 300 : -300, kind: "post" })),
   ];
 }
 
-function cityRun(depth: number, seed: number): SceneItem[] {
+export function cityRun(depth: number, seed: number): SceneItem[] {
   const cityEnd = depth * 0.34;
   const lastLamp = depth * 0.62;
   const lamps: SceneItem[] = [];
@@ -79,7 +79,7 @@ function cityRun(depth: number, seed: number): SceneItem[] {
   ];
 }
 
-function townRun(depth: number, seed: number): SceneItem[] {
+export function townRun(depth: number, seed: number): SceneItem[] {
   return [
     ...verge(100, depth * 0.8, 300, -330, "store", { seed, spread: 90 }),
     ...verge(180, depth * 0.8, 340, 330, "store", { seed: seed + 3, spread: 90 }),
@@ -89,7 +89,7 @@ function townRun(depth: number, seed: number): SceneItem[] {
   ];
 }
 
-function forestRun(depth: number, seed: number): SceneItem[] {
+export function forestRun(depth: number, seed: number): SceneItem[] {
   return [
     ...verge(60, depth, 190, -350, "pine", { seed, spread: 300 }),
     ...verge(140, depth, 200, 350, "pine", { seed: seed + 2, spread: 300 }),
@@ -99,7 +99,7 @@ function forestRun(depth: number, seed: number): SceneItem[] {
   ];
 }
 
-function highwayRun(depth: number, seed: number): SceneItem[] {
+export function highwayRun(depth: number, seed: number): SceneItem[] {
   return [
     ...verge(80, depth, 240, -420, "pine", { seed, spread: 340, s: 0.95 }),
     ...verge(160, depth, 260, 420, "pine", { seed: seed + 2, spread: 340, s: 0.95 }),
@@ -109,7 +109,17 @@ function highwayRun(depth: number, seed: number): SceneItem[] {
   ];
 }
 
-const SCENERY: Record<Terrain, (d: number, s: number) => SceneItem[]> = {
+/**
+ * What a run of a given terrain LOOKS like.
+ *
+ * Every trip supplies its own, because "forest" on Highway 60 is black spruce
+ * and bog and "forest" in the Beaver Valley is hardwood under a dolostone
+ * cliff. One shared table is what made all five trips look like the same road.
+ */
+export type Scenery = Record<Terrain, (d: number, s: number) => SceneItem[]>;
+
+/** The generic road, used where a trip has nothing more specific to say. */
+export const SCENERY: Scenery = {
   city: cityRun,
   town: townRun,
   forest: forestRun,
@@ -205,7 +215,7 @@ export function paceFor(
 
 
 function legFor(
-  travel: Travel, index: number, runs: Record<string, Authored>,
+  travel: Travel, index: number, runs: Record<string, Authored>, scenery: Scenery,
 ): Leg | null {
   const a = runs[travel.id];
   if (!a) return null;
@@ -226,7 +236,7 @@ function legFor(
     // at the end of a leg, so neither does this.
     items: [
       ...surface(d + WORLD_TAIL),
-      ...(SCENERY[a.terrain]?.(d + WORLD_TAIL, seed) ?? []),
+      ...(scenery[a.terrain]?.(d + WORLD_TAIL, seed) ?? []),
     ],
     beats: slots(a.beats, d).map(({ b, z, hold }) => ({
       z,
@@ -250,13 +260,37 @@ function legFor(
 export type Script = {
   runs: Record<string, Authored>;
   arrivals: Record<string, readonly ArrivalLine[]>;
+  /** This trip's own country. Falls back to the generic road when absent. */
+  scenery?: Scenery;
+  /**
+   * The far silhouette this trip is walked against: the escarpment, the
+   * mountain with the cross on it, the rolling hardwood hills. Drawn behind
+   * everything and moved only a little, because a horizon that keeps pace with
+   * the trees is not a horizon.
+   */
+  horizon?: HorizonSpec;
+};
+
+/** A ridge line drawn across the back of the world. */
+export type HorizonSpec = {
+  /** peak height as a fraction of the stage */
+  height: number;
+  /** 0 = rolling, 1 = jagged */
+  rough: number;
+  /** how far above the road's vanishing point the ridge base sits, in px */
+  lift?: number;
+  /** each band is drawn behind the one before it, paler */
+  bands?: number;
+  /** override the colour; defaults to the trip's own far tone */
+  tint?: string;
 };
 
 /** Every travel run of a trip, keyed by the id the itinerary gave it. */
 export function legsFor(itinerary: Itinerary, script: Script): Record<string, Leg> {
   const out: Record<string, Leg> = {};
+  const scenery = script.scenery ?? SCENERY;
   itinerary.travel.forEach((t, i) => {
-    const leg = legFor(t, i, script.runs);
+    const leg = legFor(t, i, script.runs, scenery);
     if (leg) out[t.id] = leg;
   });
   return out;

@@ -1,4 +1,5 @@
 import type { Script, Authored } from "./kit";
+import { MONTREAL_COUNTRY, MONTREAL_HORIZON } from "./country";
 import type { ArrivalLine } from "../corridor";
 
 /**
@@ -19,6 +20,10 @@ const RUNS: Record<string, Authored> = {
       { at: 0, voice: "sun", text: "Why are we doing that to ourselves?", face: { brow: "worried", mouth: "grimace" } },
       { at: 0, voice: "curse", text: "Because it buys a whole Saturday, and Saturday is all on foot.",
         face: { mouth: "smile" } },
+      { at: 0, voice: "sun", text: "It's gone completely flat. Fields the whole way.",
+        face: { brow: "raised", eye: "half" } },
+      { at: 0, voice: "curse", text: "Four hours of it. Then a steeple, then another one, and then the bridge.",
+        face: { mouth: "closed" } },
     ],
   },
   "montreal-t2": {
@@ -44,6 +49,10 @@ const RUNS: Record<string, Authored> = {
       { at: 0, voice: "sun", text: "Okay, that ceiling was worth thirty-two dollars.", face: { eye: "sparkle", mouth: "grin" } },
       { at: 0, voice: "curse", text: "Next is the skyline. Thirty steep minutes up from Peel Street, or we drive to the lot.",
         face: { mouth: "closed" } },
+      { at: 0, voice: "sun", text: "There's a cross on top of the hill.",
+        face: { eye: "wide", mouth: "open" } },
+      { at: 0, voice: "curse", text: "It's lit every night. Half the city navigates by it.",
+        face: { mouth: "smile" } },
       { at: 0, voice: "sun", text: "We drive to the lot.", face: { brow: "flat", eye: "half", mouth: "grimace" } },
       { at: 0, voice: "curse", text: "We drive to the lot.", face: { mouth: "smirk" } },
     ],
@@ -53,6 +62,10 @@ const RUNS: Record<string, Authored> = {
     beats: [
       { at: 0, voice: "sun", text: "That was the whole city in one photograph.", face: { eye: "sparkle", mouth: "grin" } },
       { at: 0, voice: "curse", text: "Spiral staircases next. On the outside of the buildings.", face: { mouth: "smile" } },
+      { at: 0, voice: "sun", text: "Every single building has its stairs on the outside.",
+        face: { eye: "sparkle", mouth: "grin" } },
+      { at: 0, voice: "curse", text: "Thirty thousand of them. The city voted them its own symbol, over the Olympic tower.",
+        face: { mouth: "smile" } },
     ],
   },
   "montreal-t6": {
@@ -68,6 +81,10 @@ const RUNS: Record<string, Authored> = {
       { at: 0, voice: "sun", text: "Nothing before two o'clock. Nothing.", face: { eye: "closed", mouth: "smile" } },
       { at: 0, voice: "curse", text: "Bakeries, then the canal path. The studio's the only fixed thing today.",
         face: { mouth: "smile" } },
+      { at: 0, voice: "sun", text: "What's the leaning thing over the rooftops?",
+        face: { brow: "raised" } },
+      { at: 0, voice: "curse", text: "The Olympic tower. Tallest leaning tower there is, and it took them thirty years to pay off.",
+        face: { eye: "half", mouth: "smirk" } },
     ],
   },
   "montreal-t8": {
@@ -105,4 +122,9 @@ const ARRIVALS: Record<string, readonly ArrivalLine[]> = {
   ],
 };
 
-export const MONTREAL: Script = { runs: RUNS, arrivals: ARRIVALS };
+export const MONTREAL: Script = {
+  runs: RUNS,
+  arrivals: ARRIVALS,
+  scenery: MONTREAL_COUNTRY,
+  horizon: MONTREAL_HORIZON,
+};
