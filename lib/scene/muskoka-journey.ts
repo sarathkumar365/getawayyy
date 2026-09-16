@@ -139,83 +139,80 @@ type Authored = {
 /**
  * What is said on each run.
  *
- * Every factual claim traces to trips.json or the Phase 0 weather pass. A is the
- * one who thinks it will be fine; B is the one who has read the hours.
+ * The two of them ARE the couple — this is them on the weekend, not two
+ * narrators describing it. So there is no narrator's voice left in the walk:
+ * every line is spoken by one of them, and the facts arrive the way facts
+ * arrive between two people who are actually in the car. "Two hours, you'll be
+ * asleep before Barrie" IS the drive time from trips.json.
+ *
+ * A is the one who thinks it will be fine. B is the one who has read the hours.
+ * Deliberately few: a line has to stand for about a screen of scrolling to be
+ * read, so nine runs carry eighteen lines between them rather than thirty.
  */
 const RUNS: Record<string, Authored> = {
   "muskoka-t1": {
     title: "Departure", terrain: "city", amp: 300, climb: 7,
     beats: [
-      { at: 0.04, voice: "narrate", text: "You leave at six on Friday" },
-      { at: 0.17, voice: "narrate", text: "and watch the city let go of you in pieces —" },
-      { at: 0.29, voice: "narrate", text: "the last of the traffic," },
-      { at: 0.42, voice: "narrate", text: "then the last of the streetlights," },
-      { at: 0.56, voice: "narrate", text: "then nothing but highway." },
-      { at: 0.68, voice: "narrate", text: "There is beer first, in a room that was a sawmill town's idea of a Friday night." },
-      { at: 0.82, voice: "sun", text: "Two hours. We'll be there before it's properly dark." },
-      { at: 0.93, voice: "curse", text: "It will be properly dark." },
+      { at: 0.16, voice: "sun", text: "We're actually doing it." },
+      { at: 0.50, voice: "curse", text: "Two hours. You'll be asleep before Barrie." },
+      { at: 0.84, voice: "sun", text: "Wake me for the brewery." },
     ],
   },
   "muskoka-t2": {
     title: "The night", terrain: "town", amp: 180, climb: 3,
     beats: [
-      { at: 0.12, voice: "narrate", text: "You sleep in Bracebridge." },
-      { at: 0.45, voice: "narrate", text: "The falls keep going all night, four streets away." },
-      { at: 0.78, voice: "narrate", text: "Saturday starts early, and it has to." },
+      { at: 0.30, voice: "sun", text: "There's a waterfall in the middle of the town?" },
+      { at: 0.74, voice: "curse", text: "Lit. Quarter past ten. Nobody else there." },
     ],
   },
   "muskoka-t3": {
     title: "North to Huntsville", terrain: "highway", amp: 340, climb: 9,
     beats: [
-      { at: 0.1, voice: "narrate", text: "Lunch on Main Street, standing up, because the afternoon is full." },
-      { at: 0.4, voice: "narrate", text: "The road north is all rock cut and red maple by now." },
-      { at: 0.72, voice: "sun", text: "There are paintings on the buildings. Actual Group of Seven, reproduced, outdoors." },
-      { at: 0.88, voice: "curse", text: "In the weather. On purpose." },
+      { at: 0.16, voice: "sun", text: "Lunch standing up. Very romantic." },
+      { at: 0.50, voice: "curse", text: "The afternoon's full. That's why." },
+      { at: 0.84, voice: "sun", text: "Group of Seven paintings. On the sides of buildings." },
     ],
   },
   "muskoka-t4": {
     title: "To Arrowhead", terrain: "forest", amp: 220, climb: 12,
     beats: [
-      { at: 0.3, voice: "narrate", text: "Fifteen minutes, and the town stops entirely." },
-      { at: 0.72, voice: "narrate", text: "Stubb's Falls is a short walk in from the road." },
+      { at: 0.24, voice: "curse", text: "Fifteen minutes and the town just stops." },
+      { at: 0.76, voice: "sun", text: "Falls are a short walk in from the road." },
     ],
   },
   "muskoka-t5": {
     title: "Up to the lookout", terrain: "forest", amp: 240, climb: 20, wet: true,
     beats: [
-      { at: 0.28, voice: "narrate", text: "You climb for half an hour as the light goes orange." },
-      { at: 0.74, voice: "curse", text: "If we miss the sun it was still worth the climb." },
+      { at: 0.26, voice: "sun", text: "It's raining." },
+      { at: 0.74, voice: "curse", text: "Sun still goes down at six. Come on." },
     ],
   },
   "muskoka-t6": {
     title: "The second night", terrain: "town", amp: 190, climb: 4,
     beats: [
-      { at: 0.1, voice: "narrate", text: "Dinner on Manitoba Street. Nobody hurries you out." },
-      { at: 0.46, voice: "narrate", text: "Then the whole night, and coffee on the wharf before anything opens." },
-      { at: 0.82, voice: "narrate", text: "Sunday is the slow one. That was the plan." },
+      { at: 0.30, voice: "sun", text: "Nobody's rushing us out." },
+      { at: 0.74, voice: "curse", text: "Coffee on the wharf before anything opens." },
     ],
   },
   "muskoka-t7": {
     title: "Two streets", terrain: "town", amp: 90, climb: 2,
     beats: [
-      { at: 0.5, voice: "narrate", text: "It is two streets away. You walk it." },
+      { at: 0.5, voice: "sun", text: "It's two streets. We can walk it." },
     ],
   },
   "muskoka-t8": {
     title: "Out to the lake", terrain: "forest", amp: 200, climb: 8,
     beats: [
-      { at: 0.35, voice: "narrate", text: "North Muldrew Lake Road, and then a driveway." },
-      { at: 0.78, voice: "sun", text: "This is the one the whole weekend was built around." },
+      { at: 0.28, voice: "curse", text: "North Muldrew Lake Road. Then a driveway." },
+      { at: 0.76, voice: "sun", text: "Two hours on a wheel. Neither of us has done this." },
     ],
   },
   "muskoka-t9": {
     title: "Home", terrain: "highway", amp: 360, climb: -6,
     beats: [
-      { at: 0.08, voice: "narrate", text: "Late lunch at the wharf, with wet hands and something to carry home." },
-      { at: 0.38, voice: "narrate", text: "Two hours back, into the light this time." },
-      { at: 0.66, voice: "sun", text: "We could do the other one next. The one with the lake you can swim in." },
-      { at: 0.86, voice: "curse", text: "It is October." },
-      { at: 0.95, voice: "sun", text: "So we bring towels." },
+      { at: 0.16, voice: "sun", text: "I'm taking this home wet." },
+      { at: 0.50, voice: "curse", text: "Two hours back. Into the light this time." },
+      { at: 0.85, voice: "sun", text: "Let's do the next one." },
     ],
   },
 };

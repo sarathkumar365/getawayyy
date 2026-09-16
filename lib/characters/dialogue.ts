@@ -7,10 +7,12 @@
  * personality is being smugly right, rather than in a warnings box nobody reads.
  *
  * Voices:
- *   A (sun)   sells it. Short, loud, specific, delighted by cheap things.
- *   B (curse) delivers the cost. Dry, declarative, correct every time, and
- *             insufferable about it. Never aimed at Anjali — his contempt is
- *             reserved for bad ideas, long drives, and A.
+ *   A (sun)   thinks it will be fine, and is usually right about that.
+ *   B (curse) has read the hours. Dry, declarative, correct every time.
+ *
+ * In the walk itself they are the COUPLE, not two narrators describing one —
+ * see lib/scene/muskoka-journey.ts. Here, at the two ends of the trip, they
+ * turn and talk to her, which is the only place that is allowed.
  */
 
 import type { ArmPose } from "./rig";
@@ -34,11 +36,10 @@ const B = (text: string, x: Omit<Line, "who" | "text"> = {}): Line =>
 export const DIALOGUE: Record<string, readonly Line[]> = {
   /* ---------- 1. arrival ---------- */
   arrival: [
-    A("Okay. Okay okay okay.", { eye: "sparkle", emote: "sparkle", arms: "handsUp" }),
-    A("Anjali — you are going somewhere in October.", { brow: "delighted" }),
-    B("She can read.", { eye: "half", mouth: "smirk" }),
-    A("Five directions out of Toronto. One weekend. We found all of them.", { arms: "pointL" }),
-    B("He found the gift shops. I found the problems.", { brow: "flat" }),
+    A("Five weekends. All of them in October.", { eye: "sparkle", emote: "sparkle", arms: "handsUp" }),
+    B("He looked all of it up. Prices, opening hours, the bad reviews as well.", { brow: "flat" }),
+    A("So we walk one and you tell him.", { brow: "delighted", arms: "pointL" }),
+    B("Nothing here is decided yet.", { eye: "half", mouth: "closed" }),
   ],
 
   /* ---------- 2. the quiz ---------- */
@@ -198,8 +199,8 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
 
   /* ---------- 9. ending ---------- */
   ending: [
-    A("That is it. That is everything we found.", { mouth: "smile", eye: "closed" }),
-    B("Send it back. He wants the notes more than he wants the answer.", { brow: "neutral", mouth: "closed" }),
+    A("That is the whole weekend.", { mouth: "smile", eye: "closed" }),
+    B("Tell him which one. And tell him what he got wrong.", { brow: "neutral", mouth: "closed" }),
     A("보라해.", { eye: "sparkle", mouth: "smile", emote: "sparkle" }),
     B("Do not explain it.", { eye: "half", mouth: "smirk" }),
   ],
