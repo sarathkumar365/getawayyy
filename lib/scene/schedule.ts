@@ -1,5 +1,5 @@
 import type { Control } from "./path";
-import type { Leg, LegBeat, SceneItem } from "./corridor";
+import type { ArrivalLine, Leg, LegBeat, SceneItem } from "./corridor";
 import type { Itinerary, Station } from "./itinerary";
 
 /**
@@ -18,7 +18,11 @@ import type { Itinerary, Station } from "./itinerary";
 
 export type Seg =
   | { kind: "travel"; s0: number; s1: number; z0: number; z1: number; leg: Leg }
-  | { kind: "station"; s0: number; s1: number; z: number; station: Station };
+  | {
+      kind: "station"; s0: number; s1: number; z: number; station: Station;
+      /** what they say as they stop, before the panel rises */
+      lines: readonly ArrivalLine[];
+    };
 
 export type Schedule = {
   segs: Seg[];
@@ -37,6 +41,15 @@ export type Schedule = {
 export type ScheduleOpts = {
   /** camera depth covered by one viewport of scroll */
   depthPerScreen?: number;
+  /** lines spoken on arriving, by station id */
+  arrivals?: Record<string, readonly ArrivalLine[]>;
+  /**
+   * Extra scroll for a run, without changing its LENGTH. A scene with six lines
+   * needs reading time, and stretching the world to buy it would make that run
+   * falsely longer than the others. Slowing the camera through it costs nothing
+   * true: the distance is the distance, she just walks it slower.
+   */
+  pace?: Record<string, number>;
   /** scroll held at a station, in viewport heights */
   stationScreens?: (s: Station) => number;
 };
@@ -51,7 +64,7 @@ export type ScheduleOpts = {
  */
 const DEFAULT_DEPTH_PER_SCREEN = 1900;
 const defaultStationScreens = (s: Station): number =>
-  2.0 + Math.min(2.2, s.richness * 0.32);
+  1.5 + Math.min(1.7, s.richness * 0.26);
 
 /**
  * A station stands a little way ahead of where the camera stops, so she is
@@ -106,7 +119,10 @@ export function buildSchedule(
       // must stay BELOW the shortest real run — the moment it bites it stretches
       // that run and the proportions stop being true. It has caught the two
       // streets to Bethune House twice now; at 0.12 it is well clear.
-      const screens = Math.max(0.12, depth / perScreen);
+      // `pace` buys reading time without making the run longer: the distance
+      // is the distance, she just covers it slower.
+      const slow = opts.pace?.[node.id] ?? 1;
+      const screens = Math.max(0.12, (depth / perScreen) * slow);
 
       if (leg) {
         for (const it of leg.items) items.push({ ...it, z: it.z + z });
@@ -146,8 +162,11 @@ export function buildSchedule(
     const kind = PLACE_KIND[node.stop.type] ?? "store";
     items.push({ z: z + STATION_STANDOFF, x: -130, kind, s: 1.35, label: node.stop.name });
 
-    segs.push({ kind: "station", s0: s, s1: s + hold, z, station: node });
-    s += hold;
+    const said = opts.arrivals?.[node.id] ?? [];
+    // Arriving takes longer when there is something to say about it.
+    const withLines = hold + said.length * 0.5;
+    segs.push({ kind: "station", s0: s, s1: s + withLines, z, station: node, lines: said });
+    s += withLines;
   }
 
   return { segs, screens: s, depth: z, items, beats, clock, controls, stationZ };
@@ -164,6 +183,8 @@ export type CameraState = {
   sit: number;
   /** the station she is at or closing on — the only one worth loading */
   near: string | null;
+  /** the arrival line showing right now, and how far it has faded in */
+  says: { station: string; index: number; alpha: number } | null;
 };
 
 /** Ease into and out of a stop, so arriving reads as slowing down. */
@@ -187,6 +208,7 @@ export function cameraAt(schedule: Schedule, progress: number): CameraState {
   let travelling = false;
   let sit = 0;
   let near: string | null = null;
+  let says: CameraState["says"] = null;
 
   for (const seg of schedule.segs) {
     if (seg.kind === "station") {
@@ -197,8 +219,22 @@ export function cameraAt(schedule: Schedule, progress: number): CameraState {
         // They arrive and sit FIRST; the card follows once they have settled.
         // Raising it while they were still on their feet is what made the
         // arrival feel abrupt — the card beat the people to the place.
-        sit = ramp(t, 0, 0.2) * (1 - ramp(t, 0.82, 1));
-        rise[seg.station.id] = ramp(t, 0.2, 0.44) * (1 - ramp(t, 0.76, 0.96));
+        // They stop, they sit, they SAY something about the place, and only
+        // then does the card come up. "Look at that" has to land while they
+        // are still looking at it, not under a panel.
+        sit = ramp(t, 0, 0.16) * (1 - ramp(t, 0.86, 1));
+        const n = seg.lines.length;
+        const talkTo = n > 0 ? 0.2 + n * 0.11 : 0.18;
+        if (n > 0 && t > 0.14 && t < talkTo) {
+          const k = (t - 0.14) / (talkTo - 0.14);
+          const index = Math.min(n - 1, Math.floor(k * n));
+          const within = k * n - index;
+          // in fast, hold, out fast — a spoken line, not a caption
+          const alpha = Math.min(1, within / 0.18) * (1 - ramp(within, 0.84, 1));
+          says = { station: seg.station.id, index, alpha };
+        }
+        rise[seg.station.id] =
+          ramp(t, talkTo, talkTo + 0.2) * (1 - ramp(t, 0.8, 0.97));
         z = seg.z;
         near = seg.station.id;
       } else {
@@ -227,5 +263,5 @@ export function cameraAt(schedule: Schedule, progress: number): CameraState {
     }
   }
 
-  return { z, travelling, rise, sit, near };
+  return { z, travelling, rise, sit, near, says };
 }

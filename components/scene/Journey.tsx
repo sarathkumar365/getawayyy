@@ -7,6 +7,7 @@ import { LENS, beatAlpha, clockAt, project, sortForPaint } from "@/lib/scene/cor
 import { makePath, STRAIGHT } from "@/lib/scene/path";
 import { skyAtTime } from "@/lib/sky";
 import { buildSchedule, cameraAt } from "@/lib/scene/schedule";
+import { muskokaArrivals, muskokaPace } from "@/lib/scene/muskoka-journey";
 import { hexToRgb, propColour } from "@/lib/scene/palette";
 import { scrollToY } from "@/lib/lenis";
 import { CORRIDOR_KINDS } from "./corridorKinds";
@@ -14,9 +15,10 @@ import { RearActor } from "@/components/characters/RearActor";
 import { Flock } from "./Flock";
 import { Rain } from "./Rain";
 import { StationPanel } from "@/components/station/StationPanel";
+import { DetailedCharacter } from "@/components/characters/DetailedCharacter";
 import { useAnswers } from "@/lib/answers";
 import type { Itinerary } from "@/lib/scene/itinerary";
-import type { Leg } from "@/lib/scene/corridor";
+import type { BeatFace, Leg } from "@/lib/scene/corridor";
 import type { Trip } from "@/lib/types";
 
 export type JourneyProps = {
@@ -63,6 +65,30 @@ const MOTES = Array.from({ length: 18 }, (_, i) => {
   };
 });
 
+/**
+ * The reaction bust.
+ *
+ * The walk is seen from behind, so a line on its own cannot show that she is
+ * fed up and he is enjoying it. Their head rides in the bubble instead, which
+ * is the convention this borrows from — and it is the first thing on the site
+ * to use the 39 expressions that until now only existed on a review page.
+ */
+function Bust({ who, face }: { who: "sun" | "curse"; face?: BeatFace }): JSX.Element {
+  return (
+    <span className="saybubble__face" aria-hidden="true">
+      <DetailedCharacter
+        id={who}
+        uid={`bust-${who}-${face?.eye ?? "o"}-${face?.mouth ?? "s"}-${face?.brow ?? "n"}`}
+        crop="head"
+        brow={(face?.brow ?? "neutral") as never}
+        eye={(face?.eye ?? "open") as never}
+        mouth={(face?.mouth ?? "smile") as never}
+        emote={(face?.emote ?? "none") as never}
+      />
+    </span>
+  );
+}
+
 function bookingPriorities(trip: Trip): Map<string, number> {
   return new Map(trip.bookings.map((b) => [b.name.toLowerCase(), b.priority]));
 }
@@ -106,7 +132,11 @@ export function Journey({
   const bookings = useMemo(() => bookingPriorities(trip), [trip]);
 
   const schedule = useMemo(
-    () => buildSchedule(itinerary, legs, { depthPerScreen }),
+    () => buildSchedule(itinerary, legs, {
+      depthPerScreen,
+      arrivals: muskokaArrivals(),
+      pace: muskokaPace(itinerary, depthPerScreen),
+    }),
     [itinerary, legs, depthPerScreen],
   );
   const painted = useMemo(() => sortForPaint(schedule.items), [schedule]);
@@ -154,6 +184,7 @@ export function Journey({
     const cast = stageEl.querySelector<HTMLElement>("[data-cast]");
     const motes = stageEl.querySelector<HTMLElement>("[data-motes]");
     const moteEls = Array.from(stageEl.querySelectorAll<HTMLElement>("[data-mote]"));
+    const sayEls = Array.from(stageEl.querySelectorAll<HTMLElement>("[data-say]"));
     const rail = stageEl.querySelector<HTMLElement>("[data-rail]");
     const road = stageEl.querySelector<SVGPathElement>("[data-road]");
     const shoulder = stageEl.querySelector<SVGPathElement>("[data-shoulder]");
@@ -195,7 +226,7 @@ export function Journey({
     };
 
     const apply = (p: number): void => {
-      const { z: cam, travelling, rise, sit, near } = cameraAt(schedule, p);
+      const { z: cam, travelling, rise, sit, near, says } = cameraAt(schedule, p);
 
       // The sky is resolved BEFORE the props, because the props fade into it.
       const time = clockAt(
@@ -314,6 +345,25 @@ export function Journey({
         }
       }
 
+      // Arrival lines: exactly one can be up, and only at its own stop.
+      const sayKey = says ? `${says.station}:${says.index}` : null;
+      for (const el of sayEls) {
+        const on = el.dataset.say === sayKey;
+        const a = on && says ? says.alpha : 0;
+        if (a <= 0.002) {
+          if (el.style.visibility !== "hidden") {
+            el.style.visibility = "hidden";
+            el.style.opacity = "0";
+          }
+          continue;
+        }
+        if (el.style.visibility === "hidden") el.style.visibility = "";
+        const scale = 0.78 + a * 0.24 - Math.max(0, a - 0.88) * 0.12;
+        el.style.opacity = a.toFixed(3);
+        el.style.transform =
+          `translate(-50%, ${((1 - a) * 10).toFixed(1)}px) scale(${scale.toFixed(3)})`;
+      }
+
       if (rail) rail.style.width = `${(p * 100).toFixed(2)}%`;
 
       if (clockEl) clockEl.textContent = time;
@@ -426,6 +476,7 @@ export function Journey({
             b.voice === "narrate" ? null : (
               <div key={i} data-beat="" data-bubble="" data-z={b.z} data-hold={b.hold ?? 420}
                 className={`saybubble saybubble--${b.voice}`} style={{ opacity: 0 }}>
+                <Bust who={b.voice === "sun" ? "sun" : "curse"} face={b.face} />
                 <span className="saybubble__body">{b.text}</span>
               </div>
             ))}
@@ -468,6 +519,21 @@ export function Journey({
             <i key={i} data-mote="" data-mx={m.x} data-my={m.y} data-md={m.d} data-ms={m.s}
               style={{ left: `${m.x}%`, top: `${m.y}%` }} />
           ))}
+        </div>
+
+        {/* What they say as they stop, before the card rises. */}
+        <div className="saybubbles saybubbles--arrival">
+          {schedule.segs.map((seg) =>
+            seg.kind !== "station" ? null : seg.lines.map((l, k) => (
+              <div key={`${seg.station.id}-${k}`}
+                data-say={`${seg.station.id}:${k}`}
+                className={`saybubble saybubble--${l.voice}`}
+                style={{ opacity: 0, visibility: "hidden" }}>
+                <Bust who={l.voice === "sun" ? "sun" : "curse"} face={l.face} />
+                <span className="saybubble__body">{l.text}</span>
+              </div>
+            )),
+          )}
         </div>
 
         <div className="corridor__clock" data-clock="" />

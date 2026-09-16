@@ -308,6 +308,10 @@
 
 .saybubble {
   position: absolute;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  text-align: left;
   /* the handler owns `transform` (centring included) — never set it here */
   transform-origin: 50% 100%;
   will-change: transform, opacity;
@@ -321,9 +325,27 @@
   box-shadow: 3px 4px 0 rgba(26, 23, 20, .82);
   font-size: clamp(.82rem, 2.5vw, 1rem);
   line-height: 1.34;
-  text-align: center;
-  text-wrap: balance;
+  text-wrap: pretty;
 }
+
+/* the head that rides in the bubble */
+.saybubble__face {
+  flex: 0 0 auto;
+  width: 40px; height: 40px;
+  margin: -2px 0 -2px -2px;
+  border-radius: 99px;
+  overflow: hidden;
+  background: var(--sky-2, #DDE6EC);
+  border: 2px solid currentColor;
+}
+.saybubble__face svg { width: 100%; height: 100%; display: block; }
+.saybubble__body { flex: 1 1 auto; min-width: 0; padding-top: 2px; }
+
+/* Arrival lines sit a little higher and wider — they are the reason she
+   stopped, so they get the room. */
+.saybubbles--arrival .saybubble { max-width: min(30ch, 62vw); }
+.saybubbles--arrival .saybubble--sun { bottom: 56vh; }
+.saybubbles--arrival .saybubble--curse { bottom: 61vh; }
 
 /* the tail: two stacked triangles, ink behind paper, so the outline carries
    all the way around the bubble the way an inked panel does */
@@ -373,13 +395,17 @@
 
 @media (max-width: 640px) {
   .saybubble {
-    max-width: min(20ch, 62vw);
+    max-width: min(20ch, 68vw);
     padding: var(--s-2) var(--s-3);
     border-width: 2px;
     border-radius: 15px;
   }
-  .saybubble--sun { left: 36%; bottom: 46vh; }
-  .saybubble--curse { left: 64%; bottom: 53vh; }
+  .saybubble--sun { left: 38%; bottom: 46vh; }
+  .saybubble--curse { left: 62%; bottom: 54vh; }
+  .saybubble__face { width: 32px; height: 32px; }
+  .saybubbles--arrival .saybubble { max-width: min(26ch, 74vw); }
+  .saybubbles--arrival .saybubble--sun { bottom: 54vh; }
+  .saybubbles--arrival .saybubble--curse { bottom: 62vh; }
   .journey__stage .corridor__script { top: 11vh; }
 }
 

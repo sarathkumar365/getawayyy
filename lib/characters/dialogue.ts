@@ -36,10 +36,13 @@ const B = (text: string, x: Omit<Line, "who" | "text"> = {}): Line =>
 export const DIALOGUE: Record<string, readonly Line[]> = {
   /* ---------- 1. arrival ---------- */
   arrival: [
-    A("Five weekends. All of them in October.", { eye: "sparkle", emote: "sparkle", arms: "handsUp" }),
-    B("He looked all of it up. Prices, opening hours, the bad reviews as well.", { brow: "flat" }),
-    A("So we walk one and you tell him.", { brow: "delighted", arms: "pointL" }),
-    B("Nothing here is decided yet.", { eye: "half", mouth: "closed" }),
+    A("It's been a while since we went anywhere.", { brow: "neutral", eye: "half", mouth: "closed" }),
+    B("I know.", { brow: "flat", mouth: "closed" }),
+    A("So?", { brow: "raised", eye: "open" }),
+    B("So I planned a few. October, one weekend.", { mouth: "smile", arms: "crossed" }),
+    A("A few?", { eye: "wide", emote: "sparkle" }),
+    B("Go and look. Then tell me which one.", { brow: "neutral", mouth: "closed" }),
+    A("Start with the north one.", { mouth: "grin", emote: "sparkle", arms: "handsUp" }),
   ],
 
   /* ---------- 2. the quiz ---------- */

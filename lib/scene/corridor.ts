@@ -155,6 +155,14 @@ export function verge(
 
 export type BeatVoice = "narrate" | "sun" | "curse";
 
+/** What their face is doing while they say it. Keys are the front rig's. */
+export type BeatFace = {
+  brow?: string;
+  eye?: string;
+  mouth?: string;
+  emote?: string;
+};
+
 export type LegBeat = {
   /** camera position at which this line is centred */
   z: number;
@@ -162,6 +170,18 @@ export type LegBeat = {
   text: string;
   /** how far either side it stays legible */
   hold?: number;
+  /**
+   * The walk is seen from behind, so a line alone cannot show that she is fed
+   * up and he is enjoying it. The face rides in the bubble instead.
+   */
+  face?: BeatFace;
+};
+
+/** A line spoken on ARRIVING somewhere, before the panel comes up. */
+export type ArrivalLine = {
+  voice: BeatVoice;
+  text: string;
+  face?: BeatFace;
 };
 
 export type Terrain = "city" | "highway" | "town" | "forest" | "water" | "indoor";
