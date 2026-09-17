@@ -1,20 +1,32 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, type JSX } from "react";
+import { useCallback, useEffect, useMemo, type ComponentType, type JSX } from "react";
 import type { Trip } from "@/lib/types";
 import { mapModelFor } from "@/lib/scene/tripmap";
 import { MuskokaMap, MUSKOKA_NOTE } from "./maps/MuskokaMap";
+import { AlgonquinMap, ALGONQUIN_NOTE } from "./maps/AlgonquinMap";
+import { GeorgianBayMap, GEORGIAN_BAY_NOTE } from "./maps/GeorgianBayMap";
+import { MontrealMap, MONTREAL_NOTE } from "./maps/MontrealMap";
+import { QuebecMap, QUEBEC_NOTE } from "./maps/QuebecMap";
 import { PlotMap } from "./maps/PlotMap";
 import { DayLine } from "./maps/DayLine";
+
+/** Trips with a hand-drawn sheet in Muskoka's style. Anything else plots itself. */
+const DRAWN: Record<string, { Map: ComponentType; note: string }> = {
+  muskoka: { Map: MuskokaMap, note: MUSKOKA_NOTE },
+  "algonquin-haliburton": { Map: AlgonquinMap, note: ALGONQUIN_NOTE },
+  "georgian-bay": { Map: GeorgianBayMap, note: GEORGIAN_BAY_NOTE },
+  montreal: { Map: MontrealMap, note: MONTREAL_NOTE },
+  "quebec-city": { Map: QuebecMap, note: QUEBEC_NOTE },
+};
 
 /**
  * The route, as an honest diagram — this trip's route, not a trip's route.
  *
- * Every journey used to open the same hand-drawn Muskoka map, which made the
- * map a decoration rather than information. Now each trip draws itself:
- * Muskoka keeps the artifact's hand-drawn sheet, the driving trips plot their
- * own Phase-0 coordinates, and the two city trips — where every stop resolves
- * to the same city and a plot would be one dot — draw their days in order.
+ * Every featured trip has its own hand-drawn sheet in the style of Muskoka's:
+ * water, the main roads, each day in its own ink, and the way home. A trip
+ * without one falls back to plotting its Phase-0 coordinates, or — for a city
+ * trip where every stop resolves to one dot — its days in order.
  */
 export function TripMap(
   { trip, open, onClose }: { trip: Trip; open: boolean; onClose: () => void },
@@ -37,8 +49,8 @@ export function TripMap(
 
   if (!open) return null;
 
-  const muskoka = trip.id === "muskoka";
-  const note = muskoka ? MUSKOKA_NOTE : describe(trip, model.spreadKm, model.geographic);
+  const drawn = DRAWN[trip.id];
+  const note = drawn ? drawn.note : describe(trip, model.spreadKm, model.geographic);
 
   return (
     <div className="tripmap" role="dialog" aria-modal="true"
@@ -54,7 +66,7 @@ export function TripMap(
           </button>
         </header>
 
-        {muskoka ? <MuskokaMap />
+        {drawn ? <drawn.Map />
           : model.geographic ? <PlotMap model={model} />
           : <DayLine model={model} />}
 

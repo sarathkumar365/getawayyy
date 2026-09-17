@@ -102,12 +102,6 @@ export function MuskokaMap(): JSX.Element {
           <span><i style={{ background: "#2f5d52", height: 2, opacity: .6 }} />Dorset option</span>
         </div>
 
-      <div className="maplegend">
-        <span><i style={{ background: "#b4832c" }} />Friday in</span>
-        <span><i style={{ background: "#2f5d52" }} />Saturday north</span>
-        <span><i style={{ background: "#9c4a2f" }} />Sunday home</span>
-        <span><i style={{ background: "#2f5d52", height: 2, opacity: .6 }} />Dorset option</span>
-      </div>
     </>
   );
 }
