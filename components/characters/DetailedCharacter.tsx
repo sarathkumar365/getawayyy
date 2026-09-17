@@ -322,6 +322,36 @@ function Emote({ emote, f, p }: { emote: DEmote; f: Face; p: DetailPalette }): J
           ))}
         </g>
       );
+    case "cold":
+      return (
+        <g data-part="emote">
+          {/* pink cheeks and nose tip */}
+          {[-1, 1].map((s) => (
+            <ellipse key={s} cx={s * x} cy={f.eyeY + f.eyeH * 0.66} rx={6.5} ry={3.4} fill={p.blush} opacity={0.4} />
+          ))}
+          <ellipse cx={0} cy={f.noseY + 0.5} rx={3.2} ry={2.4} fill="#FF7F8A" opacity={0.75} />
+          {/* shiver ticks either side of the head */}
+          <g stroke={p.ink} strokeWidth={1.8} strokeLinecap="round" fill="none" opacity={0.7}>
+            {[-1, 1].map((s) => (
+              <g key={s}>
+                <path d={`M${n(s * (f.craniumRx + 11))},${n(f.craniumY - 8)} q${n(s * 4)},6 0,12`} />
+                <path d={`M${n(s * (f.craniumRx + 17))},${n(f.craniumY - 5)} q${n(s * 3)},4.5 0,9`} />
+              </g>
+            ))}
+          </g>
+          {/* breath fogging in the air */}
+          <g fill="#F4F8FF">
+            {[0, 0.6, 1.2].map((delay) => (
+              <circle key={delay} cx={7} cy={f.mouthY + 2} r={2} opacity={0}>
+                <animate attributeName="cx" values={`7;${n(f.craniumRx + 4)}`} dur="1.8s" begin={`${delay}s`} repeatCount="indefinite" />
+                <animate attributeName="cy" values={`${n(f.mouthY + 2)};${n(f.mouthY - 8)}`} dur="1.8s" begin={`${delay}s`} repeatCount="indefinite" />
+                <animate attributeName="r" values="2;7.5" dur="1.8s" begin={`${delay}s`} repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0;0.85;0" dur="1.8s" begin={`${delay}s`} repeatCount="indefinite" />
+              </circle>
+            ))}
+          </g>
+        </g>
+      );
     default:
       return null;
   }

@@ -27,7 +27,7 @@ export type DMouth =
   | "closed" | "smile" | "grin" | "open" | "o"
   | "talkA" | "talkO" | "sad" | "smirk" | "grimace";
 /** Anime shorthand that does the emotional heavy lifting. */
-export type DEmote = "none" | "blush" | "sweat" | "anger" | "sparkle" | "shadow";
+export type DEmote = "none" | "blush" | "sweat" | "anger" | "sparkle" | "shadow" | "cold";
 
 export const D_BROWS: readonly DBrow[] =
   ["neutral", "raised", "furrowed", "worried", "delighted", "angry", "flat"] as const;
@@ -36,7 +36,7 @@ export const D_EYES: readonly DEye[] =
 export const D_MOUTHS: readonly DMouth[] =
   ["closed", "smile", "grin", "open", "o", "talkA", "talkO", "sad", "smirk", "grimace"] as const;
 export const D_EMOTES: readonly DEmote[] =
-  ["none", "blush", "sweat", "anger", "sparkle", "shadow"] as const;
+  ["none", "blush", "sweat", "anger", "sparkle", "shadow", "cold"] as const;
 
 export type DOutfit = "kit" | "parka" | "shell" | "beret" | "tote";
 export const D_OUTFITS: readonly DOutfit[] =

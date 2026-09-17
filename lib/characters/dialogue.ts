@@ -26,6 +26,10 @@ export type Line = {
   mouth?: DMouth;
   emote?: DEmote;
   arms?: ArmPose | "crossed";
+  /** sticky until this speaker's next line */
+  shiver?: boolean;
+  /** the opening's weather; sticky until another line changes it */
+  scene?: "warm" | "cold";
 };
 
 const A = (text: string, x: Omit<Line, "who" | "text"> = {}): Line =>
@@ -34,15 +38,26 @@ const B = (text: string, x: Omit<Line, "who" | "text"> = {}): Line =>
   ({ who: "curse", mouth: "talkA", arms: "crossed", ...x, text });
 
 export const DIALOGUE: Record<string, readonly Line[]> = {
-  /* ---------- 1. arrival ---------- */
+  /* ---------- 1. arrival ----------
+     A is her, B is him. She was promised camping; he checked the campsites. */
   arrival: [
-    A("It's been a while since we went anywhere.", { brow: "neutral", eye: "half", mouth: "closed" }),
-    B("I know.", { brow: "flat", mouth: "closed" }),
-    A("So?", { brow: "raised", eye: "open" }),
-    B("So I planned a few. October, one weekend.", { mouth: "smile", arms: "crossed" }),
-    A("A few?", { eye: "wide", emote: "sparkle" }),
-    B("Go and look. Then tell me which one.", { brow: "neutral", mouth: "closed" }),
-    A("Start with the north one.", { mouth: "grin", emote: "sparkle", arms: "handsUp" }),
+    A("You've been smiling at your phone all week.", { brow: "raised", eye: "side", mouth: "smirk" }),
+    B("Because we're going away. You and me, in October.", { brow: "neutral", mouth: "smile", emote: "blush", arms: "rest" }),
+    A("The camping trip? It's really happening?", { eye: "sparkle", mouth: "grin", emote: "sparkle", arms: "handsUp" }),
+    B("About the camping...", { brow: "worried", eye: "side", mouth: "grimace", emote: "sweat", arms: "rest" }),
+    A("That's your bad-news face.", { brow: "worried", eye: "open", mouth: "o", arms: "rest" }),
+    B("I looked at every campsite we talked about. Every single one.", { brow: "worried", mouth: "talkA", arms: "rest" }),
+    B("The nights up there are already dropping close to freezing.", { brow: "worried", eye: "half", emote: "cold", arms: "hug", shiver: true, scene: "cold" }),
+    A("Freezing? In a tent?", { brow: "worried", eye: "wide", mouth: "o", emote: "cold", arms: "hug", shiver: true }),
+    B("Frost on the tent by morning. Cold toes all night.", { brow: "worried", eye: "squint", mouth: "grimace", emote: "cold", arms: "warmHands", shiver: true }),
+    A("My nose is cold just hearing about it.", { brow: "worried", eye: "squint", mouth: "grimace", emote: "cold", arms: "warmHands", shiver: true }),
+    B("And I wasn't going to let you spend our weekend shivering.", { brow: "neutral", eye: "open", mouth: "smile", emote: "none", arms: "rest", shiver: false, scene: "warm" }),
+    A("...So no camping?", { brow: "worried", eye: "half", mouth: "sad", emote: "none", arms: "rest", shiver: false }),
+    B("No camping. Something warmer.", { brow: "raised", mouth: "smile", arms: "thumbsUp" }),
+    B("Five trips. Colourful trees in the day, and a warm bed at the end of every one.", { brow: "delighted", mouth: "talkA", arms: "rest" }),
+    A("You planned five?", { brow: "raised", eye: "wide", mouth: "o", emote: "blush" }),
+    B("I wanted you to pick. Walk through them with me.", { brow: "neutral", eye: "closed", mouth: "smile", emote: "blush", arms: "rest" }),
+    A("Okay. Show me the north one first.", { brow: "delighted", eye: "sparkle", mouth: "grin", emote: "sparkle", arms: "handsUp" }),
   ],
 
   /* ---------- 2. the quiz ---------- */
@@ -57,11 +72,11 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
   ],
   "quiz.react.pottery": [
     A("There is a real class. You make a thing, they fire it, they post it to you.", { emote: "sparkle" }),
-    B("Three weeks later. He never includes that part.", { mouth: "smirk" }),
+    B("Three weeks later. She never includes that part.", { mouth: "smirk" }),
   ],
   "quiz.react.authentic_food": [
     A("Right. This one I have opinions about.", { brow: "delighted", arms: "thumbsUp" }),
-    B("He has opinions about a sandwich.", { eye: "half", mouth: "smirk" }),
+    B("She has opinions about a sandwich.", { eye: "half", mouth: "smirk" }),
   ],
   "quiz.react.relaxation": [
     A("Noted. Slow weekend.", { mouth: "smile" }),
@@ -85,7 +100,7 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
   ],
   "quiz.react.value": [
     A("Cheapest one is genuinely good, that is the best part!", { brow: "delighted" }),
-    B("Cheapest one is also the one he keeps calling a stroll.", { mouth: "smirk" }),
+    B("Cheapest one is also the one she keeps calling a stroll.", { mouth: "smirk" }),
   ],
 
   /* ---------- 3. the reveal ---------- */
@@ -110,7 +125,7 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
   "trip.algonquin-haliburton.hero": [
     A("This is the famous one. Maple hills, a sculpture forest, a fire tower.", { eye: "sparkle" }),
     A("Pack lunch. There is almost no food on the Highway 60 corridor.", { arms: "pointL" }),
-    B("He is right. It cost me nothing to say that.", { mouth: "smirk" }),
+    B("She is right. It cost me nothing to say that.", { mouth: "smirk" }),
   ],
   "trip.algonquin-haliburton.warning": [
     B("Sugar maple peaks on the twenty-seventh of September. Your window is October.", { brow: "flat" }),
@@ -127,7 +142,7 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
     B("Old Port parking is thirty-five dollars for three hours. Seventy for the day.", { brow: "furrowed" }),
     B("Park at Champ-de-Mars instead. Fifteen to twenty for the same stay.", {}),
     A("Or take the bus. For two people it costs about what renting and fuelling a car costs.", { arms: "pointR" }),
-    B("Eleven hours of driving, round trip. He is being generous to the car.", { mouth: "smirk" }),
+    B("Eleven hours of driving, round trip. She is being generous to the car.", { mouth: "smirk" }),
   ],
 
   "trip.georgian-bay.hero": [
@@ -184,9 +199,9 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
 
   /* ---------- 7. her pick ---------- */
   herPick: [
-    A("Okay. Which one.", { eye: "wide", mouth: "o", arms: "rest" }),
-    B("Take as long as you like. Nobody is waiting.", { brow: "neutral", eye: "open", mouth: "closed" }),
-    A("And say why. The why is the part he actually wants.", { brow: "delighted", emote: "blush" }),
+    B("Okay. Which one?", { brow: "raised", eye: "open", mouth: "talkA" }),
+    A("Don't rush me.", { eye: "wide", mouth: "o", arms: "rest" }),
+    B("Take as long as you like. And tell me why. The why is the part I actually want.", { brow: "neutral", mouth: "smile", emote: "blush" }),
   ],
 
   /* ---------- 8. his pick ---------- */
@@ -195,15 +210,15 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
     B("...Yes. Fine. That was a good weekend to choose.", { brow: "raised", eye: "side", mouth: "smirk" }),
   ],
   "yourPick.mismatch": [
-    A("Different! That is allowed. That is the entire reason he asked.", { brow: "delighted", arms: "thumbsUp" }),
-    B("He researched five and chose one. You looked once and chose another.", { brow: "flat" }),
+    A("Different! That is allowed. That is the entire reason you asked.", { brow: "delighted", arms: "thumbsUp" }),
+    B("I researched five and chose one. You looked once and chose another.", { brow: "flat" }),
     B("Yours is not the worse method.", { eye: "half", mouth: "smirk" }),
   ],
 
   /* ---------- 9. ending ---------- */
   ending: [
     A("That is the whole weekend.", { mouth: "smile", eye: "closed" }),
-    B("Tell him which one. And tell him what he got wrong.", { brow: "neutral", mouth: "closed" }),
+    B("Tell me which one. And tell me what I got wrong.", { brow: "neutral", mouth: "closed" }),
     A("보라해.", { eye: "sparkle", mouth: "smile", emote: "sparkle" }),
     B("Do not explain it.", { eye: "half", mouth: "smirk" }),
   ],

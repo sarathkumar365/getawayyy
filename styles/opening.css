@@ -114,3 +114,69 @@
   .opening__start { width: 100%; }
   .bubble__text { font-size: .96rem; }
 }
+
+/* ---- the cold part of the conversation: the sky drains blue and it snows ---- */
+.opening > * { position: relative; z-index: 1; }
+.opening::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: linear-gradient(180deg, #1C2C44 0%, #3D5673 46%, #7E9AB3 76%, #C9D8E4 100%);
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+.opening.is-cold::before { opacity: 1; }
+
+.opening > .opening__snow {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden;
+  opacity: 0; transition: opacity 1.2s ease;
+}
+.opening.is-cold > .opening__snow { opacity: 1; }
+.opening__snow span {
+  position: absolute; top: -12px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #F4F8FF; opacity: .8;
+  animation: opening-snow 9s linear infinite;
+}
+/* 28 flakes, spread by nth-child so no two share a column, size or pace */
+.opening__snow span:nth-child(4n+1) { width: 4px; height: 4px; animation-duration: 11s; opacity: .6; }
+.opening__snow span:nth-child(3n+2) { width: 8px; height: 8px; animation-duration: 7.5s; }
+.opening__snow span:nth-child(5n)   { filter: blur(1px); animation-duration: 13s; }
+.opening__snow span:nth-child(1)  { left: 3%;  animation-delay: -1s; }
+.opening__snow span:nth-child(2)  { left: 7%;  animation-delay: -6s; }
+.opening__snow span:nth-child(3)  { left: 11%; animation-delay: -3s; }
+.opening__snow span:nth-child(4)  { left: 15%; animation-delay: -8s; }
+.opening__snow span:nth-child(5)  { left: 19%; animation-delay: -2s; }
+.opening__snow span:nth-child(6)  { left: 23%; animation-delay: -5s; }
+.opening__snow span:nth-child(7)  { left: 27%; animation-delay: -9s; }
+.opening__snow span:nth-child(8)  { left: 31%; animation-delay: -4s; }
+.opening__snow span:nth-child(9)  { left: 35%; animation-delay: -7s; }
+.opening__snow span:nth-child(10) { left: 39%; animation-delay: -0.5s; }
+.opening__snow span:nth-child(11) { left: 43%; animation-delay: -10s; }
+.opening__snow span:nth-child(12) { left: 47%; animation-delay: -3.5s; }
+.opening__snow span:nth-child(13) { left: 51%; animation-delay: -6.5s; }
+.opening__snow span:nth-child(14) { left: 55%; animation-delay: -1.5s; }
+.opening__snow span:nth-child(15) { left: 59%; animation-delay: -8.5s; }
+.opening__snow span:nth-child(16) { left: 63%; animation-delay: -4.5s; }
+.opening__snow span:nth-child(17) { left: 67%; animation-delay: -2.5s; }
+.opening__snow span:nth-child(18) { left: 71%; animation-delay: -7.5s; }
+.opening__snow span:nth-child(19) { left: 75%; animation-delay: -5.5s; }
+.opening__snow span:nth-child(20) { left: 79%; animation-delay: -11s; }
+.opening__snow span:nth-child(21) { left: 83%; animation-delay: -0.2s; }
+.opening__snow span:nth-child(22) { left: 87%; animation-delay: -9.5s; }
+.opening__snow span:nth-child(23) { left: 91%; animation-delay: -3.2s; }
+.opening__snow span:nth-child(24) { left: 95%; animation-delay: -6.2s; }
+.opening__snow span:nth-child(25) { left: 13%; animation-delay: -12s; }
+.opening__snow span:nth-child(26) { left: 41%; animation-delay: -10.5s; }
+.opening__snow span:nth-child(27) { left: 65%; animation-delay: -12.5s; }
+.opening__snow span:nth-child(28) { left: 89%; animation-delay: -1.8s; }
+
+@keyframes opening-snow {
+  0%   { transform: translate3d(0, 0, 0); }
+  50%  { transform: translate3d(18px, 55svh, 0); }
+  100% { transform: translate3d(-6px, 110svh, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .opening__snow span { animation: none; top: auto; }
+  .opening__snow span:nth-child(odd)  { top: 30%; }
+  .opening__snow span:nth-child(even) { top: 62%; }
+}

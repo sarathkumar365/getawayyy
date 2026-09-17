@@ -21,7 +21,7 @@ export type BrowPose = "neutral" | "raised" | "furrowed" | "worried" | "delighte
 export type EyeState = "open" | "half" | "closed" | "wide" | "sparkle" | "side";
 export type MouthShape =
   | "closed" | "smile" | "grin" | "open" | "o" | "talkA" | "talkO" | "sad";
-export type ArmPose = "rest" | "pointL" | "pointR" | "wave" | "thumbsUp" | "handsUp";
+export type ArmPose = "rest" | "pointL" | "pointR" | "wave" | "thumbsUp" | "handsUp" | "hug" | "warmHands";
 export type Outfit = "base" | "parka" | "shell" | "beret" | "tote";
 
 export const BROWS: readonly BrowPose[] =
@@ -31,7 +31,7 @@ export const EYES: readonly EyeState[] =
 export const MOUTHS: readonly MouthShape[] =
   ["closed", "smile", "grin", "open", "o", "talkA", "talkO", "sad"] as const;
 export const ARM_POSE_NAMES: readonly ArmPose[] =
-  ["rest", "pointL", "pointR", "wave", "thumbsUp", "handsUp"] as const;
+  ["rest", "pointL", "pointR", "wave", "thumbsUp", "handsUp", "hug", "warmHands"] as const;
 export const OUTFITS: readonly Outfit[] =
   ["base", "parka", "shell", "beret", "tote"] as const;
 
@@ -75,7 +75,7 @@ export type Character = {
   markings: boolean;
 };
 
-/** A — the Sunshine. Small, springy, a head that is slightly too big for him. */
+/** A — the Sunshine. Small, springy, a head that is slightly too big for her. */
 const SUN_SKELETON: Skeleton = {
   viewBox: "-110 0 220 340",
   head: { cx: 0, cy: 46, rx: 31, ry: 35, pivotY: 78 },
@@ -219,6 +219,10 @@ export const ARM_POSES: Record<ArmPose, ArmAngles> = {
   wave:     { shoulderL: 8,    elbowL: 8,   shoulderR: -150, elbowR: 34 },
   thumbsUp: { shoulderL: 10,   elbowL: 8,   shoulderR: -46,  elbowR: 92 },
   handsUp:  { shoulderL: 156,  elbowL: 18,  shoulderR: -156, elbowR: 18 },
+  // cold: forearms folded up across the chest, higher and tighter than crossed
+  hug:      { shoulderL: -10,  elbowL: -128, shoulderR: 10,   elbowR: 128 },
+  // cold: both hands cupped under the chin, as if breathing into them
+  warmHands: { shoulderL: -35, elbowL: -150, shoulderR: 35,   elbowR: 150 },
 };
 
 /** B's default: arms crossed, which is a pose no walk frame ever passes through. */

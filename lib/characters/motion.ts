@@ -142,6 +142,8 @@ export type Motion = {
   setBase(p: Pose): void;
   walk(on: boolean): void;
   talk(on: boolean): void;
+  /** cold: a fast body tremble, knees knocked in, teeth chattering between lines */
+  shiver(on: boolean): void;
   /** one-off: a small anticipation dip, then a pop. Used on reactions. */
   bounce(): void;
   kill(): void;
@@ -159,6 +161,8 @@ export function createMotion(svg: SVGSVGElement, opts: MotionOpts = {}): Motion 
   let walkTarget = 0;
   let talking = 0;
   let talkTarget = 0;
+  let shivering = 0;
+  let shiverTarget = 0;
   let phase = 0;
   let t = 0;
   let pop = 0;
@@ -188,6 +192,7 @@ export function createMotion(svg: SVGSVGElement, opts: MotionOpts = {}): Motion 
       setBase: () => undefined,
       walk: () => undefined,
       talk: () => undefined,
+      shiver: () => undefined,
       bounce: () => undefined,
       kill: () => undefined,
     };
@@ -199,6 +204,7 @@ export function createMotion(svg: SVGSVGElement, opts: MotionOpts = {}): Motion 
 
     walking += (walkTarget - walking) * Math.min(1, dt * 6);
     talking += (talkTarget - talking) * Math.min(1, dt * 12);
+    shivering += (shiverTarget - shivering) * Math.min(1, dt * 5);
     pop = Math.max(0, pop - dt * 2.6);
 
     if (walking > 0.002) phase = (phase + dt * cadence * walking) % 1;
@@ -217,13 +223,20 @@ export function createMotion(svg: SVGSVGElement, opts: MotionOpts = {}): Motion 
     const still = 1 - walking;
 
     const popEase = pop * pop * (3 - 2 * pop);
+    // two close high frequencies beat against each other, so the tremble surges and eases
+    const cold = shivering * still;
+    const tremble = Math.sin(t * 52) * 0.6 + Math.sin(t * 61) * 0.4;
     const pose: Pose = {
       ...live,
-      bob: live.bob + breath * 0.9 * still - popEase * 5,
-      lean: live.lean + sway * 0.7 * still,
-      headTilt: live.headTilt + micro * 0.9 * still + popEase * 2.5,
-      shoulderL: live.shoulderL - popEase * 7,
-      shoulderR: live.shoulderR + popEase * 7,
+      bob: live.bob + breath * 0.9 * still - popEase * 5 + cold * (3 + tremble * 1.1),
+      lean: live.lean + sway * 0.7 * still + cold * tremble * 0.8,
+      headTilt: live.headTilt + micro * 0.9 * still + popEase * 2.5 + cold * (Math.sin(t * 47) * 1.2 - 2),
+      shoulderL: live.shoulderL - popEase * 7 + cold * tremble * 2.5,
+      shoulderR: live.shoulderR + popEase * 7 - cold * tremble * 2.5,
+      hipL: live.hipL - cold * 5,
+      hipR: live.hipR + cold * 5,
+      kneeL: live.kneeL + cold * 7,
+      kneeR: live.kneeR + cold * 7,
     };
 
     // hair chases the head and overshoots it
@@ -234,7 +247,7 @@ export function createMotion(svg: SVGSVGElement, opts: MotionOpts = {}): Motion 
 
     const openness = talking > 0.01
       ? Math.abs(Math.sin(t * 9.3) * 0.62 + Math.sin(t * 14.9) * 0.38)
-      : 1;
+      : 1 - cold * (0.5 + 0.5 * Math.sin(t * 40));
 
     applyPose(rig, pose, {
       hairFront: sFront.step(hairTarget, dt),
@@ -242,7 +255,7 @@ export function createMotion(svg: SVGSVGElement, opts: MotionOpts = {}): Motion 
       strands: sStrand.step(hairTarget * 1.15, dt),
       lidL: lid(t, blinkLAt),
       lidR: lid(t, blinkRAt),
-      mouthOpen: 1 - talking * (1 - openness),
+      mouthOpen: talking > 0.01 ? 1 - talking * (1 - openness) : openness,
       flip, turn, headPivotY,
     });
   };
@@ -253,6 +266,7 @@ export function createMotion(svg: SVGSVGElement, opts: MotionOpts = {}): Motion 
     setBase(p: Pose) { base = p; },
     walk(on: boolean) { walkTarget = on ? 1 : 0; },
     talk(on: boolean) { talkTarget = on ? 1 : 0; },
+    shiver(on: boolean) { shiverTarget = on ? 1 : 0; },
     bounce() { pop = 1; },
     kill() { gsap.ticker.remove(tick); },
   };

@@ -23,6 +23,7 @@ export type ActorProps = {
   flip?: boolean;
   walking?: boolean;
   talking?: boolean;
+  shivering?: boolean;
   arms?: ArmPose | "crossed" | null;
   expression?: Expression;
   height?: number;
@@ -41,7 +42,7 @@ const restFor = (id: DetailId): Pose => (id === "curse" ? withArms(IDLE, ARMS_CR
  */
 export function Actor({
   id, outfit = "kit", x, turn = 0, flip = false,
-  walking = false, talking = false, arms = null,
+  walking = false, talking = false, shivering = false, arms = null,
   expression, height = 320, className,
 }: ActorProps): JSX.Element {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -65,6 +66,7 @@ export function Actor({
 
   useEffect(() => { motionRef.current?.walk(walking); }, [walking]);
   useEffect(() => { motionRef.current?.talk(talking); }, [talking]);
+  useEffect(() => { motionRef.current?.shiver(shivering); }, [shivering, ready]);
 
   useEffect(() => {
     const m = motionRef.current;
