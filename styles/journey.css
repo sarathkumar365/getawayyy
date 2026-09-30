@@ -41,7 +41,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--s-3);
-  will-change: transform, opacity;
 }
 
 /* the card body — this is the part that scrolls */
@@ -347,7 +346,6 @@
   text-align: left;
   /* the handler owns `transform` (centring included) — never set it here */
   transform-origin: 50% 100%;
-  will-change: transform, opacity;
 
   max-width: min(23ch, 42vw);
   padding: var(--s-3) var(--s-4);

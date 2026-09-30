@@ -81,10 +81,14 @@ export function PointerTrail({
       if (marks.length > 600) marks = marks.slice(-600);
     };
 
+    // Idle frames cost nothing: no clear, no work, until there is a mark.
+    let dirty = false;
     const draw = (): void => {
+      if (marks.length === 0 && !dirty) return;
       const now = performance.now();
       marks = marks.filter((m) => now - m.t < life);
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      dirty = marks.length > 0;
       if (marks.length < 2) return;
 
       const stroke = colour();

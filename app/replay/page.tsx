@@ -18,7 +18,14 @@ import { allTrips, tripById } from "@/lib/data";
 export default function ReplayPage(): JSX.Element {
   const [a, setA] = useState<Answers | null | "none">("none");
 
-  useEffect(() => { setA(readReplayFragment() ?? null); }, []);
+  // A second link opened in the same tab changes only the fragment, which is
+  // not a navigation: without this it kept showing the first link's answers.
+  useEffect(() => {
+    const read = (): void => setA(readReplayFragment() ?? null);
+    read();
+    window.addEventListener("hashchange", read);
+    return () => window.removeEventListener("hashchange", read);
+  }, []);
 
   if (a === "none") return <main className="replay"><p>Reading…</p></main>;
 

@@ -89,7 +89,8 @@ export function PlotMap({ model }: { model: TripMapModel }): JSX.Element {
               before put you down, or Sunday starts in mid-air at whatever town
               you woke up in. */}
           {model.days.map((d, i) => {
-            const prev = model.days[i - 1]?.places.at(-1);
+            const before = model.days[i - 1]?.places;
+            const prev = before?.[before.length - 1];
             const run = prev ? [prev, ...d.places] : d.places;
             if (run.length < 2) return null;
             const pts = run.map((p) => `${px(p.x).toFixed(1)},${py(p.y).toFixed(1)}`).join(" ");

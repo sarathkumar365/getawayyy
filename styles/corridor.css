@@ -18,10 +18,13 @@
   will-change: transform;
 }
 
-/* Every tree, house and lamp post. Placed from JavaScript every frame. */
+/* Every tree, house and lamp post. Placed from JavaScript every frame.
+   No will-change and no translate3d: there are ~1,800 of these, and a GPU
+   layer each is more memory than iOS Safari will give a tab — it killed the
+   page and reloaded it, over and over, the moment the walk opened. They
+   start display:none; only the few in view are ever painted. */
 .prop {
   position: absolute; left: 0; top: 0;
-  will-change: transform, opacity;
   transform-origin: 50% 100%;
 }
 
@@ -56,7 +59,6 @@
 }
 .beat {
   grid-area: 1 / 1; margin: 0; max-width: 34ch; text-align: center;
-  will-change: opacity, transform;
 }
 .beat--narrate {
   font-family: var(--font-display), Georgia, serif;

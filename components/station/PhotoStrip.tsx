@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useRef, useState, type JSX } from "react";
+import { useCallback, useEffect, useRef, useState, type JSX } from "react";
 import { usePhotos, useEscape, apiSrc } from "@/components/media/usePhotos";
 
 export type PhotoStripProps = {
@@ -36,9 +36,27 @@ export function PhotoStrip({ name, local, query, active = false }: PhotoStripPro
 
   const api = extra.state === "ok" ? extra.photos : [];
   const count = local.length + api.length;
+  const has = count > 0;
 
   const rail = useRef<HTMLUListElement>(null);
   const [at, setAt] = useState(0);
+
+  /*
+   * Pictures are only in the DOM while this strip is on screen. Ten decoded
+   * photos a stop, kept for every stop she has passed, is hundreds of MB —
+   * past what iOS Safari allows a tab, and it answers by killing the page.
+   * Dropped images come back from the HTTP cache, not the network.
+   */
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = rail.current;
+    if (!el || typeof IntersectionObserver === "undefined") { setInView(true); return undefined; }
+    const io = new IntersectionObserver(([e]) => setInView(Boolean(e?.isIntersecting)),
+      { rootMargin: "600px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [has]);
+  const show = active && inView;
   /** Page by a whole photo. Arrows exist because a swipe is not guaranteed —
    *  a drag that starts on an image or a button is easy for a browser to claim
    *  as something else, and then the gallery looks like it has one photo. */
@@ -79,9 +97,11 @@ export function PhotoStrip({ name, local, query, active = false }: PhotoStripPro
           {local.map((src, i) => (
             <li key={src} className="strip__cell">
               <button type="button" onClick={() => setOpen(src)} aria-label={`${name}, photo ${i + 1}`}>
-                <Image src={src} alt={`${name} — photo ${i + 1}`} fill draggable={false}
-                  sizes="(max-width: 700px) 100vw, 660px"
-                  style={{ objectFit: "cover" }} priority={active && i === 0} />
+                {show && (
+                  <Image src={src} alt={`${name} — photo ${i + 1}`} fill draggable={false}
+                    sizes="(max-width: 700px) 100vw, 660px"
+                    style={{ objectFit: "cover" }} priority={i === 0} />
+                )}
               </button>
             </li>
           ))}
@@ -93,10 +113,10 @@ export function PhotoStrip({ name, local, query, active = false }: PhotoStripPro
                 <button type="button" onClick={() => setOpen(apiSrc(p.ref, 1600))}
                   aria-label={`${name}, visitor photo`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={apiSrc(p.ref, 1200)} alt={`${name} — visitor photo`} loading="lazy"
+                  {show && <img src={apiSrc(p.ref, 1200)} alt={`${name} — visitor photo`} loading="lazy"
                     className="strip__fade" draggable={false}
                     ref={(el) => { if (el?.complete) el.classList.add("is-loaded"); }}
-                    onLoad={(e) => e.currentTarget.classList.add("is-loaded")} />
+                    onLoad={(e) => e.currentTarget.classList.add("is-loaded")} />}
                 </button>
                 {/* Google requires the credit to sit with the photo. Not optional. */}
                 {credit?.name && <span className="strip__credit">{credit.name} · Google</span>}

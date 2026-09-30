@@ -136,7 +136,10 @@
   width: 6px; height: 6px; border-radius: 50%;
   background: #F4F8FF; opacity: .8;
   animation: opening-snow 9s linear infinite;
+  /* Invisible most of the time; no reason to keep 28 animations running. */
+  animation-play-state: paused;
 }
+.opening.is-cold .opening__snow span { animation-play-state: running; }
 /* 28 flakes, spread by nth-child so no two share a column, size or pace */
 .opening__snow span:nth-child(4n+1) { width: 4px; height: 4px; animation-duration: 11s; opacity: .6; }
 .opening__snow span:nth-child(3n+2) { width: 8px; height: 8px; animation-duration: 7.5s; }

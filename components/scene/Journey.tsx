@@ -251,6 +251,9 @@ export function Journey({
     let touchY: number | null = null;
     let touchAt = 0;
 
+    /** The map or a full-size photo is over the walk: input belongs to it. */
+    const overlayOpen = (): boolean => document.querySelector(".tripmap, .lightbox") !== null;
+
     /** The card has nothing left to scroll in this direction. */
     const cardSpent = (card: HTMLElement, dir: number): boolean =>
       dir > 0 ? card.scrollTop + card.clientHeight >= card.scrollHeight - 1
@@ -306,7 +309,7 @@ export function Journey({
       const now = performance.now();
       const gap = now - lastWheel;
       lastWheel = now;
-      if (!parked) return;
+      if (!parked || overlayOpen()) return;
       // Inside the card the wheel reads the card — until the card has run out
       // in that direction, and then it means "move on".
       const card = e.target instanceof Element ? e.target.closest<HTMLElement>(".journey__card") : null;
@@ -329,7 +332,7 @@ export function Journey({
       touchCard = e.target instanceof Element ? e.target.closest<HTMLElement>(".journey__card") : null;
     };
     const onTouchMove = (e: TouchEvent): void => {
-      if (!parked) return;
+      if (!parked || overlayOpen()) return;
       const y = e.touches[0]?.clientY;
       if (touchY === null || y === undefined || touchAt < parkedAt) return;
       const dy = touchY - y;
@@ -338,9 +341,10 @@ export function Journey({
       else if (dy < -60) letGo(-1);
     };
     const onKey = (e: KeyboardEvent): void => {
-      if (!parked) return;
+      if (!parked || overlayOpen()) return;
       if (e.target instanceof HTMLElement && e.target.closest("textarea, input")) return;
-      if (["ArrowDown", "PageDown", " ", "Escape"].includes(e.key)) { e.preventDefault(); letGo(1); }
+      // Not Escape: that closes the map or a photo, and must not also walk on.
+      if (["ArrowDown", "PageDown", " "].includes(e.key)) { e.preventDefault(); letGo(1); }
       else if (["ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); letGo(-1); }
     };
     // Belt and braces: anything that still moves the page while parked is
@@ -402,7 +406,7 @@ export function Journey({
         // however small it is drawn.
         node.style.color = propColour(node.dataset.kind ?? "", z - cam, LENS.far, skyRgb, trip.id);
         node.style.transform =
-          `translate3d(${pr.left.toFixed(1)}px, ${pr.base.toFixed(1)}px, 0) ` +
+          `translate(${pr.left.toFixed(1)}px, ${pr.base.toFixed(1)}px) ` +
           `translate(-50%, -100%) scale(${(pr.scale * s).toFixed(4)})`;
         node.style.opacity = pr.opacity.toFixed(3);
       }
@@ -552,7 +556,17 @@ export function Journey({
       onUpdate: (self) => apply(self.progress),
     });
 
-    const onResize = (): void => { size(); apply(st.progress); };
+    const onResize = (): void => {
+      size();
+      // Turning the iPad changes every pixel offset. A parked card has to be
+      // re-pinned to where its hold point now is, or the pin drags the page
+      // to a stale offset.
+      if (parked) {
+        const seg = stops[parked];
+        if (seg) { parkedY = yFor(seg.hold); window.scrollTo(0, parkedY); }
+      }
+      apply(st.progress);
+    };
     window.addEventListener("resize", onResize);
     window.addEventListener("wheel", onWheel, { passive: true, capture: true });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
@@ -599,7 +613,7 @@ export function Journey({
               data-s={it.s ?? 1}
               data-kind={it.kind}
               className="prop"
-              style={{ opacity: 0 }}
+              style={{ display: "none" }}
             >
               {CORRIDOR_KINDS[it.kind]?.(it) ?? null}
             </div>

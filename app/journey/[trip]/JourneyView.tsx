@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState, type JSX } from "react";
 import "@/styles/world.css";
 import "@/styles/corridor.css";
@@ -31,7 +32,12 @@ export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
   );
 
   if (!trip || !itinerary) {
-    return <main className="journey__missing"><p>No trip called {tripId}.</p></main>;
+    return (
+      <main className="journey__missing">
+        <HomeButton />
+        <p>Hmm, there&apos;s no trip called {tripId}. <Link href="/">Back to both trips</Link></p>
+      </main>
+    );
   }
 
   return (

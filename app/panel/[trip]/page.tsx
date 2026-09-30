@@ -84,7 +84,15 @@ export default function PanelPage(): JSX.Element {
     return () => io.disconnect();
   }, [tripId, stations.length]);
 
-  if (!trip) return <main className="panel-page"><p>No trip called {tripId}.</p></main>;
+  if (!trip) {
+    return (
+      <main className="panel-page">
+        <HomeButton />
+        <p>Hmm, there&apos;s no trip called {tripId}.</p>
+        <p className="panel-page__back"><Link href="/">Back to both trips</Link></p>
+      </main>
+    );
+  }
 
   // Only this trip's stops. The count sits under this trip's name, and
   // answers.stops holds every trip she has walked.
