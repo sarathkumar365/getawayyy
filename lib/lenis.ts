@@ -18,3 +18,5 @@ export function scrollToY(y: number, duration = 1.1): void {
   if (current) { current.scrollTo(y, { duration }); return; }
   window.scrollTo({ top: y, behavior: "smooth" });
 }
+
+export const getLenis = (): Lenis | null => current;

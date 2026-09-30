@@ -198,6 +198,33 @@ const ramp = (t: number, a: number, b: number): number => {
   return k * k * (3 - 2 * k);
 };
 
+/** Where in a stop the arrival lines finish and the card may start to rise. */
+const talkEnd = (lines: number): number => (lines > 0 ? 0.2 + lines * 0.11 : 0.18);
+
+/** How far a stop's card is up, `t` of the way through its segment. */
+const riseAt = (t: number, lines: number): number => {
+  const from = talkEnd(lines);
+  return ramp(t, from, from + 0.2) * (1 - ramp(t, 0.8, 0.97));
+};
+
+/**
+ * The scroll position (in screens) where a stop's card is most fully up — the
+ * middle of its plateau. The walk parks here when a card lands, so the card
+ * does not depend on her stopping her scroll inside a narrow window.
+ */
+export function holdPoint(seg: Extract<Seg, { kind: "station" }>): number {
+  const n = seg.lines.length;
+  let best = 0;
+  let lo = 0.5;
+  let hi = 0.5;
+  for (let i = 0; i <= 200; i += 1) {
+    const t = i / 200;
+    const r = riseAt(t, n);
+    if (r > best + 1e-6) { best = r; lo = t; hi = t; } else if (r >= best - 1e-6) hi = t;
+  }
+  return seg.s0 + (seg.s1 - seg.s0) * ((lo + hi) / 2);
+}
+
 /** Marker replaced by the next station's id once the whole list is known. */
 const APPROACHING = "\u0000next";
 
@@ -224,7 +251,7 @@ export function cameraAt(schedule: Schedule, progress: number): CameraState {
         // are still looking at it, not under a panel.
         sit = ramp(t, 0, 0.16) * (1 - ramp(t, 0.86, 1));
         const n = seg.lines.length;
-        const talkTo = n > 0 ? 0.2 + n * 0.11 : 0.18;
+        const talkTo = talkEnd(n);
         if (n > 0 && t > 0.14 && t < talkTo) {
           const k = (t - 0.14) / (talkTo - 0.14);
           const index = Math.min(n - 1, Math.floor(k * n));
@@ -233,8 +260,7 @@ export function cameraAt(schedule: Schedule, progress: number): CameraState {
           const alpha = Math.min(1, within / 0.18) * (1 - ramp(within, 0.84, 1));
           says = { station: seg.station.id, index, alpha };
         }
-        rise[seg.station.id] =
-          ramp(t, talkTo, talkTo + 0.2) * (1 - ramp(t, 0.8, 0.97));
+        rise[seg.station.id] = riseAt(t, n);
         z = seg.z;
         near = seg.station.id;
       } else {

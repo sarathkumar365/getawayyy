@@ -6,10 +6,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { LENS, beatAlpha, clockAt, project, sortForPaint } from "@/lib/scene/corridor";
 import { makePath, STRAIGHT } from "@/lib/scene/path";
 import { skyAtTime } from "@/lib/sky";
-import { buildSchedule, cameraAt } from "@/lib/scene/schedule";
+import { buildSchedule, cameraAt, holdPoint } from "@/lib/scene/schedule";
 
 import { hexToRgb, propColour } from "@/lib/scene/palette";
-import { scrollToY } from "@/lib/lenis";
+import { getLenis, scrollToY } from "@/lib/lenis";
 import { CORRIDOR_KINDS } from "./corridorKinds";
 import { Horizon } from "./Horizon";
 import { RearActor } from "@/components/characters/RearActor";
@@ -146,14 +146,32 @@ export function Journey({
 
 
 
-  /** Scroll position, in page pixels, where a station's hold ends. */
-  const endOfStation = useMemo(() => {
-    const m: Record<string, number> = {};
+  /** Each stop's segment and the point its card is parked at, in screens. */
+  const stops = useMemo(() => {
+    const m: Record<string, { s0: number; s1: number; hold: number }> = {};
     for (const seg of schedule.segs) {
-      if (seg.kind === "station") m[seg.station.id] = seg.s1 / schedule.screens;
+      if (seg.kind === "station") m[seg.station.id] = { s0: seg.s0, s1: seg.s1, hold: holdPoint(seg) };
     }
     return m;
   }, [schedule]);
+
+  /**
+   * Page offset of a point in the schedule. The trigger runs top-top to
+   * bottom-bottom, so the scrollable distance is the spacer's height LESS one
+   * viewport — using the full height overshot every target by up to a screen.
+   */
+  const yFor = useCallback((sc: number): number => {
+    const el = spacer.current;
+    if (!el) return 0;
+    // getBoundingClientRect + scrollY, NOT offsetTop: the spacer sits inside a
+    // positioned wrapper, so offsetTop measured from that wrapper rather than
+    // from the page.
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    return top + (sc / schedule.screens) * (el.offsetHeight - window.innerHeight);
+  }, [schedule.screens]);
+
+  /** Set by the scroll effect while a card is parked: lets go of it. */
+  const release = useRef<((dir: 1 | -1) => void) | null>(null);
 
   /**
    * Closing a panel scrolls PAST the stop rather than hiding the panel.
@@ -164,16 +182,10 @@ export function Journey({
    * by hand does, just in one movement.
    */
   const close = useCallback((stationId: string) => {
-    const el = spacer.current;
-    const frac = endOfStation[stationId];
-    if (!el || frac === undefined) return;
-    // getBoundingClientRect + scrollY, NOT offsetTop: the spacer sits inside a
-    // positioned wrapper, so offsetTop measured from that wrapper rather than
-    // from the page and the button scrolled to the wrong place — usually back
-    // to the very beginning, which is why it looked like it did nothing.
-    const top = el.getBoundingClientRect().top + window.scrollY;
-    scrollToY(top + frac * el.offsetHeight + 8);
-  }, [endOfStation]);
+    if (release.current) { release.current(1); return; }
+    const seg = stops[stationId];
+    if (seg) scrollToY(yFor(seg.s1) + 8);
+  }, [stops, yFor]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -211,6 +223,118 @@ export function Journey({
     let lastRain = -1;
     let stopTimer: number | null = null;
 
+    /*
+     * Parking a card. Its plateau is only a fraction of a screen of scroll, so
+     * with any momentum at all a card flashed up and straight back down. Now,
+     * when the scroll crosses a card's hold point, the page is pinned there
+     * until she asks to move on: a NEW scroll gesture (not the tail of the one
+     * that brought her), a swipe, a key, or "Keep walking". Scrolling inside
+     * the card still scrolls the card.
+     */
+    let parked: string | null = null;
+    let parkedAt = 0;
+    let parkedY = 0;
+    let passed: string | null = null;
+    let lastS = -1;
+    let lastWheel = 0;
+    let armed = false;
+    let wheelSum = 0;
+    let touchY: number | null = null;
+    let touchAt = 0;
+
+    const inCard = (t: EventTarget | null): boolean =>
+      t instanceof Element && t.closest(".journey__card") !== null;
+
+    const park = (id: string, hold: number): void => {
+      parked = id;
+      parkedAt = performance.now();
+      armed = false;
+      wheelSum = 0;
+      getLenis()?.stop();
+      parkedY = yFor(hold);
+      // Anywhere on the plateau looks identical — the camera is still and the
+      // card is fully up — so the jump to its middle cannot be seen.
+      window.scrollTo(0, parkedY);
+      stageEl.dataset.parked = id;
+    };
+
+    const letGo = (dir: 1 | -1): void => {
+      const id = parked;
+      if (!id) return;
+      const seg = stops[id];
+      parked = null;
+      passed = id;
+      delete stageEl.dataset.parked;
+      getLenis()?.start();
+      if (seg) scrollToY(dir > 0 ? yFor(seg.s1) + 8 : yFor(seg.s0) - 8);
+    };
+    release.current = null;
+
+    const watchPark = (p: number): void => {
+      const sNow = p * schedule.screens;
+      if (passed) {
+        const seg = stops[passed];
+        if (!seg || sNow < seg.s0 || sNow > seg.s1) passed = null;
+      }
+      if (!parked && lastS >= 0) {
+        for (const [id, seg] of Object.entries(stops)) {
+          if (id === passed) continue;
+          const crossed = (lastS < seg.hold && sNow >= seg.hold) || (lastS > seg.hold && sNow <= seg.hold);
+          if (crossed) { park(id, seg.hold); release.current = letGo; break; }
+        }
+      }
+      if (!parked) release.current = null;
+      lastS = sNow;
+    };
+
+    const onWheel = (e: WheelEvent): void => {
+      const now = performance.now();
+      const gap = now - lastWheel;
+      lastWheel = now;
+      if (!parked) return;
+      // Inside the card the wheel reads the card — until the card has run out
+      // in that direction, and then it means "move on".
+      const card = e.target instanceof Element ? e.target.closest<HTMLElement>(".journey__card") : null;
+      if (card) {
+        const atEnd = card.scrollTop + card.clientHeight >= card.scrollHeight - 1;
+        const atTop = card.scrollTop <= 0;
+        if (!(e.deltaY > 0 && atEnd) && !(e.deltaY < 0 && atTop)) { wheelSum = 0; return; }
+      }
+      e.preventDefault();
+      // The wheel events still arriving are the momentum of the scroll that
+      // parked her. Only a pause, then a fresh push, counts as asking to go on.
+      if (!armed) {
+        if (gap > 220 && now - parkedAt > 700) armed = true;
+        else return;
+      }
+      wheelSum += e.deltaY;
+      if (Math.abs(wheelSum) > 150) letGo(wheelSum > 0 ? 1 : -1);
+    };
+    const onTouchStart = (e: TouchEvent): void => {
+      touchY = e.touches[0]?.clientY ?? null;
+      touchAt = performance.now();
+    };
+    const onTouchMove = (e: TouchEvent): void => {
+      if (!parked || inCard(e.target)) return;
+      e.preventDefault();
+      const y = e.touches[0]?.clientY;
+      if (touchY === null || y === undefined || touchAt < parkedAt) return;
+      if (touchY - y > 70) letGo(1);
+      else if (y - touchY > 70) letGo(-1);
+    };
+    const onKey = (e: KeyboardEvent): void => {
+      if (!parked) return;
+      if (e.target instanceof HTMLElement && e.target.closest("textarea, input")) return;
+      if (["ArrowDown", "PageDown", " ", "Escape"].includes(e.key)) { e.preventDefault(); letGo(1); }
+      else if (["ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); letGo(-1); }
+    };
+    // Not overflow:hidden on the root — that breaks the sticky stage. Instead
+    // anything that still moves the page (iOS momentum, a scrollbar drag) is
+    // put back.
+    const onScrollPinned = (): void => {
+      if (parked && Math.abs(window.scrollY - parkedY) > 2) window.scrollTo(0, parkedY);
+    };
+
     const ribbon = (cam: number, halfW: number): string => {
       const STEPS = 26;
       const left: string[] = [];
@@ -230,6 +354,7 @@ export function Journey({
     };
 
     const apply = (p: number): void => {
+      watchPark(p);
       const { z: cam, travelling, rise, sit, near, says } = cameraAt(schedule, p);
 
       // The sky is resolved BEFORE the props, because the props fade into it.
@@ -415,13 +540,25 @@ export function Journey({
 
     const onResize = (): void => { size(); apply(st.progress); };
     window.addEventListener("resize", onResize);
+    window.addEventListener("wheel", onWheel, { passive: false, capture: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("scroll", onScrollPinned, { passive: true });
 
     return () => {
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("wheel", onWheel, { capture: true });
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", onScrollPinned);
+      if (parked) getLenis()?.start();
+      release.current = null;
       if (stopTimer !== null) window.clearTimeout(stopTimer);
       st.kill();
     };
-  }, [schedule, trip.id]);
+  }, [schedule, trip.id, stops, yFor]);
 
   return (
     <div
