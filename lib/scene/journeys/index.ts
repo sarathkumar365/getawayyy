@@ -2,9 +2,6 @@ import type { ArrivalLine, Leg } from "../corridor";
 import type { Itinerary } from "../itinerary";
 import { legsFor, paceFor, type HorizonSpec, type Script } from "./kit";
 import { MUSKOKA } from "./muskoka";
-import { ALGONQUIN } from "./algonquin";
-import { GEORGIAN_BAY } from "./georgianBay";
-import { MONTREAL } from "./montreal";
 import { QUEBEC } from "./quebec";
 
 /**
@@ -17,9 +14,6 @@ import { QUEBEC } from "./quebec";
  */
 const SCRIPTS: Record<string, Script> = {
   muskoka: MUSKOKA,
-  "algonquin-haliburton": ALGONQUIN,
-  "georgian-bay": GEORGIAN_BAY,
-  montreal: MONTREAL,
   "quebec-city": QUEBEC,
 };
 

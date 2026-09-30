@@ -1,10 +1,10 @@
 # getawayyy
 
-A private gift site: five researched weekend trips out of Toronto for October 2026,
-presented as one continuous walk you scroll through with two characters.
+A private gift site: two researched weekend trips out of Toronto for Thanksgiving
+weekend (Oct 9–11, 2026) — North (Huntsville & Dorset) and Quebec City — presented
+as one continuous walk you scroll through with two characters.
 
-Built from a pre-researched dataset (`trips.json`, schema 2.0.0 — 6 trips, 76 stops,
-19 sources) whose defining quality is **provenance discipline**: costs that are
+Built from a pre-researched dataset (`trips.json`, schema 3.0.0 — 2 trips) whose defining quality is **provenance discipline**: costs that are
 estimates say so, costs nobody could confirm stay `null`, closed venues stay in the
 file marked closed, and ranges are never averaged into a single number. The site
 preserves that rather than smoothing it over.
@@ -20,13 +20,12 @@ No Node required — this is built and run with **bun**.
 
 | route | what it is |
 |---|---|
-| `/` | the front door: the two of them, then the five trips |
+| `/` | the front door: the two of them, then the two trips |
 | `/journey/<trip>` | the walk — one continuous world, cards rising at each stop |
 | `/panel/<trip>` | every stop on one page, for going back to one card |
 | `/replay` | what she sent back, read out of the link's fragment |
 
-Trip ids: `muskoka`, `algonquin-haliburton`, `georgian-bay`, `montreal`,
-`quebec-city`.
+Trip ids: `muskoka` (the North trip) and `quebec-city`.
 
 ## The API key
 
@@ -67,9 +66,9 @@ province parsed from the query. Places Open-Meteo has no record of resolve to a 
 settlement and are flagged `approx: true` — no coordinate is hand-entered, and the
 maps mark those with a `~`.
 
-**Montreal and Quebec City have no map.** Every stop on them resolves to the one city
-coordinate, so a plot would be five labels pointing at a single dot. They show the day
-in order instead, which is the true shape of a day spent walking a city.
+**Both maps are hand-drawn.** Towns sit where the coordinates put them relative to
+each other; shorelines are simplified sketches. A trip without a drawn sheet falls
+back to plotting its coordinates, or its days in order when every stop is one city.
 
 ## Deploying
 

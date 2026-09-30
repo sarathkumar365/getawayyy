@@ -50,6 +50,8 @@ const OVERRIDES: Record<string, string> = {
   // No coordinate here is hand-entered; these stay honest by resolving a real
   // nearby place and flagging the substitution in the output.
   Kimberley: "Eugenia",                  // ~8 km; Old Baldy sits between them
+  // Cap Tourmente's Saint-Joachim; the lookup otherwise lands on Saint-Joachim-de-Courval
+  "Saint-Joachim": "Beaupré",            // ~10 km
   "Ile d'Orleans": "Québec",             // ~15 km; the data itself calls it "15 minutes from the city"
   // district / informal names
   "Old Quebec": "Québec",
@@ -71,6 +73,7 @@ const APPROXIMATE = new Set([
   "Eugenia Falls Conservation Area",
   "Lake on the Mountain Provincial Park",
   "Kimberley",
+  "Saint-Joachim",
   "Ile d'Orleans",
   "Blue Mountains",
   "Lake of Bays",

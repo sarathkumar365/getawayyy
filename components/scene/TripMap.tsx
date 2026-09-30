@@ -4,9 +4,6 @@ import { useCallback, useEffect, useMemo, type ComponentType, type JSX } from "r
 import type { Trip } from "@/lib/types";
 import { mapModelFor } from "@/lib/scene/tripmap";
 import { MuskokaMap, MUSKOKA_NOTE } from "./maps/MuskokaMap";
-import { AlgonquinMap, ALGONQUIN_NOTE } from "./maps/AlgonquinMap";
-import { GeorgianBayMap, GEORGIAN_BAY_NOTE } from "./maps/GeorgianBayMap";
-import { MontrealMap, MONTREAL_NOTE } from "./maps/MontrealMap";
 import { QuebecMap, QUEBEC_NOTE } from "./maps/QuebecMap";
 import { PlotMap } from "./maps/PlotMap";
 import { DayLine } from "./maps/DayLine";
@@ -14,9 +11,6 @@ import { DayLine } from "./maps/DayLine";
 /** Trips with a hand-drawn sheet in Muskoka's style. Anything else plots itself. */
 const DRAWN: Record<string, { Map: ComponentType; note: string }> = {
   muskoka: { Map: MuskokaMap, note: MUSKOKA_NOTE },
-  "algonquin-haliburton": { Map: AlgonquinMap, note: ALGONQUIN_NOTE },
-  "georgian-bay": { Map: GeorgianBayMap, note: GEORGIAN_BAY_NOTE },
-  montreal: { Map: MontrealMap, note: MONTREAL_NOTE },
   "quebec-city": { Map: QuebecMap, note: QUEBEC_NOTE },
 };
 

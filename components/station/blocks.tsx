@@ -121,7 +121,7 @@ export function FlagBlock({ stop, booking }: { stop: Stop; booking?: number }): 
     flags.push({
       tone: "book",
       mark: booking ? String(booking) : "•",
-      head: booking === 1 ? "Book this first — before the room." : "Needs booking.",
+      head: booking === 1 ? "Book this first." : "Needs booking.",
       body: stop.booking,
     });
   }
@@ -191,6 +191,16 @@ export function ReviewBlock({ reviews }: { reviews: Reviews }): JSX.Element {
 
 /* ----------------------------------------------------------------- trail -- */
 
+/** Name the site a trail link goes to; a url that will not parse is shown as written. */
+function linkLabel(url: string): string {
+  if (url.includes("alltrails.com")) return "AllTrails";
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
 export function TrailStats({ trails }: { trails: Trail[] }): JSX.Element {
   return (
     <section className="trailcards">
@@ -218,7 +228,7 @@ export function TrailStats({ trails }: { trails: Trail[] }): JSX.Element {
             {t.note && <p className="trailcard__note">{t.note}</p>}
             {t.url && (
               <a className="trailcard__link" href={t.url} target="_blank" rel="noreferrer noopener">
-                AllTrails
+                {linkLabel(t.url)}
               </a>
             )}
           </article>

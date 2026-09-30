@@ -13,10 +13,10 @@ export const shared = data.shared;
 export const research = data.research_notes;
 export const sources = data.sources;
 
-/** All six, in the order the file defines. */
+/** Every trip, in the order the file defines. */
 export const allTrips: Trip[] = [...data.trips].sort((a, b) => a.order - b.order);
 
-/** The five that belong in the main listing. `kingston-pec` is featured:false. */
+/** The trips that belong in the main listing. */
 export const featuredTrips: Trip[] = allTrips.filter((t) => t.featured);
 
 const bySlug = new Map(allTrips.map((t) => [t.slug, t]));
@@ -26,9 +26,9 @@ export const tripBySlug = (slug: string): Trip | undefined => bySlug.get(slug);
 export const tripById = (id: string): Trip | undefined => byId.get(id);
 
 /**
- * muskoka <-> algonquin-haliburton point at each other via alternative_to.
- * They are two versions of the same north trip and must never be listed as
- * unrelated offerings.
+ * Two trips can point at each other via alternative_to when they are two
+ * versions of the same trip; they must never be listed as unrelated offerings.
+ * No trip in the current file does.
  */
 export function pairedWith(trip: Trip): Trip | undefined {
   return trip.alternative_to ? byId.get(trip.alternative_to) : undefined;

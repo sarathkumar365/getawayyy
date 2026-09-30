@@ -54,9 +54,9 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
     B("And I wasn't going to let you spend our weekend shivering.", { brow: "neutral", eye: "open", mouth: "smile", emote: "none", arms: "rest", shiver: false, scene: "warm" }),
     A("...So no camping?", { brow: "worried", eye: "half", mouth: "sad", emote: "none", arms: "rest", shiver: false }),
     B("No camping. Something warmer.", { brow: "raised", mouth: "smile", arms: "thumbsUp" }),
-    B("Five trips. Colourful trees in the day, and a warm bed at the end of every one.", { brow: "delighted", mouth: "talkA", arms: "rest" }),
-    A("You planned five?", { brow: "raised", eye: "wide", mouth: "o", emote: "blush" }),
-    B("I wanted you to pick. Walk through them with me.", { brow: "neutral", eye: "closed", mouth: "smile", emote: "blush", arms: "rest" }),
+    B("Two trips. Colourful trees in the day, and something lit up at night on both.", { brow: "delighted", mouth: "talkA", arms: "rest" }),
+    A("You planned two?", { brow: "raised", eye: "wide", mouth: "o", emote: "blush" }),
+    B("Same weekend, so you pick. Walk through them with me.", { brow: "neutral", eye: "closed", mouth: "smile", emote: "blush", arms: "rest" }),
     A("Okay. Show me the north one first.", { brow: "delighted", eye: "sparkle", mouth: "grin", emote: "sparkle", arms: "handsUp" }),
   ],
 
@@ -106,86 +106,37 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
   /* ---------- 3. the reveal ---------- */
   reveal: [
     A("Two. These two came out on top.", { arms: "pointL", eye: "wide" }),
-    B("Out of five. The other three did not vanish. Nothing is decided.", { brow: "flat" }),
-    A("Want all five? The compass is right there.", { arms: "pointR", mouth: "smile" }),
-  ],
+    B("Nothing is decided.", { brow: "flat" }),
+      ],
 
   /* ---------- 4. the trip worlds ---------- */
   "trip.muskoka.hero": [
-    A("Closest one. Two hours and you are in cottage country.", { mouth: "grin" }),
-    A("And there is a steam train.", { eye: "sparkle", emote: "sparkle" }),
+    A("Closest one. Two hours and you are in the trees.", { mouth: "grin" }),
+    A("And a whole forest lit up at night.", { eye: "sparkle", emote: "sparkle" }),
   ],
   "trip.muskoka.warning": [
-    B("It is also the wetter of the two north options. Forty-eight percent of October days see rain.", { brow: "furrowed" }),
-    B("Colour was ten percent on the fourteenth of September. Peak lands around Thanksgiving.", {}),
-    B("Which is the last weekend Muskoka Heritage Place opens at all.", { eye: "half", mouth: "smirk" }),
-    A("The pottery booking is confirmed, though. That one is real.", { brow: "raised", arms: "thumbsUp" }),
+    B("The Forest of Light is advance tickets only, and it sells out.", { brow: "furrowed" }),
+    B("By the tenth the reds are fading. The golds are coming on.", {}),
+    B("And there is no bed booked yet.", { eye: "half", mouth: "smirk" }),
   ],
 
-  "trip.algonquin-haliburton.hero": [
-    A("This is the famous one. Maple hills, a sculpture forest, a fire tower.", { eye: "sparkle" }),
-    A("Pack lunch. There is almost no food on the Highway 60 corridor.", { arms: "pointL" }),
-    B("She is right. It cost me nothing to say that.", { mouth: "smirk" }),
-  ],
-  "trip.algonquin-haliburton.warning": [
-    B("Sugar maple peaks on the twenty-seventh of September. Your window is October.", { brow: "flat" }),
-    B("You are booking the golden encore, not the red show.", {}),
-    B("And the park's own colour report names your weekend as one of the busiest of the year. Trailhead parking fills early.", { brow: "furrowed" }),
-    B("The day-use permit and the tower fee are estimates. Not quotes.", { eye: "half" }),
-  ],
 
-  "trip.montreal.hero": [
-    A("This is the one that hits everything. Architecture, a pottery class, a real Koreatown.", { mouth: "grin", emote: "sparkle" }),
-    B("And a car you will resent inside an hour.", { brow: "flat" }),
-  ],
-  "trip.montreal.warning": [
-    B("Old Port parking is thirty-five dollars for three hours. Seventy for the day.", { brow: "furrowed" }),
-    B("Park at Champ-de-Mars instead. Fifteen to twenty for the same stay.", {}),
-    A("Or take the bus. For two people it costs about what renting and fuelling a car costs.", { arms: "pointR" }),
-    B("Eleven hours of driving, round trip. She is being generous to the car.", { mouth: "smirk" }),
-  ],
 
-  "trip.georgian-bay.hero": [
-    A("Cliffs, waterfalls, and a suspension bridge.", { eye: "wide", arms: "handsUp" }),
-    A("Cheapest of the three to run, and the best colour drive in southern Ontario.", { brow: "delighted" }),
-  ],
-  "trip.georgian-bay.warning": [
-    B("Old Baldy is a six-kilometre climb with real elevation. It is not a stroll.", { brow: "angry", emote: "anger" }),
-    B("Scenic Caves wants proper shoes and has limited parking. Arrive early or do not arrive.", { brow: "flat" }),
-    B("Blue Mountain village spikes hard on colour weekends. Owen Sound and Meaford do not.", { eye: "half" }),
-  ],
 
   "trip.quebec-city.hero": [
-    A("A walled seventeenth-century city. And a waterfall taller than Niagara.", { eye: "sparkle", emote: "sparkle" }),
+    A("A walled city, a canyon, and tens of thousands of snow geese.", { eye: "sparkle", emote: "sparkle" }),
     B("Eight hundred kilometres. Each way.", { brow: "flat", eye: "shadowed" }),
-    A("...taller than Niagara, though.", { brow: "worried", mouth: "o", emote: "sweat" }),
+    A("...tens of thousands, though.", { brow: "worried", mouth: "o", emote: "sweat" }),
   ],
   "trip.quebec-city.warning": [
-    B("Do not attempt this Saturday to Sunday. That is not advice, it is arithmetic.", { brow: "furrowed" }),
-    B("The city is overwhelmingly French-speaking, and further from English than Montreal. Neither of you speaks French.", {}),
-  ],
-
-  /* ---------- 4b. the north fork ---------- */
-  northFork: [
-    A("Two versions of the same north trip. Lakes and towns, or forest and art.", { arms: "pointL" }),
-    B("You are not choosing between two trips.", { brow: "flat" }),
-    B("You are choosing which half of the north you give up.", { eye: "half", mouth: "smirk" }),
-  ],
-
-  /* ---------- 4c. the honest problem — B's screen ---------- */
-  honestProblem: [
-    B("Here is the whole thing. Four ways to do it, side by side.", { brow: "flat", mouth: "talkA" }),
-    B("Flying is not the extravagant option. Driving sixteen hours across a weekend is.", {}),
-    B("And the flight cost is a range, not a quote. It moves the total by several hundred dollars.", { brow: "furrowed" }),
-    B("So: fly, skip the rental, take the combined falls-and-island tour. Then you never need a car.", {}),
-    A("...I have got nothing.", { brow: "worried", eye: "side", mouth: "closed", emote: "sweat", arms: "rest" }),
-    B("Write that down.", { mouth: "smirk", eye: "half" }),
+    B("Sunday ends with eight hours in the car. Monday is the holiday for a reason.", { brow: "furrowed" }),
+    B("The city is overwhelmingly French-speaking. Neither of you speaks French.", {}),
   ],
 
   /* ---------- 5. the calendar ---------- */
   calendar: [
-    A("Five weekends in October. All of them, right here.", { arms: "pointR" }),
-    B("Two of them collide with something. Six of the deadlines are real and dated.", { brow: "flat" }),
+    A("One weekend. Thanksgiving. Both of them want it.", { arms: "pointR" }),
+    B("The deadlines are real and dated.", { brow: "flat" }),
     B("Read those before you fall in love with a weekend.", { eye: "half" }),
   ],
 
@@ -193,8 +144,6 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
   ledger: [
     A("Everything, side by side.", { mouth: "smile" }),
     B("The ranges stay ranges. Averaging a range into one number is how a budget becomes a lie.", { brow: "furrowed" }),
-    A("There is a fifth one down there, under five hundred dollars.", { eye: "wide", arms: "pointL" }),
-    B("It is a footnote. It lost, and the reasons are written down.", { mouth: "smirk" }),
   ],
 
   /* ---------- 7. her pick ---------- */
@@ -211,7 +160,7 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
   ],
   "yourPick.mismatch": [
     A("Different! That is allowed. That is the entire reason you asked.", { brow: "delighted", arms: "thumbsUp" }),
-    B("I researched five and chose one. You looked once and chose another.", { brow: "flat" }),
+    B("I researched two and chose one. You looked once and chose another.", { brow: "flat" }),
     B("Yours is not the worse method.", { eye: "half", mouth: "smirk" }),
   ],
 

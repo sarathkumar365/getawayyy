@@ -17,7 +17,7 @@ import { JourneyEnd } from "./JourneyEnd";
 import { TripMap } from "@/components/scene/TripMap";
 
 /**
- * The trip, walked. All five are written; the script for each lives in
+ * The trip, walked. Both are written; the script for each lives in
  * `lib/scene/journeys/`.
  */
 export function JourneyView({ tripId }: { tripId: string }): JSX.Element {

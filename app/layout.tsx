@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "@/styles/tokens.css";
 
 export const metadata: Metadata = {
-  title: "Five directions, one October",
+  title: "Two directions, one weekend",
   description: "Weekend getaways from Toronto — pick one.",
   robots: { index: false, follow: false }, // private link; not for search
 };

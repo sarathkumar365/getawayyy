@@ -1,107 +1,83 @@
 "use client";
 
 import type { JSX } from "react";
+import {
+  Highway, Home, INK, Label, Legend, Node, North, Route, Sheet, Water, WaterLabel,
+} from "./sketch";
 
 /**
- * Muskoka's map, brought across from the Muskoka Weekend artifact as-is.
+ * The north trip's map, in the hand-drawn style of the original Muskoka sheet.
  *
- * The other four trips draw themselves from the Phase-0 coordinates. This one
- * does not: it was hand-drawn, it was asked for by name, and its lakes are the
- * one piece of invented geometry in the build that is allowed to stay — they
- * are the reason it reads as a map rather than a diagram. Everything else on
- * it is true: real towns, real order, real distances between them.
+ * Towns sit where the Phase-0 coordinates put them relative to each other
+ * (Bala, Bracebridge, Huntsville, Dorset). Limberlost and Sandhill Nursery are
+ * placed by their addresses east and west of Huntsville, not geocoded. The
+ * lakes are the one piece of invented geometry: simplified shorelines, drawn so
+ * the sheet reads as a map rather than a diagram.
  */
 
-const SERIF = "var(--font-display), Georgia, serif";
-const MONO = "var(--font-mono), monospace";
-const SANS = "var(--font-body), sans-serif";
-
 export const MUSKOKA_NOTE =
-  "Bracebridge sits between the two days \u2014 Huntsville is 35 minutes north, " +
-  "Gravenhurst 25 minutes south. Neither day doubles back, and Sunday finishes " +
-  "pointed at home.";
+  "Bracebridge sits between the two days — Huntsville is 35 minutes north, " +
+  "Dorset 50 minutes east. Saturday doubles back to Sandhill after dark; Sunday " +
+  "comes back through Bracebridge and leaves by Bala.";
 
 export function MuskokaMap(): JSX.Element {
   return (
     <>
-        <div className="mapbox">
-          <svg viewBox="-34 -26 524 726" role="img"
-            aria-label="Map of the Muskoka route from Gravenhurst north to Huntsville and Arrowhead, with Dorset to the east">
-            <rect x="-34" y="-26" width="524" height="726" fill="#e3ded4" />
+      <Sheet w={760} h={660}
+        label="Map of the north trip: Bracebridge, north to Huntsville, Limberlost and Sandhill Nursery on Saturday, east to Dorset and back through Bala on Sunday">
+        <Water d="M150 470 L230 452 L300 478 L318 540 L280 600 L206 612 L160 574 Z" />
+        <Water d="M110 372 L196 356 L250 384 L236 440 L168 450 L118 428 Z" />
+        <Water d="M340 140 L402 128 L426 150 L410 176 L360 180 L336 162 Z" />
+        <Water d="M604 176 L660 168 L682 184 L666 204 L614 206 Z" />
+        <Water d="M500 262 L590 244 L650 270 L640 320 L580 346 L520 330 L490 298 Z" />
+        <WaterLabel x={180} y={560}>Lake Muskoka</WaterLabel>
+        <WaterLabel x={140} y={408}>Lake Rosseau</WaterLabel>
+        <WaterLabel x={346} y={122} size={10}>Lake Vernon</WaterLabel>
+        <WaterLabel x={612} y={222} size={10}>Peninsula Lk</WaterLabel>
+        <WaterLabel x={500} y={330}>Lake of Bays</WaterLabel>
 
-            {/* water */}
-            <g fill="#b9cdd2" stroke="#8fadb5" strokeWidth="1">
-              <path d="M8 500 L44 486 L58 508 L40 546 L2 560 L-14 530 Z" />
-              <path d="M-20 430 L18 414 L46 438 L30 470 L-6 474 L-24 452 Z" />
-              <path d="M140 118 L186 104 L214 124 L200 150 L158 156 L132 140 Z" />
-              <path d="M150 62 L182 50 L200 70 L184 88 L154 86 Z" />
-              <path d="M366 190 L432 172 L456 200 L428 238 L378 236 L356 214 Z" />
-            </g>
-            <text x="16" y="528" fontFamily={SERIF} fontStyle="italic" fontSize="11" fill="#5b7a82">Lake Muskoka</text>
-            <text x="152" y="134" fontFamily={SERIF} fontStyle="italic" fontSize="10" fill="#5b7a82">Fairy Lk</text>
-            <text x="380" y="212" fontFamily={SERIF} fontStyle="italic" fontSize="11" fill="#5b7a82">Lake of Bays</text>
+        <Highway points="330,660 363,511 400,340 443,172 460,40"
+          label="HWY 11" lx={392} ly={420} rotate={-77} />
+        <Highway points="363,511 470,420 560,352 696,285"
+          label="HWY 117" lx={470} ly={400} rotate={-38} />
+        <Highway points="123,529 200,600 300,660" />
 
-            {/* Hwy 11 spine */}
-            <polyline points="56,549 103,425 171,127" fill="none" stroke="#c9b98e" strokeWidth="9"
-              strokeLinecap="round" strokeLinejoin="round" />
-            <polyline points="56,549 103,425 171,127" fill="none" stroke="#a8945f" strokeWidth="1.4"
-              strokeDasharray="7 7" />
-            <text x="118" y="300" fontFamily={MONO} fontSize="10" fill="#7d6c3c"
-              transform="rotate(-76 118 300)">HWY 11</text>
+        <Route ink={INK.in} points="330,640 363,511" />
+        <Route ink={INK.day}
+          points="363,511 400,340 443,172 576,125 443,172 376,198 443,172 376,198 443,172 400,340 363,511" />
+        <Route ink={INK.home}
+          points="363,511 470,420 560,352 696,285 560,352 470,420 363,511 123,529 200,600 300,650" />
+        <Home x1={330} y1={610} x2={330} y2={648} note="180 km · 2h" />
 
-            {/* Sunday: Gravenhurst cluster + home */}
-            <polyline points="103,425 56,549 53,545 66,557 93,582" fill="none" stroke="#9c4a2f"
-              strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" />
-            {/* Friday: in from Toronto */}
-            <polyline points="56,660 56,549 103,425" fill="none" stroke="#b4832c"
-              strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" />
-            {/* Saturday: north loop */}
-            <polyline points="103,425 171,127 176,132 169,48 181,123 103,425" fill="none" stroke="#2f5d52"
-              strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" />
-            {/* Dorset alternate */}
-            <polyline points="181,123 300,168 413,212" fill="none" stroke="#2f5d52" strokeWidth="2.2"
-              strokeDasharray="6 6" strokeLinecap="round" />
+        <Node x={363} y={511} size="town" />
+        <Node x={443} y={172} size="town" />
+        <Node x={696} y={285} size="town" />
+        <Node x={123} y={529} size="town" />
+        <Node x={576} y={125} />
+        <Node x={376} y={198} />
 
-            {/* Toronto arrow */}
-            <line x1="56" y1="660" x2="56" y2="612" stroke="#6d6458" strokeWidth="1.6" />
-            <polygon points="56,668 50,652 62,652" fill="#6d6458" />
-            <text x="70" y="652" fontFamily={MONO} fontSize="10" fill="#4f4a42">TORONTO</text>
-            <text x="70" y="665" fontFamily={MONO} fontSize="9" fill="#7a7368">170 km · 1h45</text>
+        <Label x={378} y={507} kind="town">Bracebridge</Label>
+        <Label x={378} y={521}>market · falls at night</Label>
+        <Label x={378} y={533}>Wilson&apos;s Falls</Label>
+        <Label x={456} y={168} kind="town">Huntsville</Label>
+        <Label x={456} y={186}>Hunters Bay · lunch</Label>
+        <Label x={456} y={198}>Tall Trees · Lion&apos;s Lookout</Label>
+        <Label x={590} y={121}>Limberlost · Buck Lake</Label>
+        <Label x={362} y={214} anchor="end">Sandhill Nursery</Label>
+        <Label x={362} y={226} anchor="end">festival · Forest of Light</Label>
+        <Label x={684} y={264} kind="town" anchor="end">Dorset</Label>
+        <Label x={684} y={248} anchor="end">tower · Peek-a-Boo Rock</Label>
+        <Label x={110} y={526} kind="town" anchor="end">Bala</Label>
+        <Label x={110} y={540} anchor="end">cranberry marsh</Label>
+        <Label x={110} y={552} anchor="end">(optional)</Label>
 
-            {/* nodes */}
-            <g stroke="#2a3330" strokeWidth="1.6" fill="#f5f2ec">
-              <circle cx="56" cy="549" r="6.5" />
-              <circle cx="103" cy="425" r="8" />
-              <circle cx="171" cy="127" r="6.5" />
-              <circle cx="169" cy="48" r="5" />
-              <circle cx="181" cy="123" r="5" />
-              <circle cx="93" cy="582" r="5" />
-              <circle cx="413" cy="212" r="5" />
-            </g>
-            <circle cx="103" cy="425" r="3" fill="#9c4a2f" />
-
-            <g fontFamily={SANS} fontSize="12.5" fontWeight="600" fill="#222b28">
-              <text x="-30" y="553">Gravenhurst</text>
-              <text x="116" y="423">Bracebridge</text>
-              <text x="184" y="131">Huntsville</text>
-            </g>
-            <g fontFamily={MONO} fontSize="9.5" fill="#55605b">
-              <text x="104" y="586">Pottery</text>
-              <text x="180" y="44">Arrowhead</text>
-              <text x="194" y="120">Lions Lookout</text>
-              <text x="382" y="230">Dorset Tower</text>
-              <text x="116" y="437">base · 2 nights</text>
-            </g>
-          </svg>
-        </div>
-
-        <div className="maplegend">
-          <span><i style={{ background: "#b4832c" }} />Friday in</span>
-          <span><i style={{ background: "#2f5d52" }} />Saturday north</span>
-          <span><i style={{ background: "#9c4a2f" }} />Sunday home</span>
-          <span><i style={{ background: "#2f5d52", height: 2, opacity: .6 }} />Dorset option</span>
-        </div>
-
+        <North x={720} y={20} />
+      </Sheet>
+      <Legend items={[
+        { ink: INK.in, label: "Friday in" },
+        { ink: INK.day, label: "Saturday · Huntsville" },
+        { ink: INK.home, label: "Sunday · Dorset, then home" },
+      ]} />
     </>
   );
 }

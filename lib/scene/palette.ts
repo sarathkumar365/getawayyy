@@ -104,31 +104,10 @@ const WORLDS: Record<string, Record<string, RGB>> = {
     store: hexToRgb("#3A3239"),
   },
 
-  /* Hardwood at its loudest, black spruce at its darkest, tamarack gold. */
-  "algonquin-haliburton": {
-    maple: hexToRgb("#C2431F"),
-    birch: hexToRgb("#C0A24E"),
-    pine: hexToRgb("#1A3324"),
-    store: hexToRgb("#3B342E"),
-  },
 
-  /* Limestone, orchard green, and a bay that is colder than the lakes. */
-  "georgian-bay": {
-    pine: hexToRgb("#27432F"),
-    cedar: hexToRgb("#2B4633"),
-    maple: hexToRgb("#A8502A"),
-    store: hexToRgb("#413A39"),
-  },
 
-  /* City brick, copper gone green, street trees already half down. */
-  montreal: {
-    maple: hexToRgb("#9A6A2E"),
-    pine: hexToRgb("#2A3B31"),
-    store: hexToRgb("#4A3E3A"),
-    block: hexToRgb("#3A3038"),
-  },
 
-  /* Stone, tin, and river light. The coldest palette of the five. */
+  /* Stone, tin, and river light. The colder palette of the two. */
   "quebec-city": {
     maple: hexToRgb("#9C4B2C"),
     pine: hexToRgb("#24382F"),

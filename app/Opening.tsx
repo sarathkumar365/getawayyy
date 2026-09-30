@@ -83,7 +83,7 @@ export function Opening({ walkable, rest }: { walkable: TripCard; rest: TripCard
       </div>
       <header className="opening__head">
         <p className="opening__eyebrow">For Anjali</p>
-        <h1 className="opening__title">Five directions, one October</h1>
+        <h1 className="opening__title">Two directions, one weekend</h1>
       </header>
 
       <div className="opening__stage">
@@ -130,7 +130,7 @@ export function Opening({ walkable, rest }: { walkable: TripCard; rest: TripCard
       </div>
 
       <details className="opening__rest">
-        <summary>Or one of the other four</summary>
+        <summary>Or the other one</summary>
         <ul>
           {rest.map((t) => (
             <li key={t.id}>

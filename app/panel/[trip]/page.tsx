@@ -130,7 +130,7 @@ export default function PanelPage(): JSX.Element {
 
       <p className="panel-page__back">
         <Link href={`/journey/${trip.id}`}>Walk this one</Link>
-        <Link href="/">All five</Link>
+        <Link href="/">Both trips</Link>
       </p>
     </main>
   );

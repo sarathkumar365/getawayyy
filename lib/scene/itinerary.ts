@@ -5,7 +5,7 @@
  *   Travel -> Station -> Travel -> Station -> ... -> Travel
  *
  * Nothing here is hand-authored. Stations are DERIVED from trips.json by a
- * single rule, so the five trips cannot drift apart and a data correction can
+ * single rule, so the trips cannot drift apart and a data correction can
  * never leave a hand-picked list stale. Non-station stops are not discarded —
  * they become the narration and scenery of the travel run that contains them.
  */
@@ -36,7 +36,11 @@ const PASSING_TYPES: ReadonlySet<string> = new Set([
  */
 export function isStation(stop: Stop): boolean {
   if (!PASSING_TYPES.has(stop.type)) return true;
-  return Boolean(stop.reviews || stop.trail || stop.trail_options || stop.options);
+  // A booking or a caveat only exists on a card; a passed-through stop would
+  // silently drop the one thing she needs to act on.
+  return Boolean(
+    stop.reviews || stop.trail || stop.trail_options || stop.options || stop.booking || stop.caveat,
+  );
 }
 
 /* -------------------------------------------------------------- shapes -- */

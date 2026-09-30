@@ -25,8 +25,8 @@ const humanPer: Record<string, string> = {
  * The single most important rule in the file:
  *   0    -> genuinely free
  *   null -> UNKNOWN, needs a phone call. Never "$0", never "Free".
- * Four stops are null: Blackbird Pottery, Hello Pottery Co., and Quebec City's
- * two travel legs (null because the travel mode isn't decided).
+ * Unpriced stops (Limberlost's access fee, Tall Trees' menu, the Alt Hotel
+ * night) stay null.
  */
 export function formatCost(cost: Cost): CostDisplay {
   const per = cost.per ? (humanPer[cost.per] ?? cost.per) : null;
