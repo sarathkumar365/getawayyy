@@ -661,7 +661,7 @@
       "direction": "Far east",
       "bearing_deg": 75,
       "status": "planned",
-      "summary": "Friday as far as Montreal. Saturday climbs Les Loups above the Jacques-Cartier valley, then walks Old Quebec into the night. Sunday runs down the river - Montmorency, Canyon Sainte-Anne, the snow geese at Cap Tourmente - and ends on Île d'Orléans before the long drive home.",
+      "summary": "Friday as far as Montreal. Saturday climbs Les Loups above the Jacques-Cartier valley, walks Old Quebec, then heads to Wendake for Onhwa' Lumina, a lit forest walk after dark. Sunday runs down the river - Montmorency, Canyon Sainte-Anne, the snow geese at Cap Tourmente - and ends on Île d'Orléans before the long drive home.",
       "why_this_trip": "Cap Tourmente's snow geese are here now and gone by November. Colour across the region is at or near peak, and the first week of October is called ideal.",
       "stats": {
         "distance_km": 1790,
@@ -675,8 +675,8 @@
       "highlights": [
         "Snow geese at Cap Tourmente",
         "Les Loups trail above the Jacques-Cartier valley",
-        "Old Quebec by day and the walls at night",
-        "Montmorency Falls and Canyon Sainte-Anne"
+        "Onhwa' Lumina, a lit night walk in the Wendake forest",
+        "Old Quebec, Montmorency Falls and Canyon Sainte-Anne"
       ],
       "scores": {
         "nature": 5,
@@ -692,7 +692,7 @@
         "currency": "CAD",
         "for": "two people together",
         "total": null,
-        "total_range": "757+",
+        "total_range": "835+",
         "default_variant": "driving",
         "line_items": [
           {
@@ -708,6 +708,12 @@
           {
             "label": "Montmorency Falls",
             "amount": 50
+          },
+          {
+            "label": "Onhwa' Lumina x2 + parking",
+            "amount": 78,
+            "note": "Plus tax on the tickets",
+            "data_source": "tourismewendake.ca 2026-09-30"
           },
           {
             "label": "Canyon Sainte-Anne x2",
@@ -755,6 +761,12 @@
                 "amount": 50
               },
               {
+                "label": "Onhwa' Lumina x2 + parking",
+                "amount": 78,
+                "note": "Plus tax on the tickets",
+                "data_source": "tourismewendake.ca 2026-09-30"
+              },
+              {
                 "label": "Canyon Sainte-Anne x2",
                 "amount": 30
               },
@@ -780,7 +792,7 @@
               }
             ],
             "note": null,
-            "total_range": "757+"
+            "total_range": "835+"
           }
         ],
         "note": "Plus the Alt Hotel Montreal night, which has not been priced. The Old Quebec night is last month's rate for a different weekend."
@@ -937,9 +949,37 @@
             },
             {
               "time": "19:00",
+              "name": "Onhwa' Lumina",
+              "type": "culture",
+              "description": "A 1.2 km night walk through the Saint-Rémy woods in Wendake, lit up with light and sound by Moment Factory. Seven zones telling Huron-Wendat stories, about 50 minutes. Twenty minutes from the old town.",
+              "duration_min": 50,
+              "cost": {
+                "amount": 33.75,
+                "per": "person",
+                "note": "Plus tax. Parking $10.50."
+              },
+              "maps_query": "Onhwa' Lumina, 110 rue Grand Chef Thonnakona, Wendake, QC",
+              "tags": [
+                "night",
+                "nature",
+                "culture",
+                "photos",
+                "famous"
+              ],
+              "address": "110 rue Grand Chef Thonnakona, Wendake, QC G0A 4V0",
+              "phone": "+1-418-847-1835",
+              "hours": "Timed entries 6:40pm, 7:00pm, 7:20pm (Oct 9-12)",
+              "booking": "Book a timed entry online ahead - 7:00pm fits after the corn dogs.",
+              "data_source": {
+                "source": "tourismewendake.ca schedule and rates",
+                "checked": "2026-09-30"
+              }
+            },
+            {
+              "time": "20:30",
               "name": "Dinner in Old Quebec",
               "type": "food",
-              "description": "Quebecois classics, or Korean - Madang (4.7, 423 reviews) and Chicken & Bap (4.9, 717 reviews) are both strong but outside the walls.",
+              "description": "Back into the old town after the forest. Quebecois classics, or Korean - Madang (4.7, 423 reviews) and Chicken & Bap (4.9, 717 reviews) are both strong but outside the walls.",
               "duration_min": 90,
               "cost": {
                 "amount": 90,
@@ -949,26 +989,6 @@
               "maps_query": "Old Quebec, Quebec City, QC",
               "tags": [
                 "food"
-              ],
-              "address": null
-            },
-            {
-              "time": "20:45",
-              "name": "Night walk along the walls",
-              "type": "history",
-              "description": "The fortifications after dark, all the way around the old town.",
-              "duration_min": 60,
-              "cost": {
-                "amount": 0,
-                "per": "two",
-                "note": null
-              },
-              "maps_query": "Fortifications of Quebec, Quebec City, QC",
-              "tags": [
-                "history",
-                "night",
-                "photos",
-                "free"
               ],
               "address": null
             }
@@ -1189,16 +1209,23 @@
         },
         {
           "priority": 2,
+          "name": "Onhwa' Lumina",
+          "phone": "+1-418-847-1835",
+          "url": "https://tourismewendake.ca/en/onhwalumina/schedule-rates/",
+          "note": "Sat Oct 10, 7:00pm entry. $33.75+tax per adult, parking $10.50."
+        },
+        {
+          "priority": 3,
           "name": "Old Quebec, Saturday night",
           "note": "One night, Oct 10, Thanksgiving weekend. Re-check rates."
         },
         {
-          "priority": 3,
+          "priority": 4,
           "name": "Alt Hotel Montreal",
           "note": "Friday night, sleep stop only."
         },
         {
-          "priority": 4,
+          "priority": 5,
           "name": "Oh mon kogo",
           "note": "Check it is still open before going."
         }
@@ -1224,7 +1251,8 @@
         "why": [
           "Snow geese at Cap Tourmente: the daily geese program runs through Nov 1.",
           "Colour across the region is at or near peak; the first week of October is called ideal.",
-          "Canyon Sainte-Anne is open until Oct 25."
+          "Canyon Sainte-Anne is open until Oct 25.",
+          "Onhwa' Lumina runs every night Oct 9-12, not just Friday and Saturday."
         ],
         "note": "Monday Oct 12 is the Thanksgiving holiday - it absorbs the late drive home.",
         "collision": "Same weekend as the North trip. Pick one."
@@ -1400,6 +1428,12 @@
       "trip": "quebec-city",
       "label": "Sépaq - Parc national de la Jacques-Cartier",
       "url": "https://www.sepaq.com/pq/jac/"
+    },
+    {
+      "trip": "quebec-city",
+      "label": "Onhwa' Lumina schedule and rates",
+      "url": "https://tourismewendake.ca/en/onhwalumina/schedule-rates/",
+      "phone": "+1-418-847-1835"
     }
   ]
 }

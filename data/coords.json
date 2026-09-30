@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-30T17:02:53.148Z",
+  "generated": "2026-09-30T18:14:19.830Z",
   "source": "Open-Meteo geocoding (keyless)",
   "precision": "town-level; venue pins would need Google Geocoding (TIER 2)",
   "note": "Every coordinate here came from Open-Meteo. None is hand-entered. Entries flagged approx:true resolved a nearby settlement instead of the named place, because Open-Meteo carries no record of it.",
@@ -77,6 +77,12 @@
       "lon": -79.39864,
       "name": "Toronto",
       "admin": "Ontario"
+    },
+    "Wendake": {
+      "lat": 46.86136,
+      "lon": -71.35727,
+      "name": "Wendake",
+      "admin": "Quebec"
     }
   },
   "queryToTown": {
@@ -106,8 +112,8 @@
     "Stoneham, QC": "Stoneham",
     "Dufferin Terrace, Quebec City, QC": "Quebec City",
     "Oh mon kogo, 1120 Rue Saint-Jean, Quebec City, QC": "Quebec City",
+    "Onhwa' Lumina, 110 rue Grand Chef Thonnakona, Wendake, QC": "Wendake",
     "Old Quebec, Quebec City, QC": "Quebec City",
-    "Fortifications of Quebec, Quebec City, QC": "Quebec City",
     "Parc de la Chute-Montmorency, Quebec QC": "Quebec",
     "Canyon Sainte-Anne, Beaupré, QC": "Beaupré",
     "Beaupré, QC": "Beaupré",

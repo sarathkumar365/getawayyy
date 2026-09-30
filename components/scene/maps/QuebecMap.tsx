@@ -8,8 +8,8 @@ import {
 
 export const QUEBEC_NOTE =
   "Friday we only go till Montreal. Saturday we zoom past Quebec City up into " +
-  "the Jacques-Cartier valley, then come back down and walk the old town till " +
-  "late. Sunday we follow the river east to the geese at Cap Tourmente, hop " +
+  "the Jacques-Cartier valley, walk the old town, then the lit forest in " +
+  "Wendake. Sunday we follow the river east to the geese at Cap Tourmente, hop " +
   "onto Île d'Orléans, and then the long drive home.";
 
 /** The old town is a few hundred metres across; at the scale of the river it is a dot. */
@@ -32,7 +32,7 @@ export function QuebecMap(): JSX.Element {
         <Highway points="330,250 300,170 285,50" label="175" lx={270} ly={150} rotate={-75} />
 
         <Route ink={INK.in} points="24,504 70,478" />
-        <Route ink={INK.day} points="70,478 200,370 330,250 300,170 282,88 300,170 330,250" />
+        <Route ink={INK.day} points="70,478 200,370 330,250 300,170 282,88 300,170 330,250 296,218 330,250" />
         <Route ink={INK.home}
           points="330,250 380,222 470,175 470,140 470,175 560,130 575,110 560,130 470,175 440,190 455,262 330,250 200,370 70,478 24,504" />
         <Home x1={70} y1={478} x2={20} y2={506} note="540 km · 5h30 to Montreal" />
@@ -40,6 +40,7 @@ export function QuebecMap(): JSX.Element {
         <Node x={70} y={478} size="town" ink={INK.in} />
         <Node x={330} y={250} size="town" />
         <Node x={300} y={170} />
+        <Node x={296} y={218} />
         <Node x={282} y={88} />
         <Node x={380} y={222} />
         <Node x={470} y={140} />
@@ -50,6 +51,8 @@ export function QuebecMap(): JSX.Element {
         <Label x={84} y={488}>Alt Hotel · sleep only</Label>
         <Label x={318} y={256} kind="town" anchor="end">Old Quebec</Label>
         <Label x={290} y={174} anchor="end">Stoneham · lunch</Label>
+        <Label x={284} y={216} anchor="end">Wendake · Onhwa&apos; Lumina</Label>
+        <Label x={284} y={228} anchor="end">lit forest walk, 7pm</Label>
         <Label x={272} y={92} anchor="end">Les Loups</Label>
         <Label x={384} y={242}>Montmorency</Label>
         <Label x={470} y={128} anchor="middle">Canyon Ste-Anne</Label>
@@ -81,14 +84,14 @@ export function QuebecMap(): JSX.Element {
           <Label x={206} y={176} anchor="end">Petit-Champlain</Label>
           <Label x={112} y={62} anchor="middle">Rue Saint-Jean · kogo</Label>
           <Label x={140} y={130}>dinner</Label>
-          <Label x={10} y={16}>OLD QUEBEC · SATURDAY NIGHT</Label>
+          <Label x={10} y={16}>OLD QUEBEC · SATURDAY</Label>
         </g>
 
         <North x={30} y={16} />
       </Sheet>
       <Legend items={[
         { ink: INK.in, label: "Friday · just till Montreal" },
-        { ink: INK.day, label: "Saturday · valley, then the walls" },
+        { ink: INK.day, label: "Saturday · valley, old town, lit forest" },
         { ink: INK.home, label: "Sunday · river, geese, island, home" },
       ]} />
     </>
