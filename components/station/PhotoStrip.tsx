@@ -38,24 +38,31 @@ export function PhotoStrip({ name, local, query, active = false }: PhotoStripPro
   const count = local.length + api.length;
 
   const rail = useRef<HTMLUListElement>(null);
+  const [at, setAt] = useState(0);
   /** Page by a whole photo. Arrows exist because a swipe is not guaranteed —
    *  a drag that starts on an image or a button is easy for a browser to claim
    *  as something else, and then the gallery looks like it has one photo. */
   const page = useCallback((dir: -1 | 1) => {
     const el = rail.current;
     if (!el) return;
-    const cell = el.querySelector<HTMLElement>(".strip__cell");
-    const step = cell ? cell.getBoundingClientRect().width + 8 : el.clientWidth * 0.8;
-    el.scrollBy({ left: dir * step, behavior: "smooth" });
+    el.scrollBy({ left: dir * el.clientWidth, behavior: "smooth" });
+  }, []);
+  const onScroll = useCallback(() => {
+    const el = rail.current;
+    if (el && el.clientWidth) setAt(Math.round(el.scrollLeft / el.clientWidth));
   }, []);
 
   if (count === 0) {
     return (
       <div className="strip__empty">
+        <svg viewBox="0 0 24 24" aria-hidden="true" className="strip__emptyicon">
+          <path d="M4 7h3l2-2h6l2 2h3v12H4z M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"
+            fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+        </svg>
         {!active ? (
-          <span>photos coming when you reach here</span>
+          <span>Photos load when you get here</span>
         ) : extra.state === "loading" ? (
-          <span>finding photos…</span>
+          <span className="strip__loading">Finding photos</span>
         ) : extra.state === "none" && extra.why === "no-key" ? (
           <span>No photos right now. The trip is still fully on!</span>
         ) : (
@@ -67,47 +74,52 @@ export function PhotoStrip({ name, local, query, active = false }: PhotoStripPro
 
   return (
     <>
-      <ul className="strip" ref={rail} aria-label={`Photos of ${name}`}>
-        {local.map((src, i) => (
-          <li key={src} className="strip__cell">
-            <button type="button" onClick={() => setOpen(src)} aria-label={`${name}, photo ${i + 1}`}>
-              <Image src={src} alt={`${name} — photo ${i + 1}`} fill draggable={false}
-                sizes="(max-width: 700px) 80vw, 420px"
-                style={{ objectFit: "cover" }} priority={active && i === 0} />
-            </button>
-          </li>
-        ))}
-
-        {api.map((p) => {
-          const credit = p.attribution[0];
-          return (
-            <li key={p.ref} className="strip__cell">
-              <button type="button" onClick={() => setOpen(apiSrc(p.ref, 1600))}
-                aria-label={`${name}, visitor photo`}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={apiSrc(p.ref, 800)} alt={`${name} — visitor photo`} loading="lazy" draggable={false} />
+      <div className="strip__wrap">
+        <ul className="strip" ref={rail} onScroll={onScroll} aria-label={`Photos of ${name}`}>
+          {local.map((src, i) => (
+            <li key={src} className="strip__cell">
+              <button type="button" onClick={() => setOpen(src)} aria-label={`${name}, photo ${i + 1}`}>
+                <Image src={src} alt={`${name} — photo ${i + 1}`} fill draggable={false}
+                  sizes="(max-width: 700px) 100vw, 660px"
+                  style={{ objectFit: "cover" }} priority={active && i === 0} />
               </button>
-              {/* Google requires the credit to sit with the photo. Not optional. */}
-              {credit?.name && <span className="strip__credit">{credit.name} · Google</span>}
             </li>
-          );
-        })}
-      </ul>
+          ))}
 
-      <div className="strip__nav">
+          {api.map((p) => {
+            const credit = p.attribution[0];
+            return (
+              <li key={p.ref} className="strip__cell">
+                <button type="button" onClick={() => setOpen(apiSrc(p.ref, 1600))}
+                  aria-label={`${name}, visitor photo`}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={apiSrc(p.ref, 1200)} alt={`${name} — visitor photo`} loading="lazy"
+                    className="strip__fade" draggable={false}
+                    ref={(el) => { if (el?.complete) el.classList.add("is-loaded"); }}
+                    onLoad={(e) => e.currentTarget.classList.add("is-loaded")} />
+                </button>
+                {/* Google requires the credit to sit with the photo. Not optional. */}
+                {credit?.name && <span className="strip__credit">{credit.name} · Google</span>}
+              </li>
+            );
+          })}
+        </ul>
+
         {count > 1 && (
           <>
-            <button type="button" className="strip__arrow" onClick={() => page(-1)}
-              aria-label="Previous photo">‹</button>
-            <button type="button" className="strip__arrow" onClick={() => page(1)}
-              aria-label="Next photo">›</button>
+            <button type="button" className="strip__arrow strip__arrow--prev" onClick={() => page(-1)}
+              aria-label="Previous photo" disabled={at <= 0}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+            </button>
+            <button type="button" className="strip__arrow strip__arrow--next" onClick={() => page(1)}
+              aria-label="Next photo" disabled={at >= count - 1}>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+            </button>
+            <span className="strip__count" aria-live="polite">
+              {Math.min(at, count - 1) + 1} / {count}
+            </span>
           </>
         )}
-        <p className="strip__foot">
-          {count} photo{count === 1 ? "" : "s"}
-        {local.length > 0 && api.length > 0 && ` · ${local.length} his, ${api.length} from Google`}
-          {local.length === 0 && api.length > 0 && " from Google"}
-        </p>
       </div>
 
       {open && (

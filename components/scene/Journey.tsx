@@ -295,6 +295,7 @@ export function Journey({
           if (node.style.visibility !== "hidden") {
             node.style.visibility = "hidden";
             node.style.pointerEvents = "none";
+            node.classList.remove("is-open");
           }
           continue;
         }
@@ -311,6 +312,8 @@ export function Journey({
           `translate(-50%, calc(-50% + ${lift.toFixed(1)}px)) scale(${scale.toFixed(4)})`;
         node.style.opacity = Math.min(1, up * 1.35).toFixed(3);
         node.style.pointerEvents = up > 0.6 ? "auto" : "none";
+        // The card's contents stagger in once, as it lands — not scrubbed.
+        if (up > 0.5 && !node.classList.contains("is-open")) node.classList.add("is-open");
       }
 
       if (cast) {

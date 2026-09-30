@@ -30,6 +30,8 @@ export function ReactionRow(
 
   return (
     <div className="hers">
+      <p className="hers__ask">What do you think?</p>
+      <div className="hers__acts">
       <button
         type="button"
         className="act act--want"
@@ -38,7 +40,10 @@ export function ReactionRow(
         title="Ooh, I want this!"
         onClick={() => onReact(stopKey, "want")}
       >
-        ♡
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
+        </svg>
+        <span>Want this</span>
       </button>
 
       <button
@@ -49,7 +54,8 @@ export function ReactionRow(
         title="Nah, skip this"
         onClick={() => onReact(stopKey, "meh")}
       >
-        ×
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17" /></svg>
+        <span>Skip</span>
       </button>
 
       <button
@@ -60,8 +66,10 @@ export function ReactionRow(
         title="Write a note"
         onClick={() => setOpen((o) => !o)}
       >
-        ✎
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19l1-4L16 5l3 3L9 18z" /></svg>
+        <span>Note</span>
       </button>
+      </div>
 
       {open && (
         <textarea

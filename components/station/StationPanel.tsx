@@ -27,10 +27,10 @@ export type StationPanelProps = {
  *
  * Order is deliberate and does not vary by station, so the shape is learnable:
  *
- *   when / what it is  ->  photos  ->  anything alarming  ->  the facts
+ *   photos  ->  when / what it is  ->  anything alarming  ->  the facts
  *   ->  the researched detail  ->  her say
  *
- * Photos come second because on 17 of the 37 stations they ARE the content.
+ * Photos lead, full-bleed, because on many stations they ARE the content.
  * Flags come before the facts because a closure or a correction changes whether
  * you go at all, and a thing that changes the decision cannot sit under a
  * price. Her row is always last and always identical.
@@ -42,14 +42,21 @@ export function StationPanel({
   const trails = stop.trail ? [stop.trail] : (stop.trail_options ?? []);
 
   return (
-    <article className="panel" aria-labelledby={`${station.id}-title`}>
-      <div className="panel__grip" aria-hidden="true" />
+    <article className={active ? "panel panel--in" : "panel"} aria-labelledby={`${station.id}-title`}>
+      <div className="panel__media">
+        <PhotoStrip
+          name={stop.name}
+          local={photosForStop(stop.name)}
+          query={stop.maps_query}
+          active={active}
+        />
+      </div>
 
       <header className="panel__head">
         <p className="panel__meta">
           <span className="panel__when">{stop.time}</span>
-          <span>{station.dayLabel}</span>
-          <span className="panel__of">Stop {station.index}</span>
+          <span className="panel__day">{station.dayLabel}</span>
+          <span className="panel__of">{String(station.index).padStart(2, "0")}</span>
         </p>
         <h3 id={`${station.id}-title`} className="panel__title">{stop.name}</h3>
         {stop.description
@@ -58,13 +65,6 @@ export function StationPanel({
               No description here, so let the photos do the talking.
             </p>}
       </header>
-
-      <PhotoStrip
-        name={stop.name}
-        local={photosForStop(stop.name)}
-        query={stop.maps_query}
-        active={active}
-      />
 
       <FlagBlock stop={stop} booking={bookingPriority} />
 
