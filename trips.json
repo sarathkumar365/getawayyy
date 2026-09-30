@@ -39,8 +39,8 @@
       "stats": {
         "distance_km": 735,
         "drive_time_hours": 9,
-        "nights": 2,
-        "shape": "Friday evening departure, home Sunday evening",
+        "nights": 1,
+        "shape": "Saturday dawn departure, home Sunday evening",
         "best_season": "Colour at or near peak now; by Oct 10-11 expect the golden encore"
       },
       "highlights": [
@@ -205,14 +205,14 @@
       },
       "days": [
         {
-          "day": 0,
-          "label": "Friday night — off we go",
+          "day": 1,
+          "label": "Saturday — early start, full Huntsville day",
           "stops": [
             {
-              "time": "18:00",
+              "time": "06:15",
               "name": "Toronto to Muskoka",
               "type": "drive",
-              "description": "Up the 400 and onto Highway 11 after work. About two hours to Bracebridge.",
+              "description": "Up the 400 and onto Highway 11 at dawn, before the Thanksgiving traffic. About two hours to Bracebridge, in time for the market.",
               "duration_min": 120,
               "cost": {
                 "amount": 0,
@@ -224,13 +224,7 @@
                 "drive"
               ],
               "address": null
-            }
-          ]
-        },
-        {
-          "day": 1,
-          "label": "Saturday — full Huntsville day",
-          "stops": [
+            },
             {
               "time": "08:30",
               "name": "Bracebridge Farmers' Market",
@@ -699,7 +693,7 @@
       "warnings": [
         "Colour is at or near peak right now. By Oct 10-11 expect the golden encore - reds fading, golds coming on. Still beautiful.",
         "Thanksgiving weekend: everything bookable sells out. Forest of Light and Tall Trees first.",
-        "Sunday starts at 6:45am after a late Saturday. Algonquin's trailhead parking fills on Thanksgiving weekend, so the early start is not optional.",
+        "Both days start at dawn: 6:15am Saturday, 6:45am Sunday. Algonquin's trailhead parking fills on Thanksgiving weekend, so the early start is not optional.",
         "Saturday evening is tight: dinner at 5, the lookout at 6:30, the Forest of Light by 7:15. Tall Trees' kitchen closes at 9.",
         "No lodging has been chosen yet. Sleeping in Huntsville instead of Bracebridge would make Sunday's Algonquin start about 35 minutes easier."
       ],
@@ -722,7 +716,7 @@
       ],
       "dates": {
         "recommended": "2026-10-09 to 2026-10-11",
-        "depart": "Friday 2026-10-09 evening",
+        "depart": "Saturday 2026-10-10, 6:15am",
         "return": "Sunday 2026-10-11 evening",
         "label": "Thanksgiving weekend",
         "why": [
@@ -1414,7 +1408,7 @@
     ],
     "open_questions": [
       "Which of the two - both are Thanksgiving weekend, Oct 9-11.",
-      "North: where to sleep Friday and Saturday.",
+      "North: where to sleep Saturday night.",
       "Quebec: price the Alt Hotel Montreal night and re-check the Old Quebec night for Oct 10."
     ],
     "date_plan": {

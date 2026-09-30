@@ -79,7 +79,7 @@ export function MuskokaMap(): JSX.Element {
         <North x={40} y={20} />
       </Sheet>
       <Legend items={[
-        { ink: INK.in, label: "Friday drive up" },
+        { ink: INK.in, label: "Saturday dawn drive up" },
         { ink: INK.day, label: "Saturday · all Huntsville" },
         { ink: INK.home, label: "Sunday · Algonquin, Dorset, Bala" },
       ]} />

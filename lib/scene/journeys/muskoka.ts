@@ -15,11 +15,11 @@ const RUNS: Record<string, Authored> = {
   "muskoka-t1": {
     title: "Bye bye, city", terrain: "city", amp: 300, climb: 7,
     beats: [
-      { at: 0.12, voice: "curse", text: "Okay. Six o'clock, Friday. Two hours of this traffic.",
+      { at: 0.12, voice: "curse", text: "Six-fifteen, Saturday. Empty 400, all ours.",
         face: { brow: "flat", mouth: "closed" } },
-      { at: 0.40, voice: "sun", text: "And tonight's plan is what?",
+      { at: 0.40, voice: "sun", text: "Why so early? It's still dark only!",
         face: { brow: "raised", eye: "open" } },
-      { at: 0.68, voice: "curse", text: "Nothing! Tonight we just reach. Tomorrow starts at eight-thirty sharp.",
+      { at: 0.68, voice: "curse", text: "Market opens eight-thirty. Also, no Thanksgiving traffic yet.",
         face: { mouth: "smile" } },
       { at: 0, voice: "sun", text: "The buildings finish after Barrie, na?",
         face: { brow: "raised", eye: "open" } },
