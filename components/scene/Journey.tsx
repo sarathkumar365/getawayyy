@@ -409,12 +409,37 @@ export function Journey({
           `translate(${pr.left.toFixed(1)}px, ${pr.base.toFixed(1)}px) ` +
           `translate(-50%, -100%) scale(${(pr.scale * s).toFixed(4)})`;
         node.style.opacity = pr.opacity.toFixed(3);
+        // A layer is rasterised at the prop's full drawn size however small it
+        // is on screen, so far props — the many — are just painted. Only the
+        // near ones, big enough that repainting them is what stutters, get one.
+        const big = pr.scale * s > 0.6;
+        if (big !== (node.dataset.layer === "1")) {
+          node.dataset.layer = big ? "1" : "";
+          node.style.willChange = big ? "transform, opacity" : "";
+        }
       }
 
-      for (const node of beatEls) {
-        const bz = Number(node.dataset.z ?? 0);
-        const hold = Number(node.dataset.hold ?? 420);
-        const a = beatAlpha({ z: bz, hold, voice: "narrate", text: "" }, cam);
+      // One speech bubble at a time. Their fades overlap, and two bubbles over
+      // two heads that stand side by side land on top of each other.
+      const alphas = beatEls.map((node) => beatAlpha(
+        { z: Number(node.dataset.z ?? 0), hold: Number(node.dataset.hold ?? 420), voice: "narrate", text: "" },
+        cam,
+      ));
+      let lead = -1;
+      beatEls.forEach((node, i) => {
+        if (node.dataset.bubble !== undefined && (alphas[i] ?? 0) > (lead < 0 ? 0 : alphas[lead] ?? 0)) lead = i;
+      });
+      for (let i = 0; i < beatEls.length; i += 1) {
+        const node = beatEls[i];
+        if (!node) continue;
+        const a = node.dataset.bubble !== undefined && i !== lead ? 0 : (alphas[i] ?? 0);
+        // Out of the tree entirely when unseen: a hidden element that still
+        // holds a compositing layer is memory iOS will not give back.
+        if (a <= 0.002) {
+          if (node.style.display !== "none") node.style.display = "none";
+          continue;
+        }
+        if (node.style.display === "none") node.style.display = "";
         node.style.opacity = a.toFixed(3);
         if (node.dataset.bubble === undefined) {
           node.style.transform = `translateY(${((1 - a) * 16).toFixed(1)}px)`;
@@ -438,11 +463,18 @@ export function Journey({
           if (node.style.visibility !== "hidden") {
             node.style.visibility = "hidden";
             node.style.pointerEvents = "none";
+            node.style.willChange = "";
             node.classList.remove("is-open");
           }
           continue;
         }
-        if (node.style.visibility === "hidden") node.style.visibility = "";
+        if (node.style.visibility === "hidden") {
+          node.style.visibility = "";
+          // Its own layer only while it is up, so the rise is composited
+          // rather than repainted — thirteen permanent layers of card was
+          // part of what ran iOS out of memory.
+          node.style.willChange = "transform, opacity";
+        }
         // Centred, lifting the last stretch rather than sliding the full height
         // of the screen — a short travel reads as arriving, a long one reads as
         // a drawer being pulled.
@@ -506,13 +538,10 @@ export function Journey({
         const on = el.dataset.say === sayKey;
         const a = on && says ? says.alpha : 0;
         if (a <= 0.002) {
-          if (el.style.visibility !== "hidden") {
-            el.style.visibility = "hidden";
-            el.style.opacity = "0";
-          }
+          if (el.style.display !== "none") el.style.display = "none";
           continue;
         }
-        if (el.style.visibility === "hidden") el.style.visibility = "";
+        if (el.style.display === "none") el.style.display = "";
         const scale = 0.78 + a * 0.24 - Math.max(0, a - 0.88) * 0.12;
         el.style.opacity = a.toFixed(3);
         el.style.transform =
@@ -642,7 +671,7 @@ export function Journey({
           {schedule.beats.map((b, i) =>
             b.voice !== "narrate" ? null : (
               <p key={i} data-beat="" data-z={b.z} data-hold={b.hold ?? 420}
-                className="beat beat--narrate" style={{ opacity: 0 }}>
+                className="beat beat--narrate" style={{ display: "none" }}>
                 {b.text}
               </p>
             ))}
@@ -653,7 +682,7 @@ export function Journey({
           {schedule.beats.map((b, i) =>
             b.voice === "narrate" ? null : (
               <div key={i} data-beat="" data-bubble="" data-z={b.z} data-hold={b.hold ?? 420}
-                className={`saybubble saybubble--${b.voice}`} style={{ opacity: 0 }}>
+                className={`saybubble saybubble--${b.voice}`} style={{ display: "none" }}>
                 <Bust who={b.voice === "sun" ? "sun" : "curse"} face={b.face} />
                 <span className="saybubble__body">{b.text}</span>
               </div>
@@ -706,7 +735,7 @@ export function Journey({
               <div key={`${seg.station.id}-${k}`}
                 data-say={`${seg.station.id}:${k}`}
                 className={`saybubble saybubble--${l.voice}`}
-                style={{ opacity: 0, visibility: "hidden" }}>
+                style={{ display: "none" }}>
                 <Bust who={l.voice === "sun" ? "sun" : "curse"} face={l.face} />
                 <span className="saybubble__body">{l.text}</span>
               </div>

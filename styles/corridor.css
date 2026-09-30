@@ -19,10 +19,11 @@
 }
 
 /* Every tree, house and lamp post. Placed from JavaScript every frame.
-   No will-change and no translate3d: there are ~1,800 of these, and a GPU
-   layer each is more memory than iOS Safari will give a tab — it killed the
-   page and reloaded it, over and over, the moment the walk opened. They
-   start display:none; only the few in view are ever painted. */
+   Near props get a layer from Journey.tsx so their move is composited, not
+   repainted — without any, iOS redraws the scene every frame, stutters, and
+   tears bubbles in half. Never in CSS for all of them: unseen props are
+   display:none (and start that way), and ~1,800 layers at once is more memory
+   than iOS Safari gives a tab — it killed the page and reloaded it in a loop. */
 .prop {
   position: absolute; left: 0; top: 0;
   transform-origin: 50% 100%;
@@ -59,6 +60,9 @@
 }
 .beat {
   grid-area: 1 / 1; margin: 0; max-width: 34ch; text-align: center;
+  /* display:none while unseen (set from Journey.tsx), so this costs a layer
+     only for the line on screen. */
+  will-change: opacity, transform;
 }
 .beat--narrate {
   font-family: var(--font-display), Georgia, serif;
