@@ -230,7 +230,16 @@ export function Journey({
      * until she asks to move on: a NEW scroll gesture (not the tail of the one
      * that brought her), a swipe, a key, or "Keep walking". Scrolling inside
      * the card still scrolls the card.
+     *
+     * Built for an iPad first. Touch scrolling there is native (Lenis leaves
+     * touch alone) and a flick carries on under momentum that no scrollTo can
+     * interrupt — the page kept sliding and took the card with it. Hiding the
+     * root's overflow is what WebKit honours: it ends the momentum on the spot.
+     * Every listener here is passive. A non-passive touchmove on the window
+     * makes Safari wait on the main thread before each step of every scroll,
+     * which on this page is what made the whole walk feel like wading.
      */
+    const html = document.documentElement;
     let parked: string | null = null;
     let parkedAt = 0;
     let parkedY = 0;
@@ -242,8 +251,10 @@ export function Journey({
     let touchY: number | null = null;
     let touchAt = 0;
 
-    const inCard = (t: EventTarget | null): boolean =>
-      t instanceof Element && t.closest(".journey__card") !== null;
+    /** The card has nothing left to scroll in this direction. */
+    const cardSpent = (card: HTMLElement, dir: number): boolean =>
+      dir > 0 ? card.scrollTop + card.clientHeight >= card.scrollHeight - 1
+        : dir < 0 ? card.scrollTop <= 0 : false;
 
     const park = (id: string, hold: number): void => {
       parked = id;
@@ -251,6 +262,7 @@ export function Journey({
       armed = false;
       wheelSum = 0;
       getLenis()?.stop();
+      html.style.overflow = "hidden";
       parkedY = yFor(hold);
       // Anywhere on the plateau looks identical — the camera is still and the
       // card is fully up — so the jump to its middle cannot be seen.
@@ -265,6 +277,7 @@ export function Journey({
       parked = null;
       passed = id;
       delete stageEl.dataset.parked;
+      html.style.overflow = "";
       getLenis()?.start();
       if (seg) scrollToY(dir > 0 ? yFor(seg.s1) + 8 : yFor(seg.s0) - 8);
     };
@@ -297,12 +310,7 @@ export function Journey({
       // Inside the card the wheel reads the card — until the card has run out
       // in that direction, and then it means "move on".
       const card = e.target instanceof Element ? e.target.closest<HTMLElement>(".journey__card") : null;
-      if (card) {
-        const atEnd = card.scrollTop + card.clientHeight >= card.scrollHeight - 1;
-        const atTop = card.scrollTop <= 0;
-        if (!(e.deltaY > 0 && atEnd) && !(e.deltaY < 0 && atTop)) { wheelSum = 0; return; }
-      }
-      e.preventDefault();
+      if (card && !cardSpent(card, e.deltaY)) { wheelSum = 0; return; }
       // The wheel events still arriving are the momentum of the scroll that
       // parked her. Only a pause, then a fresh push, counts as asking to go on.
       if (!armed) {
@@ -312,17 +320,22 @@ export function Journey({
       wheelSum += e.deltaY;
       if (Math.abs(wheelSum) > 150) letGo(wheelSum > 0 ? 1 : -1);
     };
+    // A swipe counts only if it began after the card parked — the finger
+    // that flicked her here is often still on the glass.
+    let touchCard: HTMLElement | null = null;
     const onTouchStart = (e: TouchEvent): void => {
       touchY = e.touches[0]?.clientY ?? null;
       touchAt = performance.now();
+      touchCard = e.target instanceof Element ? e.target.closest<HTMLElement>(".journey__card") : null;
     };
     const onTouchMove = (e: TouchEvent): void => {
-      if (!parked || inCard(e.target)) return;
-      e.preventDefault();
+      if (!parked) return;
       const y = e.touches[0]?.clientY;
       if (touchY === null || y === undefined || touchAt < parkedAt) return;
-      if (touchY - y > 70) letGo(1);
-      else if (y - touchY > 70) letGo(-1);
+      const dy = touchY - y;
+      if (touchCard && !cardSpent(touchCard, dy)) return;
+      if (dy > 60) letGo(1);
+      else if (dy < -60) letGo(-1);
     };
     const onKey = (e: KeyboardEvent): void => {
       if (!parked) return;
@@ -330,8 +343,7 @@ export function Journey({
       if (["ArrowDown", "PageDown", " ", "Escape"].includes(e.key)) { e.preventDefault(); letGo(1); }
       else if (["ArrowUp", "PageUp"].includes(e.key)) { e.preventDefault(); letGo(-1); }
     };
-    // Not overflow:hidden on the root — that breaks the sticky stage. Instead
-    // anything that still moves the page (iOS momentum, a scrollbar drag) is
+    // Belt and braces: anything that still moves the page while parked is
     // put back.
     const onScrollPinned = (): void => {
       if (parked && Math.abs(window.scrollY - parkedY) > 2) window.scrollTo(0, parkedY);
@@ -542,9 +554,9 @@ export function Journey({
 
     const onResize = (): void => { size(); apply(st.progress); };
     window.addEventListener("resize", onResize);
-    window.addEventListener("wheel", onWheel, { passive: false, capture: true });
+    window.addEventListener("wheel", onWheel, { passive: true, capture: true });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
     window.addEventListener("keydown", onKey);
     window.addEventListener("scroll", onScrollPinned, { passive: true });
 
@@ -555,7 +567,7 @@ export function Journey({
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("scroll", onScrollPinned);
-      if (parked) getLenis()?.start();
+      if (parked) { html.style.overflow = ""; getLenis()?.start(); }
       release.current = null;
       if (stopTimer !== null) window.clearTimeout(stopTimer);
       st.kill();

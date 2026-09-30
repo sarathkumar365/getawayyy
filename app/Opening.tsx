@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useMemo, useState, type JSX } from "react";
+import { useCallback, useEffect, useMemo, useState, type JSX } from "react";
 import { useRouter } from "next/navigation";
 import "@/styles/opening.css";
 import { Actor } from "@/components/characters/Actor";
@@ -69,6 +69,12 @@ export function Opening({ walkable, rest }: { walkable: TripCard; rest: TripCard
     setScene("warm");
     setHeld((p) => ({ sun: { ...p.sun, shiver: false }, curse: { ...p.curse, shiver: false } }));
   }, []);
+
+  // Fetch the walk while she is still reading, so "Let's go" lands on a page
+  // that is already here. Otherwise the tap starts a chain of requests — route
+  // data, then its scripts, then its styles — and on a tablet over Wi-Fi the
+  // loading bar crawled through each in turn.
+  useEffect(() => { router.prefetch(`/journey/${walkable.id}`); }, [router, walkable.id]);
 
   /** They turn away, and then the walk starts. */
   const start = useCallback(() => {
