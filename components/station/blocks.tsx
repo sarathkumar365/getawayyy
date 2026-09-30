@@ -44,7 +44,7 @@ export function PracticalRow({ stop }: { stop: Stop }): JSX.Element {
       <CostLine stop={stop} />
 
       <div className="fact">
-        <dt>Time there</dt>
+        <dt>How long</dt>
         <dd>{minutes(stop.duration_min)}</dd>
       </div>
 
@@ -75,7 +75,7 @@ export function PracticalRow({ stop }: { stop: Stop }): JSX.Element {
 
       {stop.tags.length > 0 && (
         <div className="fact fact--wide">
-          <dt>What it is</dt>
+          <dt>Vibe</dt>
           <dd className="tags">{stop.tags.join(" · ")}</dd>
         </div>
       )}
@@ -97,13 +97,13 @@ export function FlagBlock({ stop, booking }: { stop: Stop; booking?: number }): 
   const flags: { tone: "danger" | "warn" | "book"; mark: string; head: string; body?: string }[] = [];
 
   if (stop.closed_since_v1) {
-    flags.push({ tone: "danger", mark: "✕", head: "Permanently closed.", body: stop.closed_since_v1 });
+    flags.push({ tone: "danger", mark: "✕", head: "Closed for good, sadly.", body: stop.closed_since_v1 });
   }
   if (stop.removed) {
     flags.push({ tone: "danger", mark: "✕", head: "Dropped from the plan.", body: stop.removed });
   }
   if (stop.correction) {
-    flags.push({ tone: "warn", mark: "!", head: "I had this wrong first time.", body: stop.correction });
+    flags.push({ tone: "warn", mark: "!", head: "Oops, I got this wrong the first time.", body: stop.correction });
   }
   if (stop.season) {
     flags.push({ tone: "warn", mark: "!", head: stop.season });
@@ -113,15 +113,15 @@ export function FlagBlock({ stop, booking }: { stop: Stop; booking?: number }): 
   }
   if (stop.status === "unverified") {
     flags.push({
-      tone: "warn", mark: "?", head: "Not verified.",
-      body: "This one came from research I could not confirm against a live source.",
+      tone: "warn", mark: "?", head: "Not fully confirmed.",
+      body: "Found this in research but couldn't double-check it live.",
     });
   }
   if (stop.booking) {
     flags.push({
       tone: "book",
       mark: booking ? String(booking) : "•",
-      head: booking === 1 ? "Book this first." : "Needs booking.",
+      head: booking === 1 ? "Book this first!" : "Needs booking, don't forget.",
       body: stop.booking,
     });
   }
@@ -168,13 +168,13 @@ export function ReviewBlock({ reviews }: { reviews: Reviews }): JSX.Element {
         <div className="reviews__cols">
           {reviews.praise && reviews.praise.length > 0 && (
             <div>
-              <h4 className="reviews__label reviews__label--good">What people like</h4>
+              <h4 className="reviews__label reviews__label--good">What people love</h4>
               <ul>{reviews.praise.map((p) => <li key={p}>{p}</li>)}</ul>
             </div>
           )}
           {reviews.complaints && reviews.complaints.length > 0 && (
             <div>
-              <h4 className="reviews__label reviews__label--bad">What they complain about</h4>
+              <h4 className="reviews__label reviews__label--bad">What people crib about</h4>
               <ul>{reviews.complaints.map((c) => <li key={c}>{c}</li>)}</ul>
             </div>
           )}
@@ -255,7 +255,7 @@ export function OptionList(
             <li key={o.name} className={pick ? "option option--pick" : "option"}>
               <div className="option__head">
                 <span className="option__name">{o.name}</span>
-                {pick && <span className="badge badge--pick">his pick</span>}
+                {pick && <span className="badge badge--pick">his pick ★</span>}
                 {o.rating !== undefined && (
                   <span className="option__rating">
                     {o.rating.toFixed(1)} ★{o.count !== undefined && ` · ${o.count}`}
@@ -290,7 +290,7 @@ export function SourceBadge({ source }: { source: DataSource }): JSX.Element {
 export function TipsBlock({ tips }: { tips: string[] }): JSX.Element {
   return (
     <section className="tips">
-      <h4 className="tips__title">Worth knowing</h4>
+      <h4 className="tips__title">Good to know</h4>
       <ul>{tips.map((t) => <li key={t}>{t}</li>)}</ul>
     </section>
   );

@@ -55,7 +55,7 @@ export function StationPanel({
         {stop.description
           ? <p className="panel__desc">{stop.description}</p>
           : <p className="panel__desc panel__desc--none">
-              No description for this one — so the photos are the description.
+              No description here, so let the photos do the talking.
             </p>}
       </header>
 
@@ -76,10 +76,10 @@ export function StationPanel({
       {trails.length > 0 && <TrailStats trails={trails} />}
 
       {stop.options && stop.options.length > 0 && (
-        <OptionList title="Choose one" options={stop.options} recommended={stop.recommended} />
+        <OptionList title="Pick one" options={stop.options} recommended={stop.recommended} />
       )}
       {stop.alternatives_nearby && stop.alternatives_nearby.length > 0 && (
-        <OptionList title="Also nearby" options={stop.alternatives_nearby} />
+        <OptionList title="Also close by" options={stop.alternatives_nearby} />
       )}
 
       {stop.data_source && <SourceBadge source={stop.data_source} />}

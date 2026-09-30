@@ -7,10 +7,10 @@ import {
 } from "./sketch";
 
 export const QUEBEC_NOTE =
-  "Friday stops at Montreal. Saturday runs past Quebec City and up into the " +
-  "Jacques-Cartier valley, then comes back down to walk the old town into the " +
-  "night. Sunday follows the river east to the geese at Cap Tourmente and " +
-  "crosses onto Île d'Orléans before the long road home.";
+  "Friday we only go till Montreal. Saturday we zoom past Quebec City up into " +
+  "the Jacques-Cartier valley, then come back down and walk the old town till " +
+  "late. Sunday we follow the river east to the geese at Cap Tourmente, hop " +
+  "onto Île d'Orléans, and then the long drive home.";
 
 /** The old town is a few hundred metres across; at the scale of the river it is a dot. */
 const IX = 350;
@@ -87,7 +87,7 @@ export function QuebecMap(): JSX.Element {
         <North x={30} y={16} />
       </Sheet>
       <Legend items={[
-        { ink: INK.in, label: "Friday to Montreal" },
+        { ink: INK.in, label: "Friday · just till Montreal" },
         { ink: INK.day, label: "Saturday · valley, then the walls" },
         { ink: INK.home, label: "Sunday · river, geese, island, home" },
       ]} />

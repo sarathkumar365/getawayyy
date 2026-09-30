@@ -16,9 +16,9 @@ import {
  */
 
 export const MUSKOKA_NOTE =
-  "Bracebridge sits between the two days — Huntsville is 35 minutes north, " +
-  "Dorset 50 minutes east. Saturday doubles back to Sandhill after dark; Sunday " +
-  "comes back through Bracebridge and leaves by Bala.";
+  "Bracebridge is right in the middle — Huntsville is 35 minutes up, Dorset " +
+  "50 minutes east. Saturday we go back to Sandhill after dark for the lights, " +
+  "and Sunday we swing back through Bracebridge and head home via Bala.";
 
 export function MuskokaMap(): JSX.Element {
   return (
@@ -74,8 +74,8 @@ export function MuskokaMap(): JSX.Element {
         <North x={720} y={20} />
       </Sheet>
       <Legend items={[
-        { ink: INK.in, label: "Friday in" },
-        { ink: INK.day, label: "Saturday · Huntsville" },
+        { ink: INK.in, label: "Friday drive up" },
+        { ink: INK.day, label: "Saturday · all Huntsville" },
         { ink: INK.home, label: "Sunday · Dorset, then home" },
       ]} />
     </>

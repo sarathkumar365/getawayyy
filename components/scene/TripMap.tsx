@@ -89,12 +89,12 @@ function describe(trip: Trip, spreadKm: number, geographic: boolean): string {
   const hours = trip.stats?.drive_time_hours;
 
   if (!geographic) {
-    return `Everything on this one is inside the city, so this is the order of it rather than a plot. `
-      + (km ? `${km} km of driving in total, almost all of it getting there and back.` : "");
+    return `Everything on this one is inside the city, so here it is in order instead of on a map. `
+      + (km ? `${km} km of driving in total, mostly just getting there and back.` : "");
   }
   const parts: string[] = [];
-  if (base) parts.push(`${base} is the base`);
-  parts.push(`the furthest two points are about ${Math.round(spreadKm)} km apart`);
-  if (km && hours) parts.push(`${km} km and about ${hours} hours of driving over the weekend`);
+  if (base) parts.push(`${base} is home base`);
+  parts.push(`the two farthest stops are about ${Math.round(spreadKm)} km apart`);
+  if (km && hours) parts.push(`roughly ${km} km and ${hours} hours of driving over the weekend — good playlist needed`);
   return `${parts.join(", ")}.`.replace(/^./, (c) => c.toUpperCase());
 }

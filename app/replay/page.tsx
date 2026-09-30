@@ -24,7 +24,7 @@ export default function ReplayPage(): JSX.Element {
   if (!a) {
     return (
       <main className="replay">
-        <h1>Nothing in this link</h1>
+        <h1>Hmm, this link is empty</h1>
         <p>
           It needs the whole link, fragment and all — the part after the <code>#</code>
           {" "}is the only part that carries anything.
@@ -59,24 +59,24 @@ export default function ReplayPage(): JSX.Element {
 
   return (
     <main className="replay">
-      <p className="replay__eyebrow">She sent this back</p>
-      <h1>{a.name ? `${a.name}'s answers` : "Her answers"}</h1>
+      <p className="replay__eyebrow">Look what she sent back!</p>
+      <h1>{a.name ? `${a.name}'s answers` : "Her answers!"}</h1>
 
       {a.pick && (
         <section>
-          <h2>She picked</h2>
+          <h2>Her pick</h2>
           <p className="replay__big">{trip?.name ?? a.pick.tripId}</p>
           {a.pick.why && <p className="replay__quote">“{a.pick.why}”</p>}
         </section>
       )}
 
       {a.weekend && (
-        <section><h2>Weekend</h2><p>{a.weekend}</p></section>
+        <section><h2>Which weekend</h2><p>{a.weekend}</p></section>
       )}
 
       {Object.keys(a.trips).length > 0 && (
         <section>
-          <h2>On the trips</h2>
+          <h2>How she felt about the trips</h2>
           <ul>
             {Object.entries(a.trips).map(([id, r]) => (
               <li key={id}>{tripById(id)?.name ?? id} — <b>{r}</b></li>
@@ -87,7 +87,7 @@ export default function ReplayPage(): JSX.Element {
 
       {stopEntries.length > 0 && (
         <section>
-          <h2>Stops</h2>
+          <h2>Stops she liked (or not)</h2>
           <ul>
             {stopEntries.map(([k, r]) => (
               <li key={k}>{nameOf(k)} — <b>{r === "want" ? "wants this" : "meh"}</b></li>
@@ -98,7 +98,7 @@ export default function ReplayPage(): JSX.Element {
 
       {noteEntries.length > 0 && (
         <section>
-          <h2>What she wrote</h2>
+          <h2>Her notes</h2>
           <ul>
             {noteEntries.map(([k, text]) => (
               <li key={k}><b>{nameOf(k)}</b><br />“{text}”</li>
@@ -108,7 +108,7 @@ export default function ReplayPage(): JSX.Element {
       )}
 
       {a.missing && (
-        <section><h2>What was missing</h2><p className="replay__quote">“{a.missing}”</p></section>
+        <section><h2>What you forgot</h2><p className="replay__quote">“{a.missing}”</p></section>
       )}
 
       <p className="replay__foot">

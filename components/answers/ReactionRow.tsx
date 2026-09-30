@@ -34,8 +34,8 @@ export function ReactionRow(
         type="button"
         className="act act--want"
         aria-pressed={reaction === "want"}
-        aria-label="I want this"
-        title="I want this"
+        aria-label="Ooh, I want this!"
+        title="Ooh, I want this!"
         onClick={() => onReact(stopKey, "want")}
       >
         ♡
@@ -45,8 +45,8 @@ export function ReactionRow(
         type="button"
         className="act"
         aria-pressed={reaction === "meh"}
-        aria-label="Not this one"
-        title="Not this one"
+        aria-label="Nah, skip this"
+        title="Nah, skip this"
         onClick={() => onReact(stopKey, "meh")}
       >
         ×
@@ -56,8 +56,8 @@ export function ReactionRow(
         type="button"
         className="act"
         aria-expanded={open}
-        aria-label="Add a note"
-        title="Add a note"
+        aria-label="Write a note"
+        title="Write a note"
         onClick={() => setOpen((o) => !o)}
       >
         ✎
@@ -67,7 +67,7 @@ export function ReactionRow(
         <textarea
           className="note"
           value={draft}
-          placeholder="Anything you want to say about this one…"
+          placeholder="Say anything about this one…"
           onChange={(e) => setDraft(e.target.value)}
           onBlur={() => { if (draft !== (note ?? "")) onNote(stopKey, draft); }}
         />

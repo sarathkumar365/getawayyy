@@ -89,25 +89,25 @@ export function JourneyEnd(
         <div className="ending__ask">
           <p className="ending__tally">
             {loaded && (wanted === 0
-              ? "You didn't mark anything on the way round — that's allowed."
-              : `You marked ${wanted} of ${stations.length} stops${notes > 0 ? `, and left ${notes} note${notes === 1 ? "" : "s"}` : ""}.`)}
+              ? "You didn't mark anything on the way. Totally allowed!"
+              : `You liked ${wanted} of ${stations.length} stops${notes > 0 ? `, and left ${notes} note${notes === 1 ? "" : "s"}` : ""}.`)}
           </p>
 
           <fieldset className="ask">
-            <legend>Would you go on this one?</legend>
+            <legend>So? Would you go on this one?</legend>
             <div className="ask__row">
               {(["love", "maybe", "no"] as const).map((r) => (
                 <button key={r} type="button"
                   aria-pressed={answers.trips[trip.id] === r}
                   onClick={() => reactToTrip(trip.id, r)}>
-                  {r === "love" ? "Yes, this one" : r === "maybe" ? "Maybe" : "Not this one"}
+                  {r === "love" ? "Yes, this one!" : r === "maybe" ? "Hmm, maybe" : "Nah, not this one"}
                 </button>
               ))}
             </div>
           </fieldset>
 
           <fieldset className="ask">
-            <legend>Which weekend in October?</legend>
+            <legend>Which weekend works for you?</legend>
             <div className="ask__row">
               {WEEKENDS.map((w) => (
                 <button key={w.id} type="button"
@@ -120,7 +120,7 @@ export function JourneyEnd(
           </fieldset>
 
           <fieldset className="ask">
-            <legend>{picked ? "Why this one?" : "Pick it, and say why"}</legend>
+            <legend>{picked ? "Why this one? Tell tell!" : "Pick it, and tell me why"}</legend>
             <textarea value={why || answers.pick?.why || ""}
               placeholder="Because…"
               onChange={(e) => setWhy(e.target.value)}
@@ -128,7 +128,7 @@ export function JourneyEnd(
           </fieldset>
 
           <fieldset className="ask">
-            <legend>Anything he missed?</legend>
+            <legend>Anything he forgot?</legend>
             <textarea value={missing || answers.missing || ""}
               placeholder="Something you'd rather do instead…"
               onChange={(e) => setMissingDraft(e.target.value)}
@@ -137,28 +137,28 @@ export function JourneyEnd(
 
           <div className="ending__send">
             <button type="button" className="ending__link" onClick={makeLink}>
-              Send all this back to him
+              Send all this to him!
             </button>
             {share && (
               <p className="ending__note">
-                {copied ? "Copied — paste it to him." : "Copy this link and send it:"}
+                {copied ? "Copied! Now paste it to him." : "Copy this link and send it to him:"}
                 <br />
                 <span className="ending__url">{share}</span>
               </p>
             )}
             {share === null && copied === false && (
               <p className="ending__note ending__note--quiet">
-                Nothing leaves this page until you tap that.
+                Don't worry, nothing gets sent until you tap that.
               </p>
             )}
           </div>
 
           <div className="ending__more">
             <Link className="ending__again" href={`/panel/${trip.id}`}>
-              See every stop on one page
+              See all the stops on one page
             </Link>
             <Link className="ending__again" href="/">
-              Walk a different one
+              Try the other trip
             </Link>
           </div>
         </div>

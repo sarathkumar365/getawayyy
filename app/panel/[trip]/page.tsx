@@ -93,7 +93,7 @@ export default function PanelPage(): JSX.Element {
   return (
     <main className="panel-page" data-world={tripId}>
       <header className="panel-page__head">
-        <p className="eyebrow">Every stop</p>
+        <p className="eyebrow">All the stops, in one go</p>
         <h1>{trip.name}</h1>
         <p className="lede">{trip.tagline ?? trip.summary}</p>
 
@@ -129,8 +129,8 @@ export default function PanelPage(): JSX.Element {
       </div>
 
       <p className="panel-page__back">
-        <Link href={`/journey/${trip.id}`}>Walk this one</Link>
-        <Link href="/">Both trips</Link>
+        <Link href={`/journey/${trip.id}`}>Walk this one with us</Link>
+        <Link href="/">Back to both trips</Link>
       </p>
     </main>
   );

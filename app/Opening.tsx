@@ -83,7 +83,7 @@ export function Opening({ walkable, rest }: { walkable: TripCard; rest: TripCard
       </div>
       <header className="opening__head">
         <p className="opening__eyebrow">For Anjali</p>
-        <h1 className="opening__title">Two directions, one weekend</h1>
+        <h1 className="opening__title">Two trips, one long weekend!</h1>
       </header>
 
       <div className="opening__stage">
@@ -116,7 +116,7 @@ export function Opening({ walkable, rest }: { walkable: TripCard; rest: TripCard
         {spoken ? (
           <>
             <button type="button" className="opening__start" onClick={start}>
-              Start walking
+              Let's go!
             </button>
             <p className="opening__eyebrow" style={{ opacity: .7 }}>
               {walkable.name} · {walkable.stops} stops · {walkable.budget} for two
@@ -124,13 +124,13 @@ export function Opening({ walkable, rest }: { walkable: TripCard; rest: TripCard
           </>
         ) : (
           <button type="button" className="opening__skip" onClick={skip}>
-            Skip ahead
+            Skip the chit-chat
           </button>
         )}
       </div>
 
       <details className="opening__rest">
-        <summary>Or the other one</summary>
+        <summary>Or peek at the other one</summary>
         <ul>
           {rest.map((t) => (
             <li key={t.id}>

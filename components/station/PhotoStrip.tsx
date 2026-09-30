@@ -53,13 +53,13 @@ export function PhotoStrip({ name, local, query, active = false }: PhotoStripPro
     return (
       <div className="strip__empty">
         {!active ? (
-          <span>photos load as you arrive</span>
+          <span>photos coming when you reach here</span>
         ) : extra.state === "loading" ? (
-          <span>looking for photos…</span>
+          <span>finding photos…</span>
         ) : extra.state === "none" && extra.why === "no-key" ? (
-          <span>Photos need the Places key. The trip itself is unaffected.</span>
+          <span>No photos right now. The trip is still fully on!</span>
         ) : (
-          <span>No photos for this one yet.</span>
+          <span>No photos for this one yet, sorry!</span>
         )}
       </div>
     );
