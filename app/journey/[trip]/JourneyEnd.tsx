@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useMemo, useState, type JSX } from "react";
+import { useCallback, useEffect, useMemo, useState, type JSX } from "react";
 import { Actor } from "@/components/characters/Actor";
 import { SpeechBubble } from "@/components/characters/SpeechBubble";
 import { beat, type Line } from "@/lib/characters/dialogue";
 import { useAnswers, shareUrl, WEEKENDS, REACTION_LABEL } from "@/lib/answers";
+import { canSendDirect, isApple, sendText, smsHref, whatsappHref } from "@/lib/send";
 import type { Station } from "@/lib/scene/itinerary";
 import type { Trip } from "@/lib/types";
 import type { DetailId } from "@/lib/characters/detailed";
@@ -27,8 +28,15 @@ export function JourneyEnd(
   const [typing, setTyping] = useState(false);
   const [spoken, setSpoken] = useState(false);
   const [missing, setMissingDraft] = useState("");
-  const [share, setShare] = useState<string | null>(null);
+  const [origin, setOrigin] = useState<string | null>(null);
+  const [apple, setApple] = useState(false);
+  const [canShare, setCanShare] = useState(false);
   const [copied, setCopied] = useState(false);
+  useEffect(() => {
+    setOrigin(window.location.origin);
+    setApple(isApple());
+    setCanShare(typeof navigator.share === "function");
+  }, []);
 
   const line = lines[i];
   const speaker: DetailId | null = line?.who ?? null;
@@ -42,20 +50,27 @@ export function JourneyEnd(
   const wanted = Object.entries(answers.stops).filter(([k, v]) => keys.has(k) && v === "want").length;
   const notes = Object.keys(answers.notes).filter((k) => keys.has(k)).length;
 
-  const makeLink = useCallback(() => {
-    const r = shareUrl(answers, window.location.origin);
-    if (r.ok) {
-      setShare(r.url);
-      void navigator.clipboard?.writeText(r.url).then(
-        () => setCopied(true),
-        () => setCopied(false),
-      );
-    } else {
-      // Over a safe URL length. Never hand over a link that will arrive broken.
-      setShare(null);
-      setCopied(false);
-    }
-  }, [answers]);
+  /*
+   * Built on every render, not on click, so the buttons are real links: a
+   * WhatsApp or Messages link opened from a click handler after an await is
+   * what popup blockers eat. The typed-but-not-yet-blurred note is folded in,
+   * because tapping a button is the blur that would have saved it.
+   */
+  const share = useMemo(() => {
+    if (!origin) return null;
+    return shareUrl({ ...answers, missing: missing || answers.missing }, origin);
+  }, [answers, missing, origin]);
+  const text = share?.ok ? sendText(share.url) : null;
+
+  const copy = useCallback(() => {
+    if (!share?.ok) return;
+    void navigator.clipboard?.writeText(share.url).then(() => setCopied(true), () => setCopied(false));
+  }, [share]);
+
+  const more = useCallback(() => {
+    if (!share?.ok || !text) return;
+    navigator.share?.({ text }).catch(() => {});
+  }, [share, text]);
 
   return (
     <section className="ending">
@@ -117,21 +132,41 @@ export function JourneyEnd(
           </fieldset>
 
           <div className="ending__send">
-            <button type="button" className="ending__link" onClick={makeLink}>
-              Send all this to him!
-            </button>
-            {share && (
+            <p className="ending__sendhead">Send all this to him!</p>
+            {share && !share.ok ? (
               <p className="ending__note">
-                {copied ? "Copied! Now paste it to him." : "Copy this link and send it to him:"}
-                <br />
-                <span className="ending__url">{share}</span>
+                That's a lot of notes! Too long to fit in one message. Trim a couple and try again.
               </p>
-            )}
-            {share === null && copied === false && (
-              <p className="ending__note ending__note--quiet">
-                Don't worry, nothing gets sent until you tap that.
-              </p>
-            )}
+            ) : text ? (
+              <>
+                <div className="ending__buttons">
+                  {canSendDirect && (
+                    <>
+                      <a className="sendbtn sendbtn--wa" href={whatsappHref(text)}
+                        target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" />
+                          <path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8a4.5 4.5 0 0 1-2.3-2.3l.8-1-1-2z" />
+                        </svg>
+                        WhatsApp
+                      </a>
+                      <a className="sendbtn sendbtn--sms" href={smsHref(text, apple)}>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M12 4c-4.97 0-9 3.36-9 7.5 0 2.2 1.14 4.18 2.95 5.55L5 21l4.3-2.2c.87.2 1.77.3 2.7.3 4.97 0 9-3.36 9-7.5S16.97 4 12 4z" />
+                        </svg>
+                        {apple ? "iMessage" : "Text message"}
+                      </a>
+                    </>
+                  )}
+                  {canShare && (
+                    <button type="button" className="sendbtn" onClick={more}>More…</button>
+                  )}
+                </div>
+                <button type="button" className="ending__copy" onClick={copy}>
+                  {copied ? "Copied! Paste it anywhere." : "Or copy the link"}
+                </button>
+              </>
+            ) : null}
           </div>
 
           <div className="ending__more">

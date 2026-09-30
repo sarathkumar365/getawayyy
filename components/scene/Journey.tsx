@@ -276,7 +276,9 @@ export function Journey({
         const seg = stops[passed];
         if (!seg || sNow < seg.s0 || sNow > seg.s1) passed = null;
       }
-      if (!parked && lastS >= 0) {
+      // A jump (End key, a scrollbar drag, a restored position) is going
+      // somewhere on purpose; only walking into a card parks it.
+      if (!parked && lastS >= 0 && Math.abs(sNow - lastS) < 1.5) {
         for (const [id, seg] of Object.entries(stops)) {
           if (id === passed) continue;
           const crossed = (lastS < seg.hold && sNow >= seg.hold) || (lastS > seg.hold && sNow <= seg.hold);

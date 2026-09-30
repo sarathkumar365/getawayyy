@@ -56,22 +56,36 @@
 .ask textarea::placeholder { color: var(--ink-faint); }
 
 .ending__send { display: flex; flex-direction: column; gap: var(--s-3); }
-.ending__link {
-  align-self: flex-start;
-  font-family: var(--font-display); font-size: var(--step-1); cursor: pointer;
-  padding: var(--s-3) var(--s-6); border-radius: 99px; border: 0;
-  background: var(--ink); color: var(--paper);
-  transition: transform var(--t-fast) var(--ease-out), background var(--t-fast) var(--ease-out);
+.ending__sendhead { margin: 0; font-family: var(--font-display); font-size: var(--step-2); }
+.ending__buttons { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.sendbtn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
+  font: inherit; font-weight: 600; cursor: pointer; text-decoration: none;
+  padding: var(--s-3) var(--s-5); border-radius: 99px;
+  border: 1px solid var(--rule-strong); background: var(--paper-raised); color: var(--ink);
+  transition: transform var(--t-fast) var(--ease-out), filter var(--t-fast) var(--ease-out),
+              border-color var(--t-fast) var(--ease-out);
 }
-.ending__link:hover { transform: translateY(-2px); background: var(--violet); }
-.ending__link:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; }
+.sendbtn svg {
+  width: 18px; height: 18px; fill: none; stroke: currentColor;
+  stroke-width: 1.7; stroke-linejoin: round; stroke-linecap: round;
+}
+.sendbtn:hover { transform: translateY(-2px); border-color: var(--ink-soft); }
+.sendbtn:active { transform: none; }
+.sendbtn:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; }
+/* The two apps in their own colours: she knows them on sight. */
+.sendbtn--wa { background: #25D366; border-color: #25D366; color: #06301A; }
+.sendbtn--sms { background: #0A84FF; border-color: #0A84FF; color: #fff; }
+.sendbtn--wa:hover, .sendbtn--sms:hover { filter: brightness(1.06); }
+
+.ending__copy {
+  align-self: flex-start; font: inherit; font-size: var(--step--1); cursor: pointer;
+  background: none; border: 0; padding: 0; color: var(--ink-faint);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.ending__copy:hover { color: var(--ink-soft); }
 
 .ending__note { margin: 0; font-size: var(--step--1); color: var(--ink-soft); }
-.ending__note--quiet { color: var(--ink-faint); }
-.ending__url {
-  font-family: var(--font-mono); font-size: var(--step--1);
-  word-break: break-all; color: var(--ink-faint);
-}
 .ending__more { display: flex; flex-wrap: wrap; gap: var(--s-4); }
 .ending__again {
   align-self: flex-start; font-size: var(--step--1);
@@ -79,7 +93,7 @@
 }
 
 @media (max-width: 560px) {
-  .ending__link, .ask__row button { width: 100%; }
+  .sendbtn, .ask__row button { width: 100%; }
   .ask__row { flex-direction: column; }
 }
 
