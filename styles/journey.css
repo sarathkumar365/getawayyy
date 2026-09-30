@@ -7,6 +7,16 @@
 
 .journey { position: relative; }
 
+/* Snap points for touch (markers rendered by Journey.tsx). `always` means a
+   flick cannot sail past a stop; proximity leaves the walking in between free.
+   Not on desktop: there the wheel parks the card from script, and Lenis owns
+   the scroll. */
+.journey__snap { position: absolute; left: 0; width: 1px; height: 1px; pointer-events: none; }
+@media (pointer: coarse) {
+  html:has(.journey__snap) { scroll-snap-type: y proximity; }
+  .journey__snap { scroll-snap-align: start; scroll-snap-stop: always; }
+}
+
 .journey__stage {
   position: sticky;
   top: 0;

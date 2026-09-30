@@ -240,6 +240,11 @@ export function Journey({
      * which on this page is what made the whole walk feel like wading.
      */
     const html = document.documentElement;
+    // On a touch screen the stops are CSS snap points instead (see the
+    // .journey__snap markers): iOS runs its own momentum, and any script that
+    // pins the page against it loses — the pin and the momentum took turns,
+    // and the walk flickered on to the next stops by itself.
+    const touch = window.matchMedia("(pointer: coarse)").matches;
     let parked: string | null = null;
     let parkedAt = 0;
     let parkedY = 0;
@@ -294,7 +299,7 @@ export function Journey({
       }
       // A jump (End key, a scrollbar drag, a restored position) is going
       // somewhere on purpose; only walking into a card parks it.
-      if (!parked && lastS >= 0 && Math.abs(sNow - lastS) < 1.5) {
+      if (!touch && !parked && lastS >= 0 && Math.abs(sNow - lastS) < 1.5) {
         for (const [id, seg] of Object.entries(stops)) {
           if (id === passed) continue;
           const crossed = (lastS < seg.hold && sNow >= seg.hold) || (lastS > seg.hold && sNow <= seg.hold);
@@ -623,6 +628,13 @@ export function Journey({
       className="journey"
       style={{ height: `${schedule.screens * 100}vh` }}
     >
+      {/* Where a flick on a touch screen comes to rest: one per stop, at the
+          point its card is fully up. Placed on the same scale ScrollTrigger
+          measures, the spacer less one (dynamic) viewport. */}
+      {Object.entries(stops).map(([id, seg]) => (
+        <i key={id} className="journey__snap" aria-hidden="true"
+          style={{ top: `calc(${(seg.hold / schedule.screens).toFixed(5)} * (100% - 100dvh))` }} />
+      ))}
       <div ref={stage} className="journey__stage">
         {horizon && <Horizon spec={horizon} seed={trip.id.length * 131 + 7} />}
         <div className="corridor__ground" />
