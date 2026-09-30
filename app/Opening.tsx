@@ -82,8 +82,8 @@ export function Opening({ walkable, rest }: { walkable: TripCard; rest: TripCard
         {SNOW.map((k) => <span key={k} />)}
       </div>
       <header className="opening__head">
-        <p className="opening__eyebrow">For Anjali</p>
-        <h1 className="opening__title">Two trips, one long weekend!</h1>
+        <p className="opening__eyebrow">Hi, Anjali</p>
+        {/* <h1 className="opening__title">Two trips, one long weekend!</h1> */}
       </header>
 
       <div className="opening__stage">

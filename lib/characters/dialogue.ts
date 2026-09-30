@@ -45,8 +45,8 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
   /* ---------- 1. arrival ----------
      A is her, B is him. She was promised camping; he checked the campsites. */
   arrival: [
-    A("Okay, what is going on? You've been grinning at your phone the whole week.", { brow: "raised", eye: "side", mouth: "smirk" }),
-    B("Because we're going on a trip, na.", { brow: "neutral", mouth: "smile", emote: "blush", arms: "rest" }),
+    A("You've been on your phone the whole week. What are you planning?", { brow: "raised", eye: "side", mouth: "smirk" }),
+    B("Our trip, na. The one we keep talking about.", { brow: "neutral", mouth: "smile", emote: "blush", arms: "rest" }),
     A("Wait, the camping trip? It's actually happening?!", { eye: "sparkle", mouth: "grin", emote: "sparkle", arms: "handsUp" }),
     B("Yeah, so... about the camping...", { brow: "worried", eye: "side", mouth: "grimace", emote: "sweat", arms: "rest" }),
     A("Oh no. That's your bad-news face.", { brow: "worried", eye: "open", mouth: "o", arms: "rest" }),
