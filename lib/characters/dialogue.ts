@@ -46,11 +46,11 @@ export const DIALOGUE: Record<string, readonly Line[]> = {
      A is her, B is him. She was promised camping; he checked the campsites. */
   arrival: [
     A("Okay, what is going on? You've been grinning at your phone the whole week.", { brow: "raised", eye: "side", mouth: "smirk" }),
-    B("Because we're going on a trip, na. You and me, this October!", { brow: "neutral", mouth: "smile", emote: "blush", arms: "rest" }),
+    B("Because we're going on a trip, na.", { brow: "neutral", mouth: "smile", emote: "blush", arms: "rest" }),
     A("Wait, the camping trip? It's actually happening?!", { eye: "sparkle", mouth: "grin", emote: "sparkle", arms: "handsUp" }),
     B("Yeah, so... about the camping...", { brow: "worried", eye: "side", mouth: "grimace", emote: "sweat", arms: "rest" }),
     A("Oh no. That's your bad-news face.", { brow: "worried", eye: "open", mouth: "o", arms: "rest" }),
-    B("I checked every campsite we talked about. Every single one, I'm telling you.", { brow: "worried", mouth: "talkA", arms: "rest" }),
+    B("I checked every campsite we talked about. Every single one", { brow: "worried", mouth: "talkA", arms: "rest" }),
     B("Nights up there are already going close to freezing.", { brow: "worried", eye: "half", emote: "cold", arms: "hug", shiver: true, scene: "cold" }),
     A("Freezing?! In a tent?!", { brow: "worried", eye: "wide", mouth: "o", emote: "cold", arms: "hug", shiver: true }),
     B("Frost on the tent in the morning. Cold toes the full night.", { brow: "worried", eye: "squint", mouth: "grimace", emote: "cold", arms: "warmHands", shiver: true }),
