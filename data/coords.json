@@ -1,9 +1,22 @@
 {
-  "generated": "2026-09-30T18:14:19.830Z",
+  "generated": "2026-09-30T18:32:40.438Z",
   "source": "Open-Meteo geocoding (keyless)",
   "precision": "town-level; venue pins would need Google Geocoding (TIER 2)",
   "note": "Every coordinate here came from Open-Meteo. None is hand-entered. Entries flagged approx:true resolved a nearby settlement instead of the named place, because Open-Meteo carries no record of it.",
   "towns": {
+    "Algonquin Park": {
+      "lat": 45.75012,
+      "lon": -78.49956,
+      "name": "Algonquin Provincial Park",
+      "admin": "Ontario",
+      "approx": true
+    },
+    "Algonquin Provincial Park": {
+      "lat": 45.75012,
+      "lon": -78.49956,
+      "name": "Algonquin Provincial Park",
+      "admin": "Ontario"
+    },
     "Bala": {
       "lat": 45.01676,
       "lon": -79.61582,
@@ -98,11 +111,13 @@
     "Lion's Lookout, Huntsville, ON": "Huntsville",
     "Huntsville, ON to Bracebridge, ON": "Huntsville",
     "Bracebridge Falls, Bracebridge, ON": "Bracebridge",
-    "Bracebridge, ON to Dorset, ON": "Bracebridge",
+    "Bracebridge, ON to Algonquin Provincial Park, ON": "Bracebridge",
+    "Lookout Trail, Algonquin Park, ON": "Algonquin Park",
+    "Spruce Bog Boardwalk, Algonquin Park, ON": "Algonquin Park",
+    "Algonquin Provincial Park, ON to Dorset, ON": "Algonquin Provincial Park",
     "Dorset Lookout Tower, Dorset, ON": "Dorset",
     "Peek-a-Boo Trail, Dorset, ON": "Dorset",
-    "Dorset, ON to Bracebridge, ON": "Dorset",
-    "Wilson's Falls, Bracebridge, ON": "Bracebridge",
+    "Dorset, ON to Bala, ON": "Dorset",
     "Johnston's Cranberry Marsh, Bala, ON": "Bala",
     "Bala, ON to Toronto, ON": "Bala",
     "Toronto, ON to Montreal, QC": "Toronto",

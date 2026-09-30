@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState, type JSX } from "react";
 import "@/styles/ending.css";
-import { readReplayFragment, type Answers } from "@/lib/answers";
+import { readReplayFragment, weekendLabel, REACTION_LABEL, type Answers } from "@/lib/answers";
+import { HomeButton } from "@/components/nav/HomeButton";
 import { allTrips, tripById } from "@/lib/data";
 
 /**
@@ -59,6 +60,7 @@ export default function ReplayPage(): JSX.Element {
 
   return (
     <main className="replay">
+      <HomeButton />
       <p className="replay__eyebrow">Look what she sent back!</p>
       <h1>{a.name ? `${a.name}'s answers` : "Her answers!"}</h1>
 
@@ -71,7 +73,7 @@ export default function ReplayPage(): JSX.Element {
       )}
 
       {a.weekend && (
-        <section><h2>Which weekend</h2><p>{a.weekend}</p></section>
+        <section><h2>Which weekend</h2><p>{weekendLabel(a.weekend)}</p></section>
       )}
 
       {Object.keys(a.trips).length > 0 && (
@@ -79,7 +81,7 @@ export default function ReplayPage(): JSX.Element {
           <h2>How she felt about the trips</h2>
           <ul>
             {Object.entries(a.trips).map(([id, r]) => (
-              <li key={id}>{tripById(id)?.name ?? id} — <b>{r}</b></li>
+              <li key={id}>{tripById(id)?.name ?? id} — <b>{REACTION_LABEL[r] ?? r}</b></li>
             ))}
           </ul>
         </section>
@@ -112,8 +114,8 @@ export default function ReplayPage(): JSX.Element {
       )}
 
       <p className="replay__foot">
-        Answered {new Date(a.updatedAt).toLocaleString("en-CA")}. Nothing here was stored
-        anywhere — it travelled inside the link.
+        Answered {new Date(a.updatedAt).toLocaleString("en-CA", { dateStyle: "medium", timeStyle: "short" })}
+        {" — "}nothing here was stored anywhere, it travelled inside the link.
       </p>
       <Link href="/">Back to the start</Link>
     </main>

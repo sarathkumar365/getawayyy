@@ -8,6 +8,7 @@ import "./panel.css";
 import { featuredTrips, tripById } from "@/lib/data";
 import { itineraryFor, type Station } from "@/lib/scene/itinerary";
 import { StationPanel } from "@/components/station/StationPanel";
+import { HomeButton } from "@/components/nav/HomeButton";
 import { useAnswers } from "@/lib/answers";
 import type { Trip } from "@/lib/types";
 
@@ -92,6 +93,7 @@ export default function PanelPage(): JSX.Element {
 
   return (
     <main className="panel-page" data-world={tripId}>
+      <HomeButton />
       <header className="panel-page__head">
         <p className="eyebrow">All the stops, in one go</p>
         <h1>{trip.name}</h1>

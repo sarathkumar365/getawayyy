@@ -5,18 +5,10 @@ import { useCallback, useMemo, useState, type JSX } from "react";
 import { Actor } from "@/components/characters/Actor";
 import { SpeechBubble } from "@/components/characters/SpeechBubble";
 import { beat, type Line } from "@/lib/characters/dialogue";
-import { useAnswers, shareUrl } from "@/lib/answers";
+import { useAnswers, shareUrl, WEEKENDS, REACTION_LABEL } from "@/lib/answers";
 import type { Station } from "@/lib/scene/itinerary";
 import type { Trip } from "@/lib/types";
 import type { DetailId } from "@/lib/characters/detailed";
-
-/** October 2026 weekends. Thanksgiving is the one the research recommends. */
-const WEEKENDS = [
-  { id: "oct-3", label: "Oct 3–4" },
-  { id: "oct-10", label: "Oct 9–11 · Thanksgiving" },
-  { id: "oct-17", label: "Oct 17–18" },
-  { id: "oct-24", label: "Oct 24–25" },
-];
 
 /**
  * The end of the road, and the only part of this site that asks her anything.
@@ -29,12 +21,11 @@ const WEEKENDS = [
 export function JourneyEnd(
   { trip, stations }: { trip: Trip; stations: Station[] },
 ): JSX.Element {
-  const { answers, loaded, reactToTrip, setPick, setWeekend, setMissing } = useAnswers();
+  const { answers, loaded, reactToTrip, setWeekend, setMissing } = useAnswers();
   const lines = useMemo(() => beat("ending"), []);
   const [i, setI] = useState(0);
   const [typing, setTyping] = useState(false);
   const [spoken, setSpoken] = useState(false);
-  const [why, setWhy] = useState("");
   const [missing, setMissingDraft] = useState("");
   const [share, setShare] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
@@ -65,8 +56,6 @@ export function JourneyEnd(
       setCopied(false);
     }
   }, [answers]);
-
-  const picked = answers.pick?.tripId === trip.id;
 
   return (
     <section className="ending">
@@ -100,7 +89,7 @@ export function JourneyEnd(
                 <button key={r} type="button"
                   aria-pressed={answers.trips[trip.id] === r}
                   onClick={() => reactToTrip(trip.id, r)}>
-                  {r === "love" ? "Yes, this one!" : r === "maybe" ? "Hmm, maybe" : "Nah, not this one"}
+                  {REACTION_LABEL[r]}
                 </button>
               ))}
             </div>
@@ -117,14 +106,6 @@ export function JourneyEnd(
                 </button>
               ))}
             </div>
-          </fieldset>
-
-          <fieldset className="ask">
-            <legend>{picked ? "Why this one? Tell tell!" : "Pick it, and tell me why"}</legend>
-            <textarea value={why || answers.pick?.why || ""}
-              placeholder="Because…"
-              onChange={(e) => setWhy(e.target.value)}
-              onBlur={() => setPick(trip.id, why || answers.pick?.why || "")} />
           </fieldset>
 
           <fieldset className="ask">

@@ -3,7 +3,7 @@ import { MUSKOKA_COUNTRY, MUSKOKA_HORIZON } from "./country";
 import type { ArrivalLine } from "../corridor";
 
 /**
- * North — Huntsville & Dorset. Thirteen runs between twelve stops.
+ * North — Huntsville & Dorset. Fourteen runs between thirteen stops.
  *
  * They are the couple. There is no narrator: every line is spoken by one of
  * them, and the facts arrive the way facts arrive between two people who are
@@ -109,47 +109,59 @@ const RUNS: Record<string, Authored> = {
     ],
   },
   "muskoka-t9": {
-    title: "Lake of Bays, too early", terrain: "highway", amp: 300, climb: 10,
+    title: "Algonquin, before sunrise", terrain: "highway", amp: 320, climb: 10,
     beats: [
-      { at: 0.16, voice: "sun", text: "Why is it still half dark? Why are we awake?",
+      { at: 0.14, voice: "sun", text: "Six forty-five?! We came back at ten-thirty last night!",
         face: { brow: "worried", eye: "half", mouth: "sad" } },
-      { at: 0.50, voice: "curse", text: "Because by ten the tower parking is full. Everybody has the same idea.",
+      { at: 0.44, voice: "curse", text: "Algonquin parking fills by nine on Thanksgiving. I've got coffee, relax.",
         face: { mouth: "closed" } },
       { at: 0, voice: "sun", text: "Look, the white ones have gone full gold!",
         face: { eye: "sparkle", mouth: "smile" } },
-      { at: 0.90, voice: "curse", text: "Golden encore. The reds finished last week.", face: { mouth: "smile" } },
+      { at: 0, voice: "curse", text: "Golden encore. The reds finished last week.", face: { mouth: "smile" } },
+      { at: 0.90, voice: "sun", text: "Okay, the mist on the lakes is worth it. Little bit.", face: { eye: "half", mouth: "smile" } },
     ],
   },
   "muskoka-t10": {
+    title: "Down the road to the bog", terrain: "forest", amp: 140, climb: -6,
+    beats: [
+      { at: 0.24, voice: "sun", text: "Where next? My legs are finally awake.", face: { brow: "raised", eye: "open" } },
+      { at: 0.70, voice: "curse", text: "Five minutes down the road. A boardwalk through a spruce bog. Easy one.",
+        face: { mouth: "smile" } },
+    ],
+  },
+  "muskoka-t11": {
+    title: "South to Dorset", terrain: "highway", amp: 300, climb: 4,
+    beats: [
+      { at: 0.16, voice: "sun", text: "Did you see the gold trees standing in the bog?", face: { eye: "sparkle", mouth: "smile" } },
+      { at: 0.46, voice: "curse", text: "Tamarack. Only conifer that turns gold. Now Highway 35, down to the tower.",
+        face: { mouth: "smile" } },
+      { at: 0.82, voice: "sun", text: "And they'll let us in? It's almost lunchtime.", face: { brow: "raised", eye: "half" } },
+      { at: 0.94, voice: "curse", text: "Slot's booked for eleven-thirty. Relax, na.", face: { mouth: "smirk" } },
+    ],
+  },
+  "muskoka-t12": {
     title: "Down to the rock", terrain: "forest", amp: 120, climb: -8,
     beats: [
       { at: 0.24, voice: "sun", text: "There's a boardwalk right at the bottom!", face: { brow: "raised", eye: "open" } },
       { at: 0.70, voice: "curse", text: "Zero detour. Already checked.", face: { mouth: "smirk" } },
     ],
   },
-  "muskoka-t11": {
-    title: "Back west", terrain: "highway", amp: 280, climb: -4,
-    beats: [
-      { at: 0.18, voice: "sun", text: "Another waterfall?", face: { brow: "raised", mouth: "smile" } },
-      { at: 0.50, voice: "curse", text: "Small one, edge of Bracebridge. Then cranberries, if you're interested.",
-        face: { mouth: "smile" } },
-      { at: 0.86, voice: "sun", text: "Obviously I'm interested in the cranberries!", face: { eye: "sparkle", mouth: "grin" } },
-    ],
-  },
-  "muskoka-t12": {
-    title: "Cranberry time", terrain: "forest", amp: 200, climb: 2,
-    beats: [
-      { at: 0.24, voice: "curse", text: "Half an hour west. It's a whole marsh, not some shop.", face: { mouth: "closed" } },
-      { at: 0.72, voice: "sun", text: "A full red marsh?!", face: { eye: "wide", mouth: "open" } },
-    ],
-  },
   "muskoka-t13": {
+    title: "Cranberry time", terrain: "highway", amp: 280, climb: -4,
+    beats: [
+      { at: 0.18, voice: "sun", text: "Still cranberries, na? You promised.", face: { brow: "raised", mouth: "smile" } },
+      { at: 0.50, voice: "curse", text: "Hour and a bit west, out to Bala. It's a whole marsh, not some shop.",
+        face: { mouth: "closed" } },
+      { at: 0.86, voice: "sun", text: "A full red marsh?! I'm so ready.", face: { eye: "sparkle", mouth: "grin" } },
+    ],
+  },
+  "muskoka-t14": {
     title: "Home sweet home", terrain: "highway", amp: 360, climb: -6,
     beats: [
       { at: 0.10, voice: "sun", text: "My shoes are still wet from yesterday, by the way.", face: { mouth: "grin", emote: "sparkle" } },
       { at: 0.34, voice: "curse", text: "They'll dry by Toronto. Two hours only.", face: { mouth: "smile" } },
       { at: 0.56, voice: "sun", text: "And Monday is a holiday!", face: { brow: "raised" } },
-      { at: 0.76, voice: "curse", text: "Home before dark. Driving into the light this time.", face: { mouth: "smile" } },
+      { at: 0.76, voice: "curse", text: "Algonquin, a fire tower and a cranberry marsh. All in one Sunday.", face: { mouth: "smile" } },
       { at: 0.94, voice: "sun", text: "Next year we're coming back for that forest. Promise?",
         face: { eye: "sparkle", mouth: "grin", emote: "sparkle" } },
     ],
@@ -190,9 +202,13 @@ const ARRIVALS: Record<string, readonly ArrivalLine[]> = {
     { voice: "sun", text: "The waterfall is lit up! In colours!", face: { eye: "sparkle", mouth: "grin" } },
     { voice: "curse", text: "Middle of the town, and nobody around. Perfect.", face: { mouth: "smile" } },
   ],
-  "muskoka-d2-0830": [
+  "muskoka-d2-0815": [
     { voice: "sun", text: "Okay fine, that was worth waking up for.", face: { mouth: "grin" } },
-    { voice: "curse", text: "Full Lake of Bays. That's why we came early.", face: { mouth: "smile" } },
+    { voice: "curse", text: "Kilometres of hills, all gold. And we got parking.", face: { mouth: "smile" } },
+  ],
+  "muskoka-d2-1130": [
+    { voice: "sun", text: "A fire tower! We're going all the way up?", face: { eye: "wide", mouth: "open", emote: "sparkle" } },
+    { voice: "curse", text: "Full Lake of Bays from the top. That's why I booked it.", face: { mouth: "smile" } },
   ],
 };
 

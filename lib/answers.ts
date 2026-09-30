@@ -14,6 +14,21 @@ import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from
  */
 
 export type Reaction = "love" | "maybe" | "no";
+
+/** Both trips are planned for Thanksgiving; the week after is the fallback. */
+export const WEEKENDS = [
+  { id: "oct-10", label: "Oct 9–11 · Thanksgiving" },
+  { id: "oct-17", label: "Oct 17–18" },
+] as const;
+
+export const weekendLabel = (id: string): string =>
+  WEEKENDS.find((w) => w.id === id)?.label ?? id;
+
+export const REACTION_LABEL: Record<Reaction, string> = {
+  love: "Yes, this one!",
+  maybe: "Hmm, maybe",
+  no: "Nah, not this one",
+};
 export type StopReaction = "want" | "meh";
 
 export type Answers = {
@@ -190,8 +205,14 @@ const setName = (name: string): void => update((p) => ({ ...p, name }));
 const setWeight = (key: string, value: number): void =>
   update((p) => ({ ...p, weights: { ...p.weights, [key]: value } }));
 
+/** "Yes, this one" is also her pick; backing off it un-picks the trip. */
 const reactToTrip = (tripId: string, r: Reaction): void =>
-  update((p) => ({ ...p, trips: { ...p.trips, [tripId]: r } }));
+  update((p) => {
+    const pick = r === "love"
+      ? { tripId, why: p.pick?.tripId === tripId ? p.pick.why : "" }
+      : p.pick?.tripId === tripId ? null : p.pick;
+    return { ...p, trips: { ...p.trips, [tripId]: r }, pick };
+  });
 
 const reactToStop = (key: string, r: StopReaction): void =>
   update((p) => {

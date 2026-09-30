@@ -34,17 +34,18 @@
       "direction": "North",
       "bearing_deg": 0,
       "status": "planned",
-      "summary": "Saturday is all Huntsville: the market in Bracebridge first, then the floating boardwalk, Limberlost, the Sandhill festival, dinner at Tall Trees, sunset at Lion's Lookout and the Forest of Light after dark. Sunday is Dorset early, then waterfalls and cranberries on the way home.",
+      "summary": "Saturday is all Huntsville: the market in Bracebridge first, then the floating boardwalk, Limberlost, the Sandhill festival, dinner at Tall Trees, sunset at Lion's Lookout and the Forest of Light after dark. Sunday starts early in Algonquin, then the Dorset tower, and cranberries in Bala on the way home.",
       "why_this_trip": "Close, all nature, and one night-time thing - the Forest of Light - that only happens in October.",
       "stats": {
-        "distance_km": 640,
-        "drive_time_hours": 7.5,
+        "distance_km": 735,
+        "drive_time_hours": 9,
         "nights": 2,
         "shape": "Friday evening departure, home Sunday evening",
         "best_season": "Colour at or near peak now; by Oct 10-11 expect the golden encore"
       },
       "highlights": [
         "Sandhill Fall Forest of Light, Classic night",
+        "Algonquin's Lookout Trail and Spruce Bog, first thing Sunday",
         "Dorset Lookout Tower and Peek-a-Boo Rock",
         "Hunters Bay floating boardwalk",
         "Dinner at Tall Trees, sunset at Lion's Lookout"
@@ -63,7 +64,7 @@
         "currency": "CAD",
         "for": "two people together",
         "total": null,
-        "total_range": "355+",
+        "total_range": "388+",
         "default_variant": "core",
         "line_items": [
           {
@@ -92,8 +93,14 @@
             "estimated": true
           },
           {
-            "label": "Gas, about 640 km",
-            "amount": 79,
+            "label": "Algonquin day-use permit",
+            "amount": 21,
+            "estimated": true,
+            "note": "Per vehicle; 2026 fee not published"
+          },
+          {
+            "label": "Gas, about 735 km",
+            "amount": 91,
             "estimated": true
           }
         ],
@@ -129,13 +136,19 @@
                 "estimated": true
               },
               {
-                "label": "Gas, about 640 km",
-                "amount": 79,
+                "label": "Algonquin day-use permit",
+                "amount": 21,
+                "estimated": true,
+                "note": "Per vehicle; 2026 fee not published"
+              },
+              {
+                "label": "Gas, about 735 km",
+                "amount": 91,
                 "estimated": true
               }
             ],
             "note": null,
-            "total_range": "355+"
+            "total_range": "388+"
           },
           {
             "id": "with-marsh",
@@ -168,8 +181,14 @@
                 "estimated": true
               },
               {
-                "label": "Gas, about 640 km",
-                "amount": 79,
+                "label": "Algonquin day-use permit",
+                "amount": 21,
+                "estimated": true,
+                "note": "Per vehicle; 2026 fee not published"
+              },
+              {
+                "label": "Gas, about 735 km",
+                "amount": 91,
                 "estimated": true
               },
               {
@@ -179,7 +198,7 @@
               }
             ],
             "note": "Assumes the $65 All Access is per person.",
-            "total_range": "485+"
+            "total_range": "518+"
           }
         ],
         "note": "No lodging included - no bed has been chosen yet. Limberlost's access fee is not confirmed."
@@ -436,27 +455,108 @@
         },
         {
           "day": 2,
-          "label": "Sunday — Dorset, then home",
+          "label": "Sunday — Algonquin, Dorset, then home",
           "stops": [
             {
-              "time": "07:30",
-              "name": "Bracebridge to Dorset",
+              "time": "06:45",
+              "name": "Bracebridge to Algonquin",
               "type": "drive",
-              "description": "East on Highway 117 along Lake of Bays, about 50 minutes.",
-              "duration_min": 50,
+              "description": "North on Highway 11 to Huntsville, then east on Highway 60 into the park. About an hour and a half. Early is the whole point.",
+              "duration_min": 90,
               "cost": {
                 "amount": 0,
                 "per": "two",
                 "note": null
               },
-              "maps_query": "Bracebridge, ON to Dorset, ON",
+              "maps_query": "Bracebridge, ON to Algonquin Provincial Park, ON",
               "tags": [
                 "drive"
               ],
               "address": null
             },
             {
-              "time": "08:30",
+              "time": "08:15",
+              "name": "Algonquin Lookout Trail",
+              "type": "nature",
+              "description": "The signature Algonquin view - a cliff edge looking out over kilometres of hardwood hills. Short for what it gives you.",
+              "duration_min": 60,
+              "cost": {
+                "amount": 21,
+                "per": "vehicle",
+                "note": "Day-use permit, covers everything in the park. Estimate - fee not published."
+              },
+              "maps_query": "Lookout Trail, Algonquin Park, ON",
+              "tags": [
+                "nature",
+                "viewpoint",
+                "photos",
+                "famous"
+              ],
+              "address": null,
+              "estimated": true,
+              "trail": {
+                "name": "Lookout Trail",
+                "length_km": 2.1,
+                "duration_min": 38,
+                "elevation_gain_m": 78,
+                "difficulty": "Moderate",
+                "route_type": "Loop",
+                "rating": 4.7,
+                "url": "https://www.alltrails.com/trail/canada/ontario/algonquin-lookout-trail"
+              },
+              "booking": "Day-use permit, reserved online. For Sun Oct 11 it opens Tue Oct 6 at 7:00am - Thanksgiving weekend sells out.",
+              "hours": "Permit covers 7am-10pm",
+              "tips": [
+                "Thanksgiving is one of Algonquin's busiest weekends. Trailhead parking fills - be there by about 8:15."
+              ]
+            },
+            {
+              "time": "09:30",
+              "name": "Spruce Bog Boardwalk",
+              "type": "nature",
+              "description": "Easy boardwalk loop through black spruce bog, a few minutes down Highway 60. A totally different landscape from the maple hills, with tamaracks going gold.",
+              "duration_min": 45,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": "Covered by the day-use permit"
+              },
+              "maps_query": "Spruce Bog Boardwalk, Algonquin Park, ON",
+              "tags": [
+                "nature",
+                "easy",
+                "wildlife"
+              ],
+              "address": null,
+              "trail": {
+                "name": "Spruce Bog Boardwalk",
+                "length_km": 1.6,
+                "duration_min": 30,
+                "difficulty": "Easy",
+                "route_type": "Loop",
+                "rating": 4.6,
+                "url": "https://www.alltrails.com/trail/canada/ontario/spruce-bog-boardwalk"
+              }
+            },
+            {
+              "time": "10:15",
+              "name": "Algonquin to Dorset",
+              "type": "drive",
+              "description": "Back west on Highway 60, then south on Highway 35 to Dorset. About an hour.",
+              "duration_min": 60,
+              "cost": {
+                "amount": 0,
+                "per": "two",
+                "note": null
+              },
+              "maps_query": "Algonquin Provincial Park, ON to Dorset, ON",
+              "tags": [
+                "drive"
+              ],
+              "address": null
+            },
+            {
+              "time": "11:30",
               "name": "Dorset Lookout Tower",
               "type": "viewpoint",
               "description": "A fire tower on a ridge above Lake of Bays. The most famous fall-colour view in the region.",
@@ -476,11 +576,11 @@
               "estimated": true,
               "booking": "Advance reservation mandatory.",
               "tips": [
-                "Go early Sunday - weekend crowding is real."
+                "Book a late-morning slot (around 11:30). The reservation guarantees entry, so there's no need to race here - Algonquin is the one where early matters."
               ]
             },
             {
-              "time": "09:30",
+              "time": "12:30",
               "name": "Peek-a-Boo Rock boardwalk",
               "type": "nature",
               "description": "A short boardwalk right at the base of the tower. Zero detour.",
@@ -500,44 +600,24 @@
               "address": null
             },
             {
-              "time": "10:00",
-              "name": "Dorset to Bracebridge",
+              "time": "13:00",
+              "name": "Dorset to Bala",
               "type": "drive",
-              "description": "Back west along Highway 117.",
-              "duration_min": 50,
+              "description": "West along Highway 117 past Bracebridge, then out to Bala. About an hour and a quarter.",
+              "duration_min": 75,
               "cost": {
                 "amount": 0,
                 "per": "two",
                 "note": null
               },
-              "maps_query": "Dorset, ON to Bracebridge, ON",
+              "maps_query": "Dorset, ON to Bala, ON",
               "tags": [
                 "drive"
               ],
               "address": null
             },
             {
-              "time": "11:00",
-              "name": "Wilson's Falls",
-              "type": "nature",
-              "description": "A waterfall trail on the edge of Bracebridge. Short and free.",
-              "duration_min": 60,
-              "cost": {
-                "amount": 0,
-                "per": "two",
-                "note": null
-              },
-              "maps_query": "Wilson's Falls, Bracebridge, ON",
-              "tags": [
-                "nature",
-                "waterfall",
-                "photos",
-                "free"
-              ],
-              "address": null
-            },
-            {
-              "time": "13:00",
+              "time": "14:15",
               "name": "Johnston's Cranberry Marsh",
               "type": "attraction",
               "description": "Cranberry marsh and harvest in Bala, on the way home. Optional.",
@@ -559,7 +639,7 @@
               "caveat": "That the All Access ticket is valid Oct 10-12 is unconfirmed. Reviews are overwhelmingly positive, with one grumpy one."
             },
             {
-              "time": "15:30",
+              "time": "16:15",
               "name": "Drive home",
               "type": "drive",
               "description": "Highway 169 to the 400. About two hours to Toronto.",
@@ -588,28 +668,29 @@
         },
         {
           "priority": 2,
+          "name": "Algonquin day-use permit",
+          "note": "Reserve online at ontarioparks.ca for Sun Oct 11. Opens Tue Oct 6 at 7:00am, five days ahead. Thanksgiving weekend sells out - set an alarm.",
+          "url": "https://www.ontarioparks.ca/",
+          "phone": "+1-888-668-7275"
+        },
+        {
+          "priority": 3,
           "name": "Tall Trees",
           "phone": "+1-705-789-9769",
           "note": "Earliest Saturday seating. $50/person cancellation fee with under 5 hours' notice."
         },
         {
-          "priority": 3,
+          "priority": 4,
           "name": "Dorset Lookout Tower",
-          "note": "Reservation mandatory. Take an early Sunday slot."
+          "note": "Reservation mandatory. Take a slot around 11:30 - you'll be coming from Algonquin."
         },
         {
-          "priority": 4,
+          "priority": 5,
           "name": "Sandhill Nursery Fall Festival",
           "note": "$5/person, advance tickets."
         },
         {
-          "priority": 5,
-          "name": "Algonquin day-use permit",
-          "optional": true,
-          "note": "Only if doing the Lookout Trail stretch goal. Books about 5 days ahead - for Oct 11 that is Tue Oct 6. The 7:00am release time is unconfirmed; set an alarm anyway."
-        },
-        {
-          "priority": 6,
+          "priority": 7,
           "name": "Johnston's Cranberry Marsh",
           "optional": true,
           "note": "All Access $65 advance vs $67 at the gate."
@@ -618,8 +699,9 @@
       "warnings": [
         "Colour is at or near peak right now. By Oct 10-11 expect the golden encore - reds fading, golds coming on. Still beautiful.",
         "Thanksgiving weekend: everything bookable sells out. Forest of Light and Tall Trees first.",
+        "Sunday starts at 6:45am after a late Saturday. Algonquin's trailhead parking fills on Thanksgiving weekend, so the early start is not optional.",
         "Saturday evening is tight: dinner at 5, the lookout at 6:30, the Forest of Light by 7:15. Tall Trees' kitchen closes at 9.",
-        "No lodging has been chosen yet."
+        "No lodging has been chosen yet. Sleeping in Huntsville instead of Bracebridge would make Sunday's Algonquin start about 35 minutes easier."
       ],
       "alternatives": [
         {
@@ -633,9 +715,9 @@
           "note": "Optional. Saturday 10am-3pm - unconfirmed."
         },
         {
-          "name": "Algonquin Lookout Trail",
-          "type": "different-shape",
-          "note": "Stretch goal. Needs a day-use permit that books about 5 days ahead (Tue Oct 6 for Oct 11). Thanksgiving weekend sells out."
+          "name": "Wilson's Falls",
+          "type": "rejected",
+          "reason": "Cut to make room for Algonquin on Sunday. A short waterfall trail in Bracebridge - nice, but the least unique stop of the weekend."
         }
       ],
       "dates": {
@@ -645,7 +727,8 @@
         "label": "Thanksgiving weekend",
         "why": [
           "Saturday Oct 10 is a Classic night at the Forest of Light.",
-          "Colour is at or near peak now; the golden encore should hold through Oct 10-11."
+          "Colour is at or near peak now; the golden encore should hold through Oct 10-11.",
+          "Algonquin is at or near peak colour; the permit for Sunday opens Tue Oct 6."
         ],
         "note": "Monday Oct 12 is the Thanksgiving holiday, so a third day is available if you want it.",
         "collision": "Same weekend as Quebec City. Pick one."
@@ -1342,7 +1425,7 @@
       "collision": "Both trips want the same weekend. They are alternatives, not a sequence.",
       "logic": "Colour is at or near peak across both regions now; Oct 10-11 is the golden encore up north and still ideal around Quebec.",
       "hard_deadlines": [
-        "Algonquin day-use permit for Oct 11 books Tue Oct 6 (release time unconfirmed)",
+        "Algonquin day-use permit for Sun Oct 11 opens Tue Oct 6 at 7:00am (ontarioparks.ca)",
         "Canyon Sainte-Anne closes for the season Oct 25",
         "Cap Tourmente geese program runs through Nov 1"
       ]
@@ -1434,6 +1517,12 @@
       "label": "Onhwa' Lumina schedule and rates",
       "url": "https://tourismewendake.ca/en/onhwalumina/schedule-rates/",
       "phone": "+1-418-847-1835"
+    },
+    {
+      "trip": "muskoka",
+      "label": "Algonquin day-use permits (Ontario Parks)",
+      "url": "https://www.algonquinpark.on.ca/visit/general_park_info/faqs.php",
+      "phone": "+1-888-668-7275"
     }
   ]
 }

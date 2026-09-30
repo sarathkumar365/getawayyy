@@ -1,0 +1,21 @@
+.homebtn {
+  position: fixed;
+  top: max(var(--s-3), env(safe-area-inset-top));
+  left: var(--s-3);
+  z-index: 100;
+  font-size: var(--step--1);
+  font-weight: 600;
+  text-decoration: none;
+  padding: var(--s-2) var(--s-4);
+  border-radius: 99px;
+  border: 1px solid rgba(255, 255, 255, .34);
+  background: rgba(16, 22, 30, .58);
+  color: #F2EFE8;
+  backdrop-filter: blur(8px);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.homebtn:hover { background: rgba(16, 22, 30, .85); border-color: rgba(255, 255, 255, .7); }
+.homebtn:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+.homebtn svg { width: 14px; height: 14px; }

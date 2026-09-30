@@ -15,6 +15,7 @@ import { itineraryFor } from "@/lib/scene/itinerary";
 import { stageFor, hasScript } from "@/lib/scene/journeys";
 import { JourneyEnd } from "./JourneyEnd";
 import { TripMap } from "@/components/scene/TripMap";
+import { HomeButton } from "@/components/nav/HomeButton";
 
 /**
  * The trip, walked. Both are written; the script for each lives in
@@ -39,6 +40,8 @@ export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
         <Celestial />
         <PointerTrail />
         <div className="sky" aria-hidden="true" />
+
+        <HomeButton />
 
         <button
           type="button"
