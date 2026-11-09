@@ -89,7 +89,7 @@ export default function PanelPage(): JSX.Element {
       <main className="panel-page">
         <HomeButton />
         <p>Hmm, there&apos;s no trip called {tripId}.</p>
-        <p className="panel-page__back"><Link href="/">Back to both trips</Link></p>
+        <p className="panel-page__back"><Link href="/trips">Back to both trips</Link></p>
       </main>
     );
   }
@@ -140,7 +140,7 @@ export default function PanelPage(): JSX.Element {
 
       <p className="panel-page__back">
         <Link href={`/journey/${trip.id}`}>Walk this one with us</Link>
-        <Link href="/">Back to both trips</Link>
+        <Link href="/trips">Back to both trips</Link>
       </p>
     </main>
   );

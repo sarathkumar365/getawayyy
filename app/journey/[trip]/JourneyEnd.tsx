@@ -173,7 +173,7 @@ export function JourneyEnd(
             <Link className="ending__again" href={`/panel/${trip.id}`}>
               See all the stops on one page
             </Link>
-            <Link className="ending__again" href="/">
+            <Link className="ending__again" href="/trips">
               Try the other trip
             </Link>
           </div>

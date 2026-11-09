@@ -20,7 +20,8 @@ No Node required — this is built and run with **bun**.
 
 | route | what it is |
 |---|---|
-| `/` | the front door: the two of them, then the two trips |
+| `/` | fifty painted memories dissolve into dust, followed by a CRT ending |
+| `/trips` | the original front door: the two of them, then the two trips |
 | `/journey/<trip>` | the walk — one continuous world, cards rising at each stop |
 | `/panel/<trip>` | every stop on one page, for going back to one card |
 | `/replay` | what she sent back, read out of the link's fragment |
@@ -79,3 +80,19 @@ the photo strips simply stay empty.
 
 `data/coords.json` and `data/photos.json` are committed because the build imports
 them. Regenerate with `bun run geocode` and `bun run photos`.
+
+## Memory ending
+
+`app/MemoryEnding.tsx` draws the paintings on Canvas 2D. Each grain
+samples its painting’s pigment; an alpha mask erodes the paper as grains move
+radially outward. `lib/memory.ts` owns the 7.3-second clock, responsive frame
+placement, and the shared fade/CRT collapse. Tap the black screen to replay.
+The small closing “the end.” uses SVG stroke-dashoffset: 80 ms handwriting,
+40 ms hold, 100 ms scribble, and 80 ms fade — 300 ms total. Reduced-motion visitors see static words instead.
+
+`lib/memory-images.ts` lists all 50 generated gouache WebPs in the asset inventory; each replay runs two overlapping cycles, shuffles each cycle’s
+order, and scatters positions with a gentle traveling wave. Only stylized exports belong in `public/memories/`. Source photographs,
+Drive downloads, and original EXIF/GPS metadata must remain outside this project.
+Painting is visual abstraction, not a guarantee of anonymity.
+
+Verify: `bun test lib/memory.test.ts`, `bun run typecheck`, `bun run build`.

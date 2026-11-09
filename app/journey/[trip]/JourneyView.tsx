@@ -35,7 +35,7 @@ export function JourneyView({ tripId }: { tripId: string }): JSX.Element {
     return (
       <main className="journey__missing">
         <HomeButton />
-        <p>Hmm, there&apos;s no trip called {tripId}. <Link href="/">Back to both trips</Link></p>
+        <p>Hmm, there&apos;s no trip called {tripId}. <Link href="/trips">Back to both trips</Link></p>
       </main>
     );
   }

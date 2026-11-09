@@ -1,0 +1,96 @@
+.memory {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: #000;
+  isolation: isolate;
+}
+.memory__ambient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 43%, #302a23 0%, #10110e 55%, #000 100%);
+  will-change: opacity;
+}
+.memory__screen {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  mask-image: linear-gradient(to bottom, transparent, #000 var(--edge-feather, 2%), #000 calc(100% - var(--edge-feather, 2%)), transparent);
+  transform-origin: center;
+  will-change: transform, opacity;
+  overflow: hidden;
+}
+.memory__ambient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .045;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath filter='url(%23n)' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
+}
+.memory__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.memory__thanks {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  opacity: 0;
+  color: #e8dcc7;
+  font-family: "Snell Roundhand", "Segoe Print", "Bradley Hand", cursive;
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -.055em;
+}
+.memory__crt-line {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 100%; height: 2px;
+  background: linear-gradient(to right, transparent, #ede9da 20%, #ede9da 80%, transparent);
+  box-shadow: 0 0 5px #fff9df, 0 0 17px #d1be91a0;
+  opacity: 0;
+  transform-origin: center;
+  pointer-events: none;
+}
+.memory__replay { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.memory__trips {
+  position: absolute;
+  bottom: max(25px, env(safe-area-inset-bottom));
+  right: 5%;
+  z-index: 2;
+  padding: 12px;
+  color: #b0a18a;
+  opacity: .6;
+  font: italic 18px "Snell Roundhand", "Segoe Print", "Bradley Hand", cursive;
+  text-decoration: none;
+  transform: rotate(-6deg);
+}
+.memory__trips::after { content: ""; display: block; border-bottom: 1px solid currentColor; border-radius: 50%; transform: rotate(-3deg); opacity: .4; }
+.memory__trips:hover { opacity: 1; }
+.memory__trips span { padding-left: 5px; font-size: 14px; }
+.memory__replay:focus-visible { outline: 1px solid #b0a18a; outline-offset: -12px; }
+.memory__trips:focus-visible { outline: 1px solid #b0a18a; outline-offset: 3px; }
+.memory__error { position: absolute; bottom: 85px; width: 100%; text-align: center; color: #b0a18a; font-size: 13px; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .memory__screen { will-change: auto; } }
+
+.memory__handwriting {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: clamp(85px, 12vw, 120px);
+  height: auto;
+  transform: translate(-50%, -50%) rotate(-4deg);
+  overflow: visible;
+  opacity: 0;
+  pointer-events: none;
+}
+.memory__ink {
+  fill: none;
+  stroke: #e8dcc7;
+  stroke-width: 2.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.memory__scribble { stroke-width: 2.1; }

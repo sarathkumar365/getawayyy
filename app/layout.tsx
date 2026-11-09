@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from "next";
 import "@/styles/tokens.css";
 
 export const metadata: Metadata = {
-  title: "Two trips, one long weekend!",
-  description: "Two weekend getaways from Toronto. You pick!",
+  title: "Our memories",
+  description: "A few moments, kept as paintings.",
   robots: { index: false, follow: false }, // private link; not for search
 };
 
