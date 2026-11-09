@@ -95,4 +95,11 @@ order, and scatters positions with a gentle traveling wave. Only stylized export
 Drive downloads, and original EXIF/GPS metadata must remain outside this project.
 Painting is visual abstraction, not a guarantee of anonymity.
 
-Verify: `bun test lib/memory.test.ts`, `bun run typecheck`, `bun run build`.
+`lib/memory-performance.ts` bounds each painting to 2,000 sampled grains and the
+canvas to one million backing pixels. Dust shares 16 pigment batches per painting;
+erosion is cached at 30 Hz while particle motion follows requestAnimationFrame.
+Measured rendering cost adjusts dust density down after sustained pressure and
+restores it after sustained headroom, without device-name detection. Decoding runs
+four images at a time. Full-screen feather masking is reserved for CRT shutdown.
+
+Verify: `bun test`, `bun run typecheck`, `bun run build`.

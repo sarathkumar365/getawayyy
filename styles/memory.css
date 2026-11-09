@@ -15,7 +15,8 @@
   position: absolute;
   inset: 0;
   background: transparent;
-  mask-image: linear-gradient(to bottom, transparent, #000 var(--edge-feather, 2%), #000 calc(100% - var(--edge-feather, 2%)), transparent);
+  /* Mask only during shutdown; avoid a full-screen mask pass throughout the dust. */
+  mask-image: none;
   transform-origin: center;
   will-change: transform, opacity;
   overflow: hidden;

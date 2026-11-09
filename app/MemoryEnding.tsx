@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { clamp, dustDirection, paintingSize, shotPlacement, createMemorySequence, MEMORY_SHOTS, memoryFrame } from "@/lib/memory";
+import { canvasRatio, erosionFrame, grainStep, particleQuality } from "@/lib/memory-performance";
 import "@/styles/memory.css";
 
-type Grain = { x: number; y: number; release: number; speed: number; curl: number; radius: number; alpha: number; vx: number; vy: number; color: string };
-type Painting = { source: HTMLCanvasElement; layer: HTMLCanvasElement; context: CanvasRenderingContext2D; grains: Grain[] };
-const GRAIN_STEP = 5;
+type Grain = { x: number; y: number; release: number; speed: number; curl: number; sinCurl: number; radius: number; alpha: number; vx: number; vy: number; pigment: number };
+type Painting = { source: HTMLCanvasElement; layer: HTMLCanvasElement; context: CanvasRenderingContext2D; grains: Grain[]; groups: { color: string; grains: Grain[] }[]; step: number; erosion: number };
 const HOLD = 300;
 const ERODE = 600;
 const DRIFT = 900;
@@ -17,7 +17,7 @@ function paintingFrom(image: HTMLImageElement, index: number): Painting {
   const layer = document.createElement("canvas");
   const { width, height } = paintingSize(image.naturalWidth, image.naturalHeight);
   layer.width = width; layer.height = height;
-  const context = layer.getContext("2d", { willReadFrequently: true });
+  const context = layer.getContext("2d");
   if (!context) throw new Error("Canvas is unavailable");
   // Bake a warm paper frame and a feathered edge once, including its alpha.
   context.fillStyle = "#d7c5a6";
@@ -39,7 +39,7 @@ function paintingFrom(image: HTMLImageElement, index: number): Painting {
 /** Sample the painting pigment for its dust particles. */
 function samplePainting(layer: HTMLCanvasElement, index: number): Painting {
   const width = layer.width, height = layer.height;
-  const context = layer.getContext("2d", { willReadFrequently: true });
+  const context = layer.getContext("2d");
   if (!context) throw new Error("Canvas is unavailable");
   const pixels = context.getImageData(0, 0, width, height).data;
   const source = document.createElement("canvas");
@@ -48,26 +48,44 @@ function samplePainting(layer: HTMLCanvasElement, index: number): Painting {
   if (!sourceContext) throw new Error("Canvas is unavailable");
   sourceContext.drawImage(layer, 0, 0);
   const grains: Grain[] = [];
+  const step = grainStep(width, height);
+  const pigments = new Map<number, number>();
   let seed = 71 + index * 991;
   const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
-  for (let y = 0; y < height; y += GRAIN_STEP) for (let x = 0; x < width; x += GRAIN_STEP) {
-    const px = Math.min(width - 1, Math.floor(x + random() * GRAIN_STEP));
-    const py = Math.min(height - 1, Math.floor(y + random() * GRAIN_STEP));
+  for (let y = 0; y < height; y += step) for (let x = 0; x < width; x += step) {
+    const px = Math.min(width - 1, Math.floor(x + random() * step));
+    const py = Math.min(height - 1, Math.floor(y + random() * step));
     const offset = (py * width + px) * 4;
     const alpha = (pixels[offset + 3] ?? 0) / 255;
     if (alpha === 0) continue;
     const nx = (px / width - .5) * 2;
     const ny = (py / height - .5) * 2;
     const direction = dustDirection(nx, ny, random() * 2 - 1);
+    const pigment = ((pixels[offset]! >> 6) << 4) | ((pixels[offset + 1]! >> 6) << 2) | (pixels[offset + 2]! >> 6);
+    pigments.set(pigment, (pigments.get(pigment) ?? 0) + 1);
+    const speed = 80 + random() * 190, curl = random() * Math.PI * 2;
     grains.push({ x: px, y: py, alpha, vx: direction.x, vy: direction.y,
       // All edges disintegrate inward, while the freed dust travels outward.
       release: clamp((1 - Math.max(Math.abs(nx), Math.abs(ny))) * .65 + random() * .25),
-      speed: 80 + random() * 190, curl: random() * Math.PI * 2,
+      speed, curl, sinCurl: Math.sin(curl),
       radius: .25 + random() * .9,
-      color: `rgb(${pixels[offset]} ${pixels[offset + 1]} ${pixels[offset + 2]})`,
+      pigment,
     });
   }
-  return { source, layer, context, grains };
+  // Sixteen painting-specific pigments let hundreds of grains share each fill.
+  const rgb = (pigment: number) => [(pigment >> 4) * 64 + 32, ((pigment >> 2) & 3) * 64 + 32, (pigment & 3) * 64 + 32];
+  const palette = [...pigments].sort((a, b) => b[1] - a[1]).slice(0, 16).map(([key]) => rgb(key));
+  const groups = palette.map(color => ({ color: `rgb(${color.join(" ")})`, grains: [] as Grain[] }));
+  for (const grain of grains) {
+    const color = rgb(grain.pigment);
+    let nearest = 0, distance = Infinity;
+    palette.forEach((candidate, i) => {
+      const d = color.reduce((sum, value, channel) => sum + (value - candidate[channel]!) ** 2, 0);
+      if (d < distance) { nearest = i; distance = d; }
+    });
+    groups[nearest]!.grains.push(grain);
+  }
+  return { source, layer, context, grains, groups, step, erosion: -1 };
 }
 
 export function MemoryEnding() {
@@ -94,17 +112,22 @@ export function MemoryEnding() {
     const shots = createMemorySequence(Math.floor(Math.random() * 0xffffffff));
     let startedAt = 0;
     let elapsed = 0;
+    let viewportWidth = 0, viewportHeight = 0;
+    let quality = { stride: 1, slowFrames: 0, healthyFrames: 0 }, previousTick = 0;
+    let previousState: ReturnType<typeof memoryFrame> | undefined;
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const size = () => {
-      const dpr = Math.min(window.devicePixelRatio, 1.5);
+      viewportWidth = el.clientWidth; viewportHeight = el.clientHeight;
+      const dpr = canvasRatio(viewportWidth, viewportHeight, window.devicePixelRatio);
       // The screen itself collapses; its layout size remains the viewport size.
-      el.width = el.clientWidth * dpr; el.height = el.clientHeight * dpr;
+      el.width = Math.floor(viewportWidth * dpr); el.height = Math.floor(viewportHeight * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     size();
     window.addEventListener("resize", size);
     ambientEl.style.opacity = "1";
     screenEl.style.setProperty("--edge-feather", "2%");
+    screenEl.style.maskImage = "none";
     screenEl.style.transform = "none";
     screenEl.style.opacity = "1";
     titleEl.style.opacity = "0";
@@ -123,48 +146,59 @@ export function MemoryEnding() {
       ctx.save(); ctx.translate(x, y); ctx.rotate(angle);
       ctx.scale(1 + Math.min(age, 500) * .000025, 1 + Math.min(age, 500) * .000025);
       if (eroding < 1) {
-        off.globalCompositeOperation = "source-over";
-        off.clearRect(0, 0, sourceWidth, sourceHeight);
-        off.drawImage(source, 0, 0, sourceWidth, sourceHeight);
-        if (eroding > 0) {
-          off.globalCompositeOperation = "destination-out";
-          off.beginPath();
-          for (const grain of grains) {
-            const eaten = clamp((eroding - grain.release) * 14);
-            if (!eaten) continue;
-            const r = eaten * (GRAIN_STEP + 1);
-            off.moveTo(grain.x + r, grain.y);
-            off.arc(grain.x, grain.y, r, 0, Math.PI * 2);
+        const erosion = erosionFrame(eroding);
+        if (painting.erosion !== erosion) {
+          painting.erosion = erosion;
+          off.globalCompositeOperation = "source-over";
+          off.clearRect(0, 0, sourceWidth, sourceHeight);
+          off.drawImage(source, 0, 0, sourceWidth, sourceHeight);
+          if (eroding > 0) {
+            off.globalCompositeOperation = "destination-out";
+            off.beginPath();
+            for (const grain of grains) {
+              const eaten = clamp((erosion / 18 - grain.release) * 14);
+              if (!eaten) continue;
+              const r = eaten * (painting.step + 1);
+              off.moveTo(grain.x + r, grain.y);
+              off.arc(grain.x, grain.y, r, 0, Math.PI * 2);
+            }
+            off.fill();
           }
-          off.fill();
         }
         ctx.globalAlpha = entrance;
-        ctx.drawImage(layer, -width / 2, -height / 2, width, height);
+        ctx.drawImage(eroding === 0 ? source : layer, -width / 2, -height / 2, width, height);
       }
-      // Thousands of fine, independent grains accelerate into a curling breeze.
-      for (const grain of grains) {
-        const life = (age - hold - grain.release * erode) / drift;
-        if (life <= 0 || life >= 1) continue;
-        const launch = life * life;
-        const distance = grain.speed * (life * .35 + launch * 1.7);
-        const swirl = (Math.sin(life * 5 + grain.curl) - Math.sin(grain.curl)) * life * 28;
-        const driftX = grain.vx * distance - grain.vy * swirl;
-        const driftY = grain.vy * distance + grain.vx * swirl;
-        const px = (grain.x - sourceWidth / 2) * scale + driftX;
-        const py = (grain.y - sourceHeight / 2) * scale + driftY;
-        ctx.globalAlpha = grain.alpha * entrance * Math.min(1, life * 22) * Math.pow(1 - life, 1.45);
-        ctx.fillStyle = grain.color;
+      if (age <= hold) { ctx.restore(); return; }
+      // Batch by pigment. Shrinking grain area fades the dust without a fill per grain.
+      ctx.globalAlpha = entrance;
+      for (const group of painting.groups) {
+        ctx.fillStyle = group.color;
         ctx.beginPath();
-        ctx.arc(px, py, grain.radius * Math.min(scale, 1.5) * (1 - life * .5), 0, Math.PI * 2);
+        for (let i = 0; i < group.grains.length; i += quality.stride) {
+          const grain = group.grains[i]!;
+          const life = (age - hold - grain.release * erode) / drift;
+          if (life <= 0 || life >= 1) continue;
+          const launch = life * life;
+          const distance = grain.speed * (life * .35 + launch * 1.7);
+          const swirl = (Math.sin(life * 5 + grain.curl) - grain.sinCurl) * life * 28;
+          const driftX = grain.vx * distance - grain.vy * swirl;
+          const driftY = grain.vy * distance + grain.vx * swirl;
+          const px = (grain.x - sourceWidth / 2) * scale + driftX;
+          const py = (grain.y - sourceHeight / 2) * scale + driftY;
+          const opacity = grain.alpha * Math.min(1, life * 22) * Math.pow(1 - life, 1.45);
+          const radius = grain.radius * Math.min(scale, 1.5) * (1 - life * .5) * Math.sqrt(opacity);
+          ctx.moveTo(px + radius, py);
+          ctx.arc(px, py, radius, 0, Math.PI * 2);
+        }
         ctx.fill();
       }
       ctx.restore();
     };
     const draw = (time: number) => {
-      const w = el.clientWidth, h = el.clientHeight;
+      const w = viewportWidth, h = viewportHeight;
       ctx.clearRect(0, 0, w, h);
       shots.forEach((shot) => {
-        const painting = paintings[MEMORY_SHOTS.findIndex(image => image.src === shot.src)];
+        const painting = paintingsBySource.get(shot.src);
         const age = time - shot.start;
         if (!painting || age < 0 || age > HOLD + ERODE + DRIFT) return;
         const { width, x, y } = shotPlacement(shot, w, h,
@@ -174,15 +208,21 @@ export function MemoryEnding() {
           entrance * entrance * (3 - 2 * entrance));
       });
       const state = memoryFrame(time);
-      if (handwriting.current) handwriting.current.style.opacity = String(state.titleOpacity);
-      if (ink.current) ink.current.style.strokeDashoffset = String(1 - state.title);
-      if (scribble.current) scribble.current.style.strokeDashoffset = String(1 - state.titleScribble);
-      ambientEl.style.opacity = String(state.ambient);
-      screenEl.style.setProperty("--edge-feather", `${state.feather}%`);
-      screenEl.style.transform = `scale(${state.screenX}, ${state.screenY})`;
-      screenEl.style.opacity = String(state.screenOpacity);
-      lineEl.style.opacity = String(state.line);
-      lineEl.style.transform = `translate(-50%, -50%) scaleX(${state.lineX})`;
+      if (handwriting.current && state.titleOpacity !== previousState?.titleOpacity) handwriting.current.style.opacity = String(state.titleOpacity);
+      if (ink.current && state.title !== previousState?.title) ink.current.style.strokeDashoffset = String(1 - state.title);
+      if (scribble.current && state.titleScribble !== previousState?.titleScribble) scribble.current.style.strokeDashoffset = String(1 - state.titleScribble);
+      if (state.ambient !== previousState?.ambient) ambientEl.style.opacity = String(state.ambient);
+      if (state.feather !== previousState?.feather) {
+        screenEl.style.setProperty("--edge-feather", `${state.feather}%`);
+        if (state.feather > 2 && (previousState?.feather ?? 2) === 2) {
+          screenEl.style.maskImage = "linear-gradient(to bottom, transparent, #000 var(--edge-feather), #000 calc(100% - var(--edge-feather)), transparent)";
+        }
+      }
+      if (state.screenX !== previousState?.screenX || state.screenY !== previousState?.screenY) screenEl.style.transform = `scale(${state.screenX}, ${state.screenY})`;
+      if (state.screenOpacity !== previousState?.screenOpacity) screenEl.style.opacity = String(state.screenOpacity);
+      if (state.line !== previousState?.line) lineEl.style.opacity = String(state.line);
+      if (state.lineX !== previousState?.lineX) lineEl.style.transform = `translate(-50%, -50%) scaleX(${state.lineX})`;
+      previousState = state;
     };
     const stopForReducedMotion = () => {
       if (!motion.matches) return;
@@ -199,30 +239,54 @@ export function MemoryEnding() {
     const tick = (now: number) => {
       if (cancelled) return;
       elapsed = now - startedAt;
+      const drawStart = performance.now();
       draw(elapsed);
+      // Allow startup to settle. Monitor both CPU drawing and missed 60 Hz frames.
+      if (elapsed > 400 && elapsed < 5900) {
+        quality = particleQuality(quality, performance.now() - drawStart, previousTick ? now - previousTick : 16.7);
+      }
+      previousTick = now;
       if (!memoryFrame(elapsed).done) frame = requestAnimationFrame(tick);
       else setFinished(true);
     };
     // A background tab must not consume the entire film unseen.
     const visibility = () => {
       if (document.hidden) cancelAnimationFrame(frame);
-      else if (paintings.length && !motion.matches && !memoryFrame(elapsed).done) {
+      else if (paintingsBySource.size === MEMORY_SHOTS.length && !motion.matches && !memoryFrame(elapsed).done) {
         startedAt = performance.now() - elapsed;
+        previousTick = 0;
         frame = requestAnimationFrame(tick);
       }
     };
     document.addEventListener("visibilitychange", visibility);
+    const paintingsBySource = new Map<string, Painting>();
     const play = async () => {
       if (motion.matches) { stopForReducedMotion(); return; }
       try {
         await document.fonts.ready;
         if (cancelled) return;
-        paintings = preparedPaintings.current ?? await Promise.all(MEMORY_SHOTS.map(async (shot, i) => {
-          const image = new Image(); image.src = shot.src;
-          await image.decode();
-          return paintingFrom(image, i);
-        }));
+        paintings = preparedPaintings.current ?? [];
+        if (!paintings.length) {
+          // Bound decoded-image memory and yield between batches on mobile Safari.
+          for (let offset = 0; offset < MEMORY_SHOTS.length; offset += 4) {
+            if (cancelled) return;
+            const batch = await Promise.all(MEMORY_SHOTS.slice(offset, offset + 4).map(async (shot, i) => {
+              const image = new Image(); image.src = shot.src;
+              try {
+                await image.decode();
+                return paintingFrom(image, offset + i);
+              } finally { image.removeAttribute("src"); }
+            }));
+            paintings.push(...batch);
+            await new Promise<void>(resolve => setTimeout(resolve, 0));
+          }
+        }
+        if (cancelled) return;
         preparedPaintings.current = paintings;
+        paintings.forEach((painting, index) => {
+          painting.erosion = -1;
+          paintingsBySource.set(MEMORY_SHOTS[index]!.src, painting);
+        });
       } catch (cause) {
         console.error("Unable to load memory paintings", cause);
         if (!cancelled) { setError(true); titleEl.style.opacity = "1"; setFinished(true); }
