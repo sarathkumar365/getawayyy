@@ -14,12 +14,13 @@
     "measure": "bun run scripts/measure-walk.ts"
   },
   "dependencies": {
-    "next": "^15.5.4",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "@vercel/analytics": "^2.0.1",
     "gsap": "^3.13.0",
     "lenis": "^1.3.11",
-    "lz-string": "^1.5.0"
+    "lz-string": "^1.5.0",
+    "next": "^15.5.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "typescript": "^5.9.2",
